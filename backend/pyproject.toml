@@ -1,0 +1,39 @@
+[project]
+name = "pokeagent-backend"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.141.1",
+]
+
+[tool.uv]
+# An application, not a library. Modules stay as local source on sys.path rather
+# than being built and installed into the environment.
+package = false
+
+[tool.vercel]
+# api/main.py is not one of the paths Vercel auto-detects, so the entrypoint is
+# stated explicitly. This lives here rather than in vercel.json so it also holds
+# if the backend is ever deployed as a standalone Vercel project.
+entrypoint = "api.main:app"
+
+[tool.pytest.ini_options]
+# Required because package = false: the project's own modules are not installed,
+# so the project root has to be on sys.path for `from api.main import app` to work.
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+# E,F are ruff's defaults; I,UP,B add import sorting, pyupgrade, and bugbear.
+select = ["E", "F", "I", "UP", "B"]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+    "ruff>=0.16.4",
+    "uvicorn>=0.52.4",
+]

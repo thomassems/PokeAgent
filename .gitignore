@@ -149,6 +149,7 @@ activemq-data/
 
 # Environments
 .env
+.env*.local
 .envrc
 .venv
 env/
@@ -156,6 +157,16 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Node / Next.js
+#   frontend/.gitignore covers the frontend in detail; these catch anything that
+#   lands at the repo root.
+node_modules/
+.next/
+out/
+
+# Vercel
+.vercel
 
 # Spyder project settings
 .spyderproject
