@@ -14,8 +14,10 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+# Scoped to the repo root. Without the leading slash these match at any depth,
+# which would silently swallow frontend/lib/ and backend/lib/.
+/lib/
+/lib64/
 parts/
 sdist/
 var/

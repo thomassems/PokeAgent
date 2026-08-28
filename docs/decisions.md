@@ -75,21 +75,70 @@ the first deploy.
 The rewrite is guarded with `if (process.env.NODE_ENV === "production") return []`
 so it cannot shadow Vercel's own route table in production.
 
+## 6. `data/` owns the one file read; `tools/` stays pure
+
+CLAUDE.md says `tools/` does no I/O, but `tools/` has to read the baked Gen 4
+JSON out of `data/`. Those cannot both be literally true.
+
+Resolved by putting the read in `data/`, at module level, so `tools/` imports an
+already-materialised constant and never touches the filesystem:
+
+```python
+# data/dex.py
+_GEN4 = json.loads((Path(__file__).parent / "gen4.json").read_text())
+
+# tools/coverage.py
+from data.dex import TYPE_CHART        # an import, not I/O
+```
+
+Python executes a module once per process and caches it, so the read happens a
+single time no matter how many tool calls a run makes. Every function in `tools/`
+above that import stays deterministic and mock-free to test, which is what the
+rule was protecting. `data/` keeps "no logic" — a file read is not logic.
+
+The cost is that importing has a side effect, and malformed JSON becomes an
+import-time crash rather than a call-time one. For baked, committed data that is
+the better failure: it dies at deploy rather than mid-run.
+
+Rejected: **a generated `data/gen4.py` of Python literals**, which would mean
+literally zero I/O and would be precompiled to `.pyc` by Vercel at build time. It
+puts a very large generated file into every diff for a benefit the approach above
+already delivers.
+
+Rejected: **passing the data in as a parameter** — `find_candidates(dex, filters)`.
+Purest and easiest to test, but it collides with the tool-schema generator: that
+generator turns a function signature into JSON Schema for the model, so a `dex`
+parameter would appear in the schema and the model would try to supply it.
+Avoiding that needs an exclusion mechanism in the generator on day one, which is
+complexity added to a learning surface to solve a problem the chosen approach
+does not have.
+
+## 7. `httpx2` over `httpx` for TestClient
+
+Starlette 1.6 deprecation-warns that `TestClient` wants `httpx2` — the next major
+version of httpx, published under a separate PyPI name rather than as `httpx>=2`
+so both can coexist during migration.
+
+A deprecation warning alone would not justify swapping a working dev dependency.
+The deciding fact is that `openai` 3.5.0 requires `httpx2<3,>=2.7.0`, and the
+provider adapter will use that SDK against DeepSeek. `httpx2` is therefore
+arriving regardless, and keeping `httpx` for tests would mean carrying two HTTP
+client libraries that do the same job.
+
+Dev-only either way; it never ships to Vercel. Note that `httpx2` drops `certifi`
+in favour of `truststore`, so TLS verification now uses the system trust store.
+
 ---
 
 ## Open questions
 
 Not decided. Each needs its own proposal before code depends on it.
 
-- **`tools/` cannot literally do "no I/O."** CLAUDE.md says `tools/` performs no
-  I/O, but `tools/` has to read the baked Gen 4 JSON out of `data/`. Candidates:
-  load once at import into a module-level constant, generate a `.py` data module
-  at build time, or read the rule as "no I/O per call." Resolve when there is data
-  to load.
+- **Vercel Services availability is unconfirmed.** The docs page is marked
+  "Permissions Required: Services" and it is not known whether it is available on
+  the Hobby plan. Fallback is two Vercel projects — a `vercel.json` change, not a
+  restructure. See decision 2.
 - **Post-rewrite path handling on Vercel is unverified.** Whether the backend
   service receives `/api/health` or `/health` after the rewrite has not been
   checked against a real deploy. FastAPI routes carry the `/api` prefix in the
   path itself, which survives either answer, but this needs confirming.
-- **`httpx` vs `httpx2`.** Starlette 1.6 emits a deprecation warning saying
-  `TestClient` wants `httpx2`. `httpx` works today and the test passes; swapping
-  is a dependency change and has not been made.
