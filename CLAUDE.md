@@ -83,8 +83,24 @@ CI - is fair game, subject to the rules below.
 - **Explain tradeoffs, do not silently pick.**
 - **Say when you are unsure.** A flagged guess is useful; a confident wrong
   answer costs me an afternoon.
-- **Never commit, push, or open a PR unless I explicitly ask.**
+- **Never commit, push, or open a PR unless I explicitly ask.** See Git workflow.
 - **Do not touch `.env`, `uv.lock`, or `package-lock.json` without saying so.**
+
+## Git workflow
+
+- **Never commit to `main` and never push to `main`.** Branch first, every time,
+  including for a one-line change.
+- **Branch names say what the work is** - `feature/coverage-gaps`,
+  `fix/speed-tier-off-by-one`, `chore/pin-ruff`. Same rule as function names.
+- **Commit and push to the branch, then stop.** I open the PR and I merge. Do
+  not open a PR, do not merge, do not merge a PR - not even when the branch is
+  green and the change is trivial.
+- **Branching does not make committing automatic.** The rule above says *where*
+  work goes, not *when* to commit. Commit and push still need me to ask.
+- If a branch is already checked out and it suits the work, stay on it. Do not
+  open a new branch per commit.
+- If you notice work-in-progress sitting on `main`, say so and offer to move it
+  to a branch. Do not rewrite my branch state on your own.
 
 ## Verify, do not recall
 
