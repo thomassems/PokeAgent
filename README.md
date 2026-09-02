@@ -1,7 +1,7 @@
 # PokeAgent
 
-A benchmark disguised as a Pokemon team builder. Two agent implementations — one
-hand-rolled, one built on LangChain — solve the same open-ended team-building
+A benchmark disguised as a Pokemon team builder. Two agent implementations - one
+hand-rolled, one built on LangChain - solve the same open-ended team-building
 problems against the same tools, and the app streams both traces side by side so
 they can be compared on outcome quality, step count, latency, and cost.
 
@@ -18,7 +18,7 @@ backend/     FastAPI (Python 3.12)
   agents/      the two implementations plus the protocol they share
   tools/       pure, deterministic functions over data/
   data/        baked Gen 4 JSON plus the one-time fetch script
-  evals/       agent runs — slow, nondeterministic, on demand
+  evals/       agent runs - slow, nondeterministic, on demand
   tests/       unit tests
 ```
 
@@ -29,7 +29,7 @@ Dependencies point inward: `api/ -> agents/ -> tools/ -> data/`.
 Requires [uv](https://docs.astral.sh/uv/) and Node 22+.
 
 ```bash
-# backend — creates .venv and installs from uv.lock
+# backend - creates .venv and installs from uv.lock
 cd backend && uv sync
 
 # frontend
@@ -73,5 +73,5 @@ Vercel builds `frontend/` and `backend/` independently and routes `/api/*` to th
 backend, everything else to the frontend. The Python entrypoint is declared as
 `api.main:app` in `backend/pyproject.toml`.
 
-Not yet deployed — see the open questions in `docs/decisions.md` before the first
+Not yet deployed - see the open questions in `docs/decisions.md` before the first
 deploy.
