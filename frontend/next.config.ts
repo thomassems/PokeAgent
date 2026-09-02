@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   },
 
   // In production, Vercel routes /api/* to the backend service via the top-level
-  // rewrites in vercel.json, so this must not apply there — it would shadow that
+  // rewrites in vercel.json, so this must not apply there - it would shadow that
   // route table. It exists only to reproduce the same single-origin routing
   // against a local uvicorn, which keeps the browser free of CORS entirely.
   async rewrites() {
