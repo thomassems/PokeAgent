@@ -136,7 +136,8 @@ Likely DeepSeek (OpenAI-API-compatible - use the `openai` SDK with a custom
 Dependencies point inward. Outer layers may import inner ones; never the reverse.
 
 ```
-api/  ->  agents/  ->  tools/  ->  data/
+api/  ->  agents/  ->  llm/tools/  ->  services/
+                                   ->  tools/  ->  data/
 ```
 
 - `data/` - baked Gen 4 JSON plus the one-time fetch script. No logic.
@@ -144,6 +145,12 @@ api/  ->  agents/  ->  tools/  ->  data/
   candidate search. **No LLM client, no network, no I/O, no async.**
   Deterministic and fully unit-testable. This is the most important boundary in
   the repo; if something in `tools/` needs to call a model, the design is wrong.
+- `services/` - work that crosses the network. Not pure, and not unit-testable
+  without mocks. Exists so `tools/` does not have to relax the rule above.
+  **Planned, not built** - see `docs/planned.md`.
+- `llm/tools/` - the model-facing tool registry: one schema per tool plus a call
+  into `tools/` or `services/`. No business logic. **Planned, not built** - see
+  `docs/planned.md`.
 - `agents/` - the two implementations plus the shared protocol they satisfy.
   Agents call tools. Agents never touch HTTP or FastAPI types.
 - `api/` - FastAPI routes, SSE streaming, request/response models. Thin.
@@ -209,8 +216,11 @@ Use these precisely. Drift here causes real bugs.
 - **Candidate** - a Pokemon under consideration for a slot, not yet added.
 - **Run** - one agent execution from prompt to final answer.
 - **Step** - one iteration of an agent's loop.
-- Scope is **Generation 4 only**. If something references another generation,
-  that is a bug.
+- **Generation** - which games' roster and rules apply. App-level state, selected
+  in the header and passed down. Type charts, rosters, and even a Pokemon's own
+  typing depend on it. Never hardcode a generation, and never assume Gen 4.
+- **Regional form** - a variant with different typing from its base species.
+  Carries the generation the *form* debuted, not the species.
 
 ## Out of scope
 
@@ -218,7 +228,6 @@ Not building these. If a change starts heading toward one, stop and say so.
 
 - User accounts, auth, or login
 - A database (team state lives in the URL)
-- Generations other than 4
 - Battle simulation or damage calculation
 - Multiplayer, sharing feeds, or social features
 - Mobile apps
@@ -233,6 +242,9 @@ Not building these. If a change starts heading toward one, stop and say so.
 - Evals report distributions over N runs, never single-run comparisons. One
   head-to-head between two agents is anecdote, not evidence.
 - Any bug we fix gets a regression test first.
+- The eval suite runs after any prompt change - prompts break silently. Three
+  layers are planned: retrieval accuracy, tool selection, and team quality.
+  **Not built** - see `docs/planned.md`.
 
 ## Conventions
 
@@ -241,6 +253,10 @@ Not building these. If a change starts heading toward one, stop and say so.
 - TypeScript: strict mode, no `any` without a comment explaining why.
 - Names say what things are. `find_candidates`, not `helper` or `process`.
 - Sentence-case commit messages, imperative mood, one logical change each.
+- **No em dashes.** Not in code, comments, docs, commit messages, JSON content,
+  or anything written back to me. Use a spaced hyphen, a colon, or two
+  sentences. This applies to text you quote back from me as well - normalise it
+  rather than preserving it.
 
 ## Decision log
 
