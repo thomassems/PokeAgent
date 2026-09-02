@@ -1,1 +1,78 @@
 @import "tailwindcss";
+
+/*
+ * Rotom plasma inside an appliance shell: warm amber against cool slate, meant
+ * to read as a device rather than a dashboard. Every colour in the app comes
+ * from here - @theme both declares the custom property and generates the
+ * matching utility, so components never carry a hex value.
+ */
+@theme {
+  --color-shell-950: oklch(0.15 0.011 250);
+  --color-shell-900: oklch(0.19 0.012 250);
+  --color-shell-800: oklch(0.24 0.013 250);
+  --color-shell-700: oklch(0.31 0.014 250);
+  --color-shell-600: oklch(0.42 0.015 250);
+  --color-shell-400: oklch(0.62 0.014 250);
+
+  --color-screen-950: oklch(0.12 0.010 250);
+
+  --color-plasma-600: oklch(0.62 0.18 40);
+  --color-plasma-500: oklch(0.72 0.17 48);
+  --color-plasma-300: oklch(0.84 0.10 62);
+
+  --color-ink-100: oklch(0.94 0.008 80);
+  --color-ink-300: oklch(0.80 0.010 80);
+  --color-ink-500: oklch(0.64 0.012 80);
+
+  /* Type identity. Decorative only - nothing in the UI depends on telling
+     these apart, because meaning is always carried by an adjacent label. */
+  --color-type-normal: oklch(0.68 0.03 90);
+  --color-type-fire: oklch(0.68 0.17 42);
+  --color-type-water: oklch(0.65 0.14 245);
+  --color-type-electric: oklch(0.82 0.15 95);
+  --color-type-grass: oklch(0.70 0.16 145);
+  --color-type-ice: oklch(0.82 0.08 200);
+  --color-type-fighting: oklch(0.55 0.16 25);
+  --color-type-poison: oklch(0.55 0.16 310);
+  --color-type-ground: oklch(0.70 0.11 75);
+  --color-type-flying: oklch(0.74 0.08 280);
+  --color-type-psychic: oklch(0.68 0.17 355);
+  --color-type-bug: oklch(0.68 0.15 125);
+  --color-type-rock: oklch(0.62 0.07 85);
+  --color-type-ghost: oklch(0.52 0.13 300);
+  --color-type-dragon: oklch(0.55 0.18 275);
+  --color-type-dark: oklch(0.44 0.05 40);
+  --color-type-steel: oklch(0.72 0.04 230);
+  --color-type-fairy: oklch(0.78 0.11 340);
+
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  /* The spec's ~900px threshold, where the two result panels stop working side
+     by side. Naming it generates a `panels:` variant. */
+  --breakpoint-panels: 56.25rem;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-shell-950);
+    color: var(--color-ink-100);
+  }
+
+  /* Every interactive element gets a visible focus ring, not just a subtle one.
+     :focus-visible keeps it off mouse clicks. */
+  :focus-visible {
+    outline: 2px solid var(--color-plasma-500);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
