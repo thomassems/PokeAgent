@@ -51,7 +51,7 @@ into a DB call while leaving it in `tools/`.
 
 ### Queries the tools have to support
 
-Tool shapes are driven by the questions the agent actually gets asked. Three
+Tool shapes are driven by the questions the agent actually gets asked. Five
 representative ones, none of them a single-entity lookup:
 
 - **"What is my team missing?"** Needs every team member's typing at once, and
@@ -109,6 +109,29 @@ question.
 
 Terms the dex does not encode route to search. They do not route to whichever
 field happens to correlate.
+
+### Offensive coverage comes from moves, not typing
+
+A defensive profile follows from a Pokemon's typing. An offensive one does not.
+
+Garchomp is Dragon/Ground. Computed from typing it looks unable to touch Steel,
+but it runs Fire Blast, so it hits Steel for 2x. Offensive coverage comes from
+moves, not from what the Pokemon is. A types-based attacking profile only ever
+shows STAB, and it will report offensive gaps the team does not actually have.
+
+That matters because the glossary in `CLAUDE.md` defines offensive coverage as
+what the team can hit super-effectively, which is a statement about movesets.
+
+So the attacking direction of a matchup tool has to read each Pokemon's
+damaging moves and use their types, not the Pokemon's own. Both halves of that
+are already in `data/`: `POKEMON[id]["moves"]` gives the move ids and
+`MOVES[id]["type"]` gives their types. Status moves are filtered out, since
+Swords Dance covers nothing.
+
+If a tool computes the attacking direction from typing alone, it should be
+named for what it actually returns. Calling STAB-only output "offensive
+coverage" is exactly the vocabulary drift the glossary exists to prevent, and
+it is the kind that produces a confident wrong answer rather than an error.
 
 ## Eval suite
 
