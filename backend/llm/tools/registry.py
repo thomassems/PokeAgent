@@ -50,10 +50,85 @@ def get_type_matchups(pokemon, direction):
             typemap[p] = ["Couldn't find types for pokemon"]
     return typemap
 
+
 # web search tool
 
 # vector db tool
 
-def __init__():
-    if __name__=='__main__':
-        print(get_pokemon("garchomp"))
+
+# Schemas the model sees. Both agents import this list and pass it straight to
+# tools=, so neither can be handed a different tool surface than the other.
+#
+# Property names match the function parameter names on purpose, so a tool call's
+# input dict can be splatted into the function without remapping.
+TOOLS = [
+    {
+        "name": "get_pokemon",
+        "description": (
+            "Look up base stats, typing and moveset for one or more Pokemon by name. "
+            "Pass every Pokemon you need in a single call rather than calling once "
+            "per Pokemon."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "pokemon": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Pokemon names, for example ['Garchomp', 'Rotom-Wash']",
+                }
+            },
+            "required": ["pokemon"],
+        },
+    },
+    {
+        "name": "get_move",
+        "description": (
+            "Look up type, damage category, power, accuracy and PP for one or more "
+            "moves by name. Use this whenever a move's properties matter, including "
+            "when judging what a Pokemon can actually hit, since offensive coverage "
+            "comes from moves rather than from a Pokemon's own typing. Pass every "
+            "move you need in a single call."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "moves": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Move names, for example ['Earthquake', 'Stone Edge']",
+                }
+            },
+            "required": ["moves"],
+        },
+    },
+    {
+        "name": "get_type_matchups",
+        "description": (
+            "Look up type effectiveness for one or more Pokemon, based on their own "
+            "typing. Use direction='defending' for what hits them hard and what they "
+            "resist. Use direction='attacking' for what their own types are strong "
+            "against, which is same-type attack coverage only and does not account "
+            "for the moves they actually carry. Pass the whole team in one call."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "pokemon": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Pokemon names, for example ['Garchomp', 'Ferrothorn']",
+                },
+                "direction": {
+                    "type": "string",
+                    "enum": ["attacking", "defending"],
+                    "description": (
+                        "'defending' reads the chart against these Pokemon, "
+                        "'attacking' reads it in their favour."
+                    ),
+                },
+            },
+            "required": ["pokemon", "direction"],
+        },
+    },
+]
