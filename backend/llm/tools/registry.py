@@ -132,3 +132,16 @@ TOOLS = [
         },
     },
 ]
+
+
+# Dispatch map: tool name to the function that runs it. Both agents look a tool
+# up here rather than growing an if/elif chain, so adding a tool touches this
+# file and nothing else.
+#
+# Schema property names match each function's parameter names, so a tool call's
+# input dict splats straight in: TOOL_FUNCTIONS[block.name](**block.input)
+TOOL_FUNCTIONS = {
+    "get_pokemon": get_pokemon,
+    "get_move": get_move,
+    "get_type_matchups": get_type_matchups,
+}
