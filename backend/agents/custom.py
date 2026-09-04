@@ -1,6 +1,9 @@
 import anthropic
-from llm.tools.registry import TOOLS, get_move, get_pokemon, get_type_matchups
+from llm.tools.registry import TOOLS, TOOL_FUNCTIONS, get_move, get_pokemon, get_type_matchups
 from agents.prompts import SYSTEM_PROMPT
+import json
+
+NUM_ITERS = 3
 
 client = anthropic.Anthropic()
 
@@ -21,45 +24,62 @@ def chat(messages):
         messages=messages,
         tools=TOOLS,
     )
-    if message.stop_reason == "tool_use":
-        tool_block = next(b for b in message.content if b.type == "tool_use")
-        tool_input = tool_block.input
-        if tool_block.name == 'get_pokemon':
-            print('get_pokemon tool called')
-            res = get_pokemon(tool_input['pokemon'])
-        if tool_block.name == 'get_move':
-            print('get_move tool called')
-            res = get_move(tool_input['moves'])
-        if tool_block.name == 'get_type_matchups':
-            print('get_type_matchups called')
-            res = get_type_matchups(tool_input['pokemon'], tool_input['directoin'])
-        print(f"Tool result: {res}")
-        return res if res else 'invalid tool called'
-    
     print(message.content)
-    return next(block.text for block in message.content if block.type=="text")
+    return message
 
 # start with empty message list
 messages = []
 user_message="Give me stats for the move body slam"
+# USER MESSAGE WILL JUST BE WHATEVER USER INPUTS
 def call_agent(messages, user_message):
-    while True:
-        # Add the initial user question
-        add_user_message(messages, user_message)
+    # Add the initial user question
+    add_user_message(messages, user_message)
 
-        # Get Claude's response
+    iteration = 1
+    while iteration <= NUM_ITERS:
+        print({len(messages)})
+        print(f"This is iteration: #{iteration}")
+
         answer = chat(messages)
-        
-        print("this is the answer")
-        print(answer)
+        print(f'this is the {answer}')
+        add_assistant_message(messages, answer.content)
 
-        # NEED TO GET THIS ACTUAL LOOP WORKING
-        # also will need to look at the result and see if it's tool call res
-        # cuz if it is then need to call agent again
+        if answer.stop_reason == "tool_use":
+            tool_results = []
+            for b in answer.content:
+                if b.type == "tool_use":
+                    tool_input = b.input          
+                    if b.name == 'get_pokemon':
+                        print('get_pokemon tool called')
+                        res = get_pokemon(tool_input['pokemon'])
+                    if b.name == 'get_move':
+                        print('get_move tool called')
+                        res = get_move(tool_input['moves'])
+                    if b.name == 'get_type_matchups':
+                        print('get_type_matchups called')
+                        res = get_type_matchups(tool_input['pokemon'], tool_input['direction'])
+                    if b.name not in TOOL_FUNCTIONS:
+                        raise ValueError(
+                            f"Unknown tool '{b.name}'. Available: {', '.join(TOOL_FUNCTIONS)}"
+                        )
+                    print(f"Tool result: {res}")
+                    if res:
+                        tool_results.append({
+                        "type": "tool_result",
+                        "tool_use_id": b.id,
+                        "content": json.dumps(res),
+                        })
+            # INTERESTING - tool results count as user message, since the API must alternate between
+            # user and assistant
+            if tool_results:
+                add_user_message(messages, tool_results)
 
-        # Add Claude's response to the conversation history
-        add_assistant_message(messages, answer)
-        break
+        if answer.stop_reason == "end_turn":
+            print(f"Agent stopped on iteration: {iteration}")
+            text = "".join(b.text for b in answer.content if b.type == "text")
+            print(f"Final answer{text}")
+            break
+        iteration+=1
 
 
 call_agent(messages, user_message)
