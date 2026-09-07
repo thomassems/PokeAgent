@@ -1,7 +1,9 @@
 # will store all 3 tools, for now will have 3 tools
 import collections
 
-from data.dex import MOVES, POKEMON, ATTACKING_CHART, DEFENDING_CHART
+from data.dex import ATTACKING_CHART, DEFENDING_CHART, MOVES, POKEMON
+from services.search import web_search
+
 
 # data tool
 # need to have normalization
@@ -75,7 +77,9 @@ TOOLS = [
                 "pokemon": {
                     "type": "array",
                     "items": {"type": "string"},
-                    "description": "Pokemon names, for example ['Garchomp', 'Rotom-Wash']",
+                    "description": (
+                        "Pokemon names, for example ['Garchomp', 'Rotom-Wash']"
+                    ),
                 }
             },
             "required": ["pokemon"],
@@ -96,7 +100,9 @@ TOOLS = [
                 "moves": {
                     "type": "array",
                     "items": {"type": "string"},
-                    "description": "Move names, for example ['Earthquake', 'Stone Edge']",
+                    "description": (
+                        "Move names, for example ['Earthquake', 'Stone Edge']"
+                    ),
                 }
             },
             "required": ["moves"],
@@ -117,7 +123,9 @@ TOOLS = [
                 "pokemon": {
                     "type": "array",
                     "items": {"type": "string"},
-                    "description": "Pokemon names, for example ['Garchomp', 'Ferrothorn']",
+                    "description": (
+                        "Pokemon names, for example ['Garchomp', 'Ferrothorn']"
+                    ),
                 },
                 "direction": {
                     "type": "string",
@@ -129,6 +137,34 @@ TOOLS = [
                 },
             },
             "required": ["pokemon", "direction"],
+        },
+    },
+    {
+        "name": "web_search",
+        "description": (
+            "Search the web for information the dex does not hold. Use this for "
+            "tiers, competitive formats, what is currently popular, categories like "
+            "legendary or mythical, characters such as gym leaders and champions, or "
+            "any term you cannot resolve from the other tools. Do not use it for base "
+            "stats, typings, move data or type matchups, which are exact facts and "
+            "come from the dex tools."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "maxLength": 400,
+                    "description": "What to search for, phrased as a search query.",
+                },
+                "max_results": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10,
+                    "description": "How many results to return. Defaults to 5.",
+                },
+            },
+            "required": ["query"],
         },
     },
 ]
@@ -144,4 +180,5 @@ TOOL_FUNCTIONS = {
     "get_pokemon": get_pokemon,
     "get_move": get_move,
     "get_type_matchups": get_type_matchups,
+    "web_search": web_search,
 }
