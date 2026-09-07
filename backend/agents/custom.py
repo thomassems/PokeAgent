@@ -1,9 +1,10 @@
 import anthropic
-from llm.tools.registry import TOOLS, TOOL_FUNCTIONS, get_move, get_pokemon, get_type_matchups
+from llm.tools.registry import TOOLS, TOOL_FUNCTIONS, get_move, get_pokemon, get_type_matchups, web_search
 from agents.prompts import SYSTEM_PROMPT
 import json
 
-NUM_ITERS = 3
+NUM_ITERS=3
+MAX_RESULT=5
 
 client = anthropic.Anthropic()
 
@@ -30,6 +31,7 @@ def chat(messages):
 # start with empty message list
 messages = []
 user_message="Give me stats for the move body slam"
+# user_message="What is a good team to beat Cynthia with in gen4 Diamond"
 # USER MESSAGE WILL JUST BE WHATEVER USER INPUTS
 def call_agent(messages, user_message):
     # Add the initial user question
@@ -58,6 +60,9 @@ def call_agent(messages, user_message):
                     if b.name == 'get_type_matchups':
                         print('get_type_matchups called')
                         res = get_type_matchups(tool_input['pokemon'], tool_input['direction'])
+                    if b.name == 'web_search':
+                        print('web_search called')
+                        res = web_search(tool_input['query'], tool_input.get('max_results', MAX_RESULT))
                     if b.name not in TOOL_FUNCTIONS:
                         raise ValueError(
                             f"Unknown tool '{b.name}'. Available: {', '.join(TOOL_FUNCTIONS)}"
