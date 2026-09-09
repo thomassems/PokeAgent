@@ -75,13 +75,13 @@ representative ones, none of them a single-entity lookup:
   counters her perfectly but names a Pokemon that did not exist yet is still a
   wrong answer.
 
-- **"Build me a team of legendaries."** or "what is the best mythical". The dex
-  stores name, typing, stats and moves. It has no field for *legendary* or
-  *mythical*, so no amount of querying resolves the term. The data even
-  contains Heatran and Zapdos without recording that either is legendary. The
-  agent has to recognise the word as one its structured data does not encode,
-  use search to find which Pokemon the category covers, then return to the dex
-  for their stats.
+- **"Build me a team of legendaries."** The dex now carries `is_legendary` and
+  `is_mythical` per species, straight from PokeAPI, so this is a filter rather
+  than a research question. It stays on this list because the same shape of
+  question still exists for categories the dex does *not* encode: tiers,
+  competitive formats, "pseudo-legendary", "starter". Those still route to
+  search. The point is that the agent has to know which side of that line a term
+  falls on.
 
 Every one of these touches several Pokemon or several moves at once. That is
 why the lookups take lists rather than single names. A seven Pokemon comparison
@@ -95,17 +95,18 @@ is not a parameter the user supplies here, it is a conclusion the agent has to
 reach and then respect.
 
 The legendary case adds a third: the agent has to know where its own data stops.
-Tiers, competitive formats, "legendary", "mythical", "pseudo-legendary",
-"starter", anything about the current metagame - none of it is in the dex, and
-the stats lookup cannot say so, because it can only report what it has.
+Legendary and mythical are now fields in the dex, but tiers, competitive
+formats, "pseudo-legendary", "starter" and anything about the current metagame
+are not, and the stats lookup cannot report that they are missing. It can only
+return what it has.
 
-The failure to design against is silent substitution. Asked for legendaries,
-the model has every incentive to return six Pokemon with high base stat totals
-and present them as the answer. Base stat total does correlate with the
-category, nothing in the dex contradicts the choice, and the result reads as
-confident and well reasoned. It is still wrong, and no amount of checking the
-output text against the dex will catch it, because the dex was never asked the
-question.
+The failure to design against is silent substitution. Asked for a category the
+dex does not hold, the model has every incentive to return six Pokemon with high
+base stat totals and present them as the answer. Base stat total correlates with
+most of these categories, nothing in the dex contradicts the choice, and the
+result reads as confident and well reasoned. It is still wrong, and no amount of
+checking the output text against the dex will catch it, because the dex was
+never asked the question.
 
 Terms the dex does not encode route to search. They do not route to whichever
 field happens to correlate.
@@ -132,6 +133,40 @@ If a tool computes the attacking direction from typing alone, it should be
 named for what it actually returns. Calling STAB-only output "offensive
 coverage" is exactly the vocabulary drift the glossary exists to prevent, and
 it is the kind that produces a confident wrong answer rather than an error.
+## Tool ideas, not scoped
+
+Named so they are not forgotten, and explicitly not designed. None of these has
+a signature, a data source, or a decision behind it yet. Do not build from this
+section; it is a list of things to scope later.
+
+### Challenge-format tools
+
+**Nuzlocke support.** Answering "what can I catch on this route" or "my only
+Water type just fainted, what are my options" needs route encounter tables,
+which is an entire data axis the dex does not have. Encounters vary by game
+within a generation, by time of day, by method (grass, surfing, fishing), and by
+version exclusivity. That is a much larger and messier dataset than stats and
+moves, and it is the reason this is a project rather than a tool.
+
+It also changes what a good answer is. A Nuzlocke run is constrained by what you
+actually caught, not by what exists, so team building becomes optimisation over
+a fixed and often bad roster. The team quality rubric would need to know that.
+
+**IRONMON and similar randomiser rulesets.** These impose rules the dex knows
+nothing about: forced starters, level caps, banned items, permadeath variants.
+Encoding a ruleset is the hard part, and rulesets differ between communities and
+change over time, which points at search or a maintained config rather than
+baked data.
+
+### What to settle before scoping either
+
+- Which games, not just which generations. Encounter data is per-version.
+- Whether the rules are baked, fetched, or supplied by the user per run.
+- Whether these are new tools or constraints threaded through existing ones. A
+  Nuzlocke is arguably a filter on candidate search rather than a tool of its
+  own.
+- What the eval layers do with them, since a correct answer under Nuzlocke rules
+  is wrong under standard ones.
 
 ## Eval suite
 
