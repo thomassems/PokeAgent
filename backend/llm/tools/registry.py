@@ -1,8 +1,9 @@
 # will store all 3 tools, for now will have 3 tools
 import collections
 
-from data.dex import ATTACKING_CHART, DEFENDING_CHART, MOVES, POKEMON
+from data.dex import ABILITIES, ATTACKING_CHART, DEFENDING_CHART, MOVES, POKEMON
 from services.search import web_search
+from tools.dex_query import find_pokemon
 
 
 # data tool
@@ -32,7 +33,7 @@ def get_move(moves):
     return movemap
 
 
-def get_type_matchups(pokemon, direction):
+def get_type_matchups(pokemon, direction, ability=None):
     # for defenders will be whatever is in type chart or 1.0
     # since matchups only store values when the pair is not 1.0
     typemap = collections.defaultdict(list)
@@ -47,10 +48,35 @@ def get_type_matchups(pokemon, direction):
                 elif direction == "defending":
                     typemap[p].append(DEFENDING_CHART[t])
                 else:
-                    typemap[p]= ["invalid direction provided"]
+                    typemap[p] = ["invalid direction provided"]
         else:
             typemap[p] = ["Couldn't find types for pokemon"]
-    return typemap
+
+    if ability is None:
+        return typemap
+
+    # An ability can override the chart entirely: Levitate ignores Ground,
+    # Flash Fire ignores Fire. Which one an individual has is not a property of
+    # the species, so it has to be supplied rather than inferred. The effect is
+    # returned as text rather than applied, because the data stores prose and
+    # not a structured "immune to ground" flag.
+    ability_id = ability.strip().lower().replace(" ", "-")
+    if ability_id not in ABILITIES:
+        return {"error": f"Unknown ability '{ability}'.", "matchups": typemap}
+
+    result = {"matchups": typemap, "ability": ABILITIES[ability_id]}
+    unavailable = [
+        p
+        for p in pokemon
+        if (norm := p.strip().lower().replace(" ", "-")) in POKEMON
+        and ability_id not in {a["name"] for a in POKEMON[norm]["abilities"]}
+    ]
+    if unavailable:
+        result["warning"] = (
+            f"{', '.join(unavailable)} cannot have {ABILITIES[ability_id]['name']}. "
+            "The matchups above ignore it."
+        )
+    return result
 
 
 # web search tool
@@ -67,9 +93,10 @@ TOOLS = [
     {
         "name": "get_pokemon",
         "description": (
-            "Look up base stats, typing and moveset for one or more Pokemon by name. "
-            "Pass every Pokemon you need in a single call rather than calling once "
-            "per Pokemon."
+            "Look up one or more Pokemon by name. Returns base stats, typing, "
+            "abilities, the generation the form debuted, whether it is legendary or "
+            "mythical, and every move it can learn. Pass every Pokemon you need in a "
+            "single call rather than calling once per Pokemon."
         ),
         "input_schema": {
             "type": "object",
@@ -135,6 +162,17 @@ TOOLS = [
                         "'attacking' reads it in their favour."
                     ),
                 },
+                "ability": {
+                    "type": "string",
+                    "description": (
+                        "Optional. An ability that changes the matchup, such as "
+                        "Levitate or Flash Fire. Most Pokemon have two or three "
+                        "possible abilities and which one an individual has is not "
+                        "knowable from the species, so supply it only when the user "
+                        "has said which. Returns the ability's effect for you to "
+                        "apply; it is not applied to the numbers for you."
+                    ),
+                },
             },
             "required": ["pokemon", "direction"],
         },
@@ -167,6 +205,61 @@ TOOLS = [
             "required": ["query"],
         },
     },
+    {
+        "name": "find_pokemon",
+        "description": (
+            "Find Pokemon matching filters, when you do not already know the names. "
+            "Use this for questions about a category rather than a specific Pokemon: "
+            "legendaries, mythicals, everything of a type, everything from one "
+            "generation, or the fastest thing meeting those constraints. Filters "
+            "combine with AND and any you omit does not constrain. Returns names and "
+            "the sorted stat only, so follow up with get_pokemon for the ones worth a "
+            "closer look."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "types": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "normal", "fighting", "flying", "poison", "ground", "rock",
+                            "bug", "ghost", "steel", "fire", "water", "grass",
+                            "electric", "psychic", "ice", "dragon", "dark", "fairy",
+                        ],
+                    },
+                    "description": (
+                        "Matches Pokemon carrying all of these types. One type finds "
+                        "every Pokemon with it, two finds only that exact dual typing."
+                    ),
+                },
+                "generation": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9,
+                    "description": "The generation the form debuted in.",
+                },
+                "is_legendary": {"type": "boolean"},
+                "is_mythical": {"type": "boolean"},
+                "sort_by": {
+                    "type": "string",
+                    "enum": [
+                        "hp", "attack", "defense", "special_attack",
+                        "special_defense", "speed", "total",
+                    ],
+                    "description": "Sorted descending. Defaults to total base stats.",
+                },
+                "limit": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 50,
+                    "description": "How many to return. Defaults to 20.",
+                },
+            },
+            "required": [],
+        },
+    },
 ]
 
 
@@ -181,4 +274,5 @@ TOOL_FUNCTIONS = {
     "get_move": get_move,
     "get_type_matchups": get_type_matchups,
     "web_search": web_search,
+    "find_pokemon": find_pokemon,
 }

@@ -167,6 +167,10 @@ node_modules/
 .next/
 out/
 
+# PokeAPI CSVs downloaded by data/fetch_dex.py. Regenerable, ~11MB, and the
+# generated JSON is what actually gets committed.
+backend/data/.cache/
+
 # Vercel
 .vercel
 
