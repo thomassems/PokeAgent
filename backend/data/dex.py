@@ -33,13 +33,17 @@ POKEMON: dict[str, Any] = _load("pokemon.json", "pokemon")
 # Keyed by id: "earthquake". Values carry name, type, category, power, accuracy, pp.
 MOVES: dict[str, Any] = _load("moves.json", "moves")
 
+# Keyed by id: "levitate". Values carry name and a one line effect. Abilities
+# routinely override the type chart, so a matchup answer that ignores them is
+# wrong for every Levitate, Flash Fire or Water Absorb holder in the dex.
+ABILITIES: dict[str, Any] = _load("abilities.json", "abilities")
+
 def _invert(chart: dict[str, dict[str, float]]) -> dict[str, dict[str, float]]:
     """Flip attacker->defender into defender->attacker.
 
     Answering "what is Steel weak to" against the attacking chart means scanning
-    all eighteen rows looking for a `steel` key. Inverting once here makes it a
-    direct lookup, without storing the same matchups in a second file where the
-    two copies could drift apart.
+    every row looking for a `steel` key. Inverting once here makes it a direct
+    lookup, without storing the same matchups twice where the copies could drift.
     """
     inverted: dict[str, dict[str, float]] = {type_name: {} for type_name in chart}
     for attacker, row in chart.items():
@@ -48,15 +52,20 @@ def _invert(chart: dict[str, dict[str, float]]) -> dict[str, dict[str, float]]:
     return inverted
 
 
-# Attacker keyed to defender: ATTACKING_CHART["fire"]["steel"] is 2.
-# Absent pairs are neutral, so lookups default to 1.0 rather than assume the key
-# exists. Note 0 is a real value (immunity), so it is not safe to treat as falsy.
-ATTACKING_CHART: dict[str, dict[str, float]] = _load("type-chart.json", "chart")
+_CHART_FILE: dict[str, Any] = json.loads((_DATA_DIR / "type-chart.json").read_text())
 
-# The same matchups read the other way: DEFENDING_CHART["steel"]["fire"] is 2.
-# Derived, never edited. type-chart.json stays the single source of truth.
-DEFENDING_CHART: dict[str, dict[str, float]] = _invert(ATTACKING_CHART)
+# The chart is generation dependent, so both of these are keyed by generation as
+# a string: "1" through "9". Steel resisted Ghost and Dark until Gen 6, Fairy did
+# not exist before it, and Gen 1 had its own quirks. Reading the wrong generation
+# gives confidently wrong matchups rather than an error.
+ATTACKING_CHARTS: dict[str, dict[str, dict[str, float]]] = _CHART_FILE["charts"]
+DEFENDING_CHARTS: dict[str, dict[str, dict[str, float]]] = {
+    generation: _invert(chart) for generation, chart in ATTACKING_CHARTS.items()
+}
 
-# Which generation's rules these files encode. Type charts and typings both
-# differ by generation, so anything deriving from them should say which it used.
-GENERATION: str = json.loads((_DATA_DIR / "type-chart.json").read_text())["generation"]
+LATEST_GENERATION: str = str(_CHART_FILE["latest_generation"])
+
+# Convenience aliases for the current generation. Anything that cares which
+# generation it is answering for should index the dicts above instead.
+ATTACKING_CHART: dict[str, dict[str, float]] = ATTACKING_CHARTS[LATEST_GENERATION]
+DEFENDING_CHART: dict[str, dict[str, float]] = DEFENDING_CHARTS[LATEST_GENERATION]
