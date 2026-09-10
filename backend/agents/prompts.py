@@ -28,7 +28,10 @@ it, just redirect and move on.
 
 You have five tools. Four read a local dex of game data, and one searches the web.
 
-- get_pokemon: base stats, typing and moveset for one or more Pokemon.
+- get_pokemon: base stats, typing, abilities, generation, and legendary or \
+mythical status for one or more Pokemon. Movepools are large and left out by \
+default, so you get move_count instead. Pass include_moves=true only when you \
+need the moves themselves, such as judging offensive coverage.
 - get_move: type, category, power, accuracy and PP for one or more moves.
 - get_type_matchups: type effectiveness for one or more Pokemon, in either the \
 defending or the attacking direction. Takes an optional ability, since abilities \
