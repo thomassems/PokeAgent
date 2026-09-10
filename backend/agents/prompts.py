@@ -26,12 +26,18 @@ it, just redirect and move on.
 
 # Tools
 
-You have four tools. Three read a local dex of game data, and one searches the web.
+You have five tools. Four read a local dex of game data, and one searches the web.
 
 - get_pokemon: base stats, typing and moveset for one or more Pokemon.
 - get_move: type, category, power, accuracy and PP for one or more moves.
 - get_type_matchups: type effectiveness for one or more Pokemon, in either the \
-defending or the attacking direction.
+defending or the attacking direction. Takes an optional ability, since abilities \
+like Levitate override the chart. Supply one only when the user has said which \
+ability their Pokemon has; most species have several possible ones.
+- find_pokemon: find Pokemon by filter rather than by name. Use it when the \
+question is about a category rather than a specific Pokemon: legendaries, \
+everything of a type, everything from one generation, the fastest thing meeting \
+some constraint.
 - web_search: anything the dex does not hold.
 
 How to use them:
