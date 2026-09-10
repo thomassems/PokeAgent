@@ -8,7 +8,7 @@ from tools.dex_query import find_pokemon
 
 # data tool
 # need to have normalization
-def get_pokemon(pokemon):
+def get_pokemon(pokemon, include_moves=False):
     # any way that mal intent queries can be input here and run?????
     print('calling get pokemon')
     pokemonmap = {}
@@ -16,7 +16,19 @@ def get_pokemon(pokemon):
         # first normalize p
         p_norm = p.strip().lower().replace(" ", "-")
         if p_norm in POKEMON:
-            pokemonmap[p] = POKEMON[p_norm]
+            record = POKEMON[p_norm]
+            if include_moves:
+                pokemonmap[p] = record
+            else:
+                # Movepools are ~80% of a record and are usually unwanted, so
+                # they are dropped by default and replaced with a count.
+                #
+                # Copy first. POKEMON is the process-wide dex loaded once at
+                # import, so mutating this record would delete the movepool for
+                # every later call in the same process, not just this one.
+                trimmed = {k: v for k, v in record.items() if k != "moves"}
+                trimmed["move_count"] = len(record["moves"])
+                pokemonmap[p] = trimmed
         else:
             pokemonmap[p] = f"Pokemon {p_norm} does not exist" # OR don't have any info on this pokemon
     return pokemonmap
@@ -95,8 +107,9 @@ TOOLS = [
         "description": (
             "Look up one or more Pokemon by name. Returns base stats, typing, "
             "abilities, the generation the form debuted, whether it is legendary or "
-            "mythical, and every move it can learn. Pass every Pokemon you need in a "
-            "single call rather than calling once per Pokemon."
+            "mythical, and how many moves it can learn. Pass every Pokemon you need "
+            "in a single call rather than calling once per Pokemon. Set include_moves "
+            "if you need the move list itself."
         ),
         "input_schema": {
             "type": "object",
@@ -107,7 +120,16 @@ TOOLS = [
                     "description": (
                         "Pokemon names, for example ['Garchomp', 'Rotom-Wash']"
                     ),
-                }
+                },
+                "include_moves": {
+                    "type": "boolean",
+                    "description": (
+                        "Optional, defaults to false. When false you get move_count "
+                        "instead of the move list, which is far smaller. Set it true "
+                        "only when you need to know which specific moves a Pokemon "
+                        "can learn, such as judging offensive coverage."
+                    ),
+                },
             },
             "required": ["pokemon"],
         },
