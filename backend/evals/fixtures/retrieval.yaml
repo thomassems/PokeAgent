@@ -85,3 +85,48 @@
   question: How effective is a Dragon move against a Fairy type in generation 9?
   expect: 0.0
   check: { kind: matchup, attacker: dragon, defender: fairy, generation: 9 }
+
+# Dual-type multiplication. Every case above reads one cell of the chart; these
+# read the product across both of a Pokemon's types, which is the arithmetic the
+# tool now does rather than leaving to the model.
+
+- id: ferrothorn-quad-weak-to-fire
+  question: How weak is Ferrothorn to Fire?
+  expect: 4.0
+  check: { kind: profile, pokemon: ferrothorn, direction: defending, against: fire }
+
+- id: ferrothorn-quarter-resists-grass
+  question: How much damage does a Grass move do to Ferrothorn?
+  expect: 0.25
+  check: { kind: profile, pokemon: ferrothorn, direction: defending, against: grass }
+
+- id: ferrothorn-immune-to-poison
+  # Steel is immune, so the Grass half never matters.
+  question: How effective is a Poison move against Ferrothorn?
+  expect: 0.0
+  check: { kind: profile, pokemon: ferrothorn, direction: defending, against: poison }
+
+- id: gliscor-ground-immunity-beats-weakness
+  # Ground is neutral into Ground but Flying is immune, so the product is 0.
+  # A model multiplying this by hand reports "weak to Ground" and is confidently
+  # wrong with nothing in the output to signal it.
+  question: How effective is a Ground move against Gliscor?
+  expect: 0.0
+  check: { kind: profile, pokemon: gliscor, direction: defending, against: ground }
+
+- id: gliscor-quad-weak-to-ice
+  question: How weak is Gliscor to Ice?
+  expect: 4.0
+  check: { kind: profile, pokemon: gliscor, direction: defending, against: ice }
+
+- id: dragapult-immune-to-fighting
+  question: How effective is a Fighting move against Dragapult?
+  expect: 0.0
+  check: { kind: profile, pokemon: dragapult, direction: defending, against: fighting }
+
+- id: ferrothorn-neutral-to-ground
+  # Neutral types are omitted from the buckets entirely, so this also checks that
+  # absent is read as 1.0 rather than as missing data.
+  question: How effective is a Ground move against Ferrothorn?
+  expect: 1.0
+  check: { kind: profile, pokemon: ferrothorn, direction: defending, against: ground }
