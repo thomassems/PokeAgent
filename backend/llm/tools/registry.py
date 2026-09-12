@@ -1,9 +1,8 @@
 # will store all 3 tools, for now will have 3 tools
-import collections
-
-from data.dex import ABILITIES, ATTACKING_CHART, DEFENDING_CHART, MOVES, POKEMON
+from data.dex import MOVES, POKEMON
 from services.search import web_search
 from tools.dex_query import find_pokemon
+from tools.matchups import type_matchups
 
 
 # data tool
@@ -45,50 +44,8 @@ def get_move(moves):
     return movemap
 
 
-def get_type_matchups(pokemon, direction, ability=None):
-    # for defenders will be whatever is in type chart or 1.0
-    # since matchups only store values when the pair is not 1.0
-    typemap = collections.defaultdict(list)
-    for p in pokemon:
-        # first normalize p
-        p_norm = p.strip().lower().replace(" ", "-")
-        if p_norm in POKEMON:
-            types = POKEMON[p_norm]["types"]
-            for t in types:
-                if direction == "attacking":
-                    typemap[p].append(ATTACKING_CHART[t])
-                elif direction == "defending":
-                    typemap[p].append(DEFENDING_CHART[t])
-                else:
-                    typemap[p] = ["invalid direction provided"]
-        else:
-            typemap[p] = ["Couldn't find types for pokemon"]
-
-    if ability is None:
-        return typemap
-
-    # An ability can override the chart entirely: Levitate ignores Ground,
-    # Flash Fire ignores Fire. Which one an individual has is not a property of
-    # the species, so it has to be supplied rather than inferred. The effect is
-    # returned as text rather than applied, because the data stores prose and
-    # not a structured "immune to ground" flag.
-    ability_id = ability.strip().lower().replace(" ", "-")
-    if ability_id not in ABILITIES:
-        return {"error": f"Unknown ability '{ability}'.", "matchups": typemap}
-
-    result = {"matchups": typemap, "ability": ABILITIES[ability_id]}
-    unavailable = [
-        p
-        for p in pokemon
-        if (norm := p.strip().lower().replace(" ", "-")) in POKEMON
-        and ability_id not in {a["name"] for a in POKEMON[norm]["abilities"]}
-    ]
-    if unavailable:
-        result["warning"] = (
-            f"{', '.join(unavailable)} cannot have {ABILITIES[ability_id]['name']}. "
-            "The matchups above ignore it."
-        )
-    return result
+# Thin wrapper: the arithmetic lives in tools/ where it is pure and tested.
+get_type_matchups = type_matchups
 
 
 # web search tool
@@ -160,11 +117,13 @@ TOOLS = [
     {
         "name": "get_type_matchups",
         "description": (
-            "Look up type effectiveness for one or more Pokemon, based on their own "
-            "typing. Use direction='defending' for what hits them hard and what they "
-            "resist. Use direction='attacking' for what their own types are strong "
-            "against, which is same-type attack coverage only and does not account "
-            "for the moves they actually carry. Pass the whole team in one call."
+            "Type effectiveness for one or more Pokemon, with dual-type "
+            "multiplication already applied and grouped by multiplier, so a 4x "
+            "weakness appears as 4 and an immunity as 0. Neutral types are omitted. "
+            "Use direction='defending' for what hits them hard and what they resist. "
+            "Use direction='attacking' for what their own types are strong against, "
+            "which is same-type attack coverage only and ignores the moves they "
+            "actually carry. Pass the whole team in one call."
         ),
         "input_schema": {
             "type": "object",
