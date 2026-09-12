@@ -1,0 +1,54 @@
+# Layer 2: tool selection.
+#
+# Asserted on the recorded tool call, never on the answer text. An agent can
+# produce a correct-looking answer through the wrong tool, and only the call
+# record exposes it. Text grading would score that as a pass.
+#
+# `expect_tool` must be called at least once. `forbid_tools` must never be.
+
+- id: stats-question-uses-dex
+  prompt: What are Garchomp's base stats?
+  expect_tool: get_pokemon
+  forbid_tools: [web_search]
+  why: Exact facts come from structured data. Answering this from search prose is
+    the failure mode the exact-versus-fuzzy split exists to prevent.
+
+- id: move-question-uses-move-tool
+  prompt: How much power does Earthquake have, and what type is it?
+  expect_tool: get_move
+  forbid_tools: [web_search]
+  why: Move properties are exact facts held in the dex.
+
+- id: matchup-question-uses-matchups
+  prompt: What is Ferrothorn weak to?
+  expect_tool: get_type_matchups
+  forbid_tools: [web_search]
+  why: Type effectiveness is computed from the chart, not looked up on the web.
+
+- id: category-question-uses-filter
+  prompt: Give me three legendary Pokemon from generation 4.
+  expect_tool: find_pokemon
+  forbid_tools: [web_search]
+  why: The dex carries is_legendary and generation, so this is a filter. Before
+    those fields existed this would have needed search, which is why it is a case.
+
+- id: tier-question-uses-search
+  prompt: Which Pokemon are currently strong in the OU tier?
+  expect_tool: web_search
+  forbid_tools: [get_pokemon, find_pokemon]
+  why: Tiers and current metagame are not in the dex and cannot be inferred from
+    any field in it. Substituting high base stat totals is the silent failure.
+
+- id: character-question-uses-search
+  prompt: What Pokemon does Cynthia use?
+  expect_tool: web_search
+  forbid_tools: []
+  why: Characters are not in the dex. The follow-up dex calls are expected and
+    correct, so nothing is forbidden here.
+
+- id: no-moves-for-a-stat-question
+  prompt: Is Dragapult faster than Garchomp?
+  expect_tool: get_pokemon
+  forbid_tools: [web_search]
+  why: A speed comparison needs no movepools. Watched via include_moves in the
+    recorded call, since pulling them is roughly four times the tokens.
