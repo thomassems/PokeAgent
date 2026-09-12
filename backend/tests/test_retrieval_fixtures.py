@@ -11,6 +11,7 @@ import pytest
 
 from data.dex import ATTACKING_CHARTS, MOVES, POKEMON
 from evals.loader import RetrievalCase, retrieval_cases
+from tools.matchups import type_matchups
 
 CASES = retrieval_cases()
 
@@ -24,6 +25,15 @@ def resolve(case: RetrievalCase) -> Any:
         return POKEMON[check.pokemon]["types"]
     if check.kind == "move":
         return MOVES[check.move][check.field]
+    if check.kind == "profile":
+        # Goes through the tool rather than recomputing, so the bucketing is
+        # covered too: a type absent from every bucket means neutral.
+        result = type_matchups([check.pokemon], check.direction)
+        entry = result["matchups"][check.pokemon]
+        for multiplier, types in entry[check.direction].items():
+            if check.against in types:
+                return float(multiplier)
+        return 1.0
     # Absent pairs are neutral, so the default is 1.0 rather than a KeyError.
     row = ATTACKING_CHARTS[str(check.generation)][check.attacker]
     return row.get(check.defender, 1.0)

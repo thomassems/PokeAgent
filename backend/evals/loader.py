@@ -35,6 +35,20 @@ class MoveCheck(BaseModel):
     field: str
 
 
+class ProfileCheck(BaseModel):
+    """A multiplier against a whole Pokemon, after dual-type multiplication.
+
+    MatchupCheck reads one cell of the chart. This reads the product across both
+    of a Pokemon's types, which is the arithmetic the tool does on the model's
+    behalf and the place it used to go wrong.
+    """
+
+    kind: Literal["profile"]
+    pokemon: str
+    direction: Literal["attacking", "defending"]
+    against: str
+
+
 class MatchupCheck(BaseModel):
     kind: Literal["matchup"]
     attacker: str
@@ -42,7 +56,7 @@ class MatchupCheck(BaseModel):
     generation: int
 
 
-Check = StatCheck | TypingCheck | MoveCheck | MatchupCheck
+Check = StatCheck | TypingCheck | MoveCheck | MatchupCheck | ProfileCheck
 
 
 class RetrievalCase(BaseModel):
