@@ -1,0 +1,87 @@
+# Layer 1: retrieval accuracy.
+#
+# Each case is checked twice. tests/ asserts the dex holds `expect`, which is
+# free and deterministic. evals/ asserts the agent *says* `expect` when asked
+# `question`, which costs a model call. A failure in the first means the data is
+# wrong; a failure only in the second means the model hallucinated.
+#
+# `check` tells tests/ how to verify without a model. `kind` picks the verifier.
+
+- id: garchomp-base-speed
+  question: What is Garchomp's base speed?
+  expect: 102
+  check: { kind: stat, pokemon: garchomp, stat: speed }
+
+- id: toxapex-defense
+  question: What is Toxapex's base defense?
+  expect: 152
+  check: { kind: stat, pokemon: toxapex, stat: defense }
+
+- id: snorlax-hp
+  question: What is Snorlax's base HP?
+  expect: 160
+  check: { kind: stat, pokemon: snorlax, stat: hp }
+
+- id: garchomp-typing
+  question: What types is Garchomp?
+  expect: [dragon, ground]
+  check: { kind: typing, pokemon: garchomp }
+
+- id: ferrothorn-typing
+  question: What types is Ferrothorn?
+  expect: [grass, steel]
+  check: { kind: typing, pokemon: ferrothorn }
+
+- id: mimikyu-typing-alias
+  # Stored only as mimikyu-disguised upstream. Regression case for the alias.
+  question: What types is Mimikyu?
+  expect: [ghost, fairy]
+  check: { kind: typing, pokemon: mimikyu }
+
+- id: earthquake-power
+  question: How much power does Earthquake have?
+  expect: 100
+  check: { kind: move, move: earthquake, field: power }
+
+- id: hydro-pump-accuracy
+  question: What is Hydro Pump's accuracy?
+  expect: 80
+  check: { kind: move, move: hydro-pump, field: accuracy }
+
+- id: swords-dance-is-status
+  question: What category is Swords Dance?
+  expect: status
+  check: { kind: move, move: swords-dance, field: category }
+
+- id: fire-into-steel-modern
+  question: How effective is a Fire move against a Steel type in generation 9?
+  expect: 2.0
+  check: { kind: matchup, attacker: fire, defender: steel, generation: 9 }
+
+- id: electric-into-ground-immune
+  # Zero is a real value, not absence. Guards against falsy handling.
+  question: How effective is an Electric move against a Ground type?
+  expect: 0.0
+  check: { kind: matchup, attacker: electric, defender: ground, generation: 9 }
+
+- id: ghost-into-steel-gen4
+  # Steel resisted Ghost until gen 6. Wrong generation gives 1.0 here.
+  question: How effective is a Ghost move against a Steel type in generation 4?
+  expect: 0.5
+  check: { kind: matchup, attacker: ghost, defender: steel, generation: 4 }
+
+- id: ghost-into-steel-gen6
+  question: How effective is a Ghost move against a Steel type in generation 6?
+  expect: 1.0
+  check: { kind: matchup, attacker: ghost, defender: steel, generation: 6 }
+
+- id: ghost-into-psychic-gen1
+  # Gen 1 only: Ghost did nothing to Psychic.
+  question: How effective is a Ghost move against a Psychic type in generation 1?
+  expect: 0.0
+  check: { kind: matchup, attacker: ghost, defender: psychic, generation: 1 }
+
+- id: dragon-into-fairy-immune
+  question: How effective is a Dragon move against a Fairy type in generation 9?
+  expect: 0.0
+  check: { kind: matchup, attacker: dragon, defender: fairy, generation: 9 }
