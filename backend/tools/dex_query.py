@@ -53,10 +53,15 @@ def find_pokemon(
     wanted = {t.strip().lower() for t in types} if types else set()
     limit = max(1, min(limit, MAX_LIMIT))
 
-    # Aliases mean one Pokemon can appear under several ids, so dedupe by name.
+    # Aliases and alternate forms mean one display name covers several records,
+    # so dedupe by name. The surviving entry carries its dex id, because the form
+    # that matched is often not the one you get by looking the plain name up:
+    # filtering for Dragons returns Necrozma's Ultra form, psychic/dragon at 754,
+    # while get_pokemon("Necrozma") returns the base form, psychic at 600. Without
+    # the id the model cannot tell those apart, and both are called Necrozma.
     seen: set[str] = set()
     matches: list[dict[str, Any]] = []
-    for record in POKEMON.values():
+    for identifier, record in POKEMON.items():
         if wanted and not wanted <= set(record["types"]):
             continue
         if generation is not None and record.get("generation") != generation:
@@ -68,13 +73,19 @@ def find_pokemon(
         if record["name"] in seen:
             continue
         seen.add(record["name"])
-        matches.append(
-            {
-                "name": record["name"],
-                "types": record["types"],
-                sort_by: _stat(record, sort_by),
-            }
-        )
+        entry: dict[str, Any] = {
+            "id": identifier,
+            "name": record["name"],
+            "types": record["types"],
+            sort_by: _stat(record, sort_by),
+        }
+        # Flag the ones where looking up the plain name gives a different Pokemon.
+        if identifier != record["name"].lower().replace(" ", "-"):
+            entry["form_note"] = (
+                f"This is the {identifier} form. Use id '{identifier}' with "
+                "get_pokemon, not the name, or you will get a different form."
+            )
+        matches.append(entry)
 
     matches.sort(key=lambda m: m[sort_by], reverse=True)
     return {
