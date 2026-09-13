@@ -130,3 +130,16 @@
   question: How effective is a Ground move against Ferrothorn?
   expect: 1.0
   check: { kind: profile, pokemon: ferrothorn, direction: defending, against: ground }
+
+# Same-type attacking coverage is different from defensive multiplication. A
+# Pokemon chooses one STAB move type at a time, so use the best single matchup.
+
+- id: swampert-stab-does-not-quad-hit-fire
+  question: How well does Swampert's own typing hit Fire?
+  expect: 2.0
+  check: { kind: profile, pokemon: swampert, direction: attacking, against: fire }
+
+- id: garchomp-ground-stab-hits-fairy-neutrally
+  question: How well does Garchomp's own typing hit Fairy?
+  expect: 1.0
+  check: { kind: profile, pokemon: garchomp, direction: attacking, against: fairy }
