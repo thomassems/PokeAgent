@@ -65,8 +65,23 @@ def test_matchups_multiply_across_both_types() -> None:
     assert "fighting" in entry["defending"]["2"]
 
 
+def test_attacking_matchups_use_best_stab_not_product() -> None:
+    # Swampert has Water and Ground STAB. Both hit Fire super effectively, but a
+    # Pokemon uses one move at a time, so this is 2x coverage rather than 4x.
+    entry = get_type_matchups(["Swampert"], "attacking")["matchups"]["Swampert"]
+    assert "fire" in entry["attacking"]["2"]
+    assert "4" not in entry["attacking"]
+
+
+def test_attacking_immunity_does_not_hide_other_stab_options() -> None:
+    # Dragon does nothing to Fairy, but Garchomp's Ground STAB hits Fairy
+    # neutrally, so Fairy should be omitted as neutral rather than listed as 0.
+    entry = get_type_matchups(["Garchomp"], "attacking")["matchups"]["Garchomp"]
+    assert "fairy" not in entry["attacking"].get("0", [])
+
+
 def test_immunity_beats_any_number_of_weaknesses() -> None:
-    # Grass is 2x into ground but Flying is immune, so the product must be 0.
+    # Electric is normally 2x into Flying, but Ground is immune, so the product is 0.
     entry = get_type_matchups(["Gliscor"], "defending")["matchups"]["Gliscor"]
     assert "electric" in entry["defending"]["0"]
 

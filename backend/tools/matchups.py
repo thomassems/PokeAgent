@@ -40,18 +40,36 @@ def _bucket(profile: dict[str, float]) -> dict[str, list[str]]:
     return dict(sorted(buckets.items(), key=lambda item: float(item[0]), reverse=True))
 
 
-def _profile(types: list[str], direction: str, generation: str) -> dict[str, float]:
-    """Multiply each of the eighteen types across every type this Pokemon has."""
-    chart = DEFENDING_CHARTS if direction == "defending" else ATTACKING_CHARTS
+def _defending_profile(types: list[str], generation: str) -> dict[str, float]:
+    """Multiply incoming damage across every type this Pokemon has."""
+    chart = DEFENDING_CHARTS
     all_types = list(ATTACKING_CHARTS[generation])
     profile: dict[str, float] = {}
     for other in all_types:
         multiplier = 1.0
         for own in types:
-            if own in chart[generation]:
-                multiplier *= chart[generation][own].get(other, 1.0)
+            multiplier *= chart[generation][own].get(other, 1.0)
         profile[other] = multiplier
     return profile
+
+
+def _attacking_profile(types: list[str], generation: str) -> dict[str, float]:
+    """Use the best same-type attack multiplier against each defending type."""
+    chart = ATTACKING_CHARTS
+    all_types = list(chart[generation])
+    profile: dict[str, float] = {}
+    for defender in all_types:
+        profile[defender] = max(
+            chart[generation][attack_type].get(defender, 1.0)
+            for attack_type in types
+        )
+    return profile
+
+
+def _profile(types: list[str], direction: str, generation: str) -> dict[str, float]:
+    if direction == "defending":
+        return _defending_profile(types, generation)
+    return _attacking_profile(types, generation)
 
 
 def type_matchups(
