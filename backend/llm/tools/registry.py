@@ -1,4 +1,5 @@
-# will store all 3 tools, for now will have 3 tools
+from copy import deepcopy
+
 from data.dex import MOVES, POKEMON
 from services.search import web_search
 from tools.dex_query import find_pokemon
@@ -9,7 +10,6 @@ from tools.matchups import type_matchups
 # need to have normalization
 def get_pokemon(pokemon, include_moves=False):
     # any way that mal intent queries can be input here and run?????
-    print('calling get pokemon')
     pokemonmap = {}
     for p in pokemon:
         # first normalize p
@@ -17,7 +17,7 @@ def get_pokemon(pokemon, include_moves=False):
         if p_norm in POKEMON:
             record = POKEMON[p_norm]
             if include_moves:
-                pokemonmap[p] = record
+                pokemonmap[p] = deepcopy(record)
             else:
                 # Movepools are ~80% of a record and are usually unwanted, so
                 # they are dropped by default and replaced with a count.
@@ -25,7 +25,7 @@ def get_pokemon(pokemon, include_moves=False):
                 # Copy first. POKEMON is the process-wide dex loaded once at
                 # import, so mutating this record would delete the movepool for
                 # every later call in the same process, not just this one.
-                trimmed = {k: v for k, v in record.items() if k != "moves"}
+                trimmed = {k: deepcopy(v) for k, v in record.items() if k != "moves"}
                 trimmed["move_count"] = len(record["moves"])
                 pokemonmap[p] = trimmed
         else:
@@ -38,7 +38,7 @@ def get_move(moves):
         # first normalize p
         m_norm = m.strip().lower().replace(" ", "-")
         if m_norm in MOVES:
-            movemap[m] = MOVES[m_norm]
+            movemap[m] = deepcopy(MOVES[m_norm])
         else:
             movemap[m] = "Move does not exist" # OR no info on this
     return movemap
@@ -62,11 +62,11 @@ TOOLS = [
     {
         "name": "get_pokemon",
         "description": (
-            "Look up one or more Pokemon by name. Returns base stats, typing, "
-            "abilities, the generation the form debuted, whether it is legendary or "
-            "mythical, and how many moves it can learn. Pass every Pokemon you need "
-            "in a single call rather than calling once per Pokemon. Set include_moves "
-            "if you need the move list itself."
+            "Look up one or more Pokemon by name. Returns base stats including "
+            "base stat total, typing, abilities, the generation the form debuted, "
+            "whether it is legendary or mythical, and how many moves it can learn. "
+            "Pass every Pokemon you need in a single call rather than calling once "
+            "per Pokemon. Set include_moves if you need the move list itself."
         ),
         "input_schema": {
             "type": "object",

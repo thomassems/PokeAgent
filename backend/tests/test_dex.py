@@ -44,7 +44,8 @@ def test_gen_one_quirks() -> None:
     assert "fire" not in gen1["ice"]
     assert ATTACKING_CHARTS["9"]["ice"]["fire"] == 0.5
 
-
+# test makes sure neutral matchups are represented by absence not by storing
+# something like "nomrla":1.0
 def test_neutral_pairs_are_absent_not_stored() -> None:
     assert "normal" not in ATTACKING_CHARTS["9"]["fire"]
 
@@ -91,6 +92,7 @@ def test_records_carry_the_fields_the_tools_advertise() -> None:
     fields = ("name", "types", "stats", "generation", "is_legendary", "is_mythical")
     for field in fields:
         assert field in garchomp, field
+    assert garchomp["stats"]["total"] == 600
 
 
 def test_abilities_carry_effect_text() -> None:
