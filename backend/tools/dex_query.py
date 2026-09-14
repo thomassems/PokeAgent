@@ -26,8 +26,7 @@ MAX_LIMIT = 50
 
 
 def _stat(record: dict[str, Any], key: str) -> int:
-    stats = record["stats"]
-    return sum(stats.values()) if key == "total" else stats[key]
+    return record["stats"][key]
 
 
 def find_pokemon(
