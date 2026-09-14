@@ -49,12 +49,24 @@ def test_trimming_does_not_mutate_the_shared_dex() -> None:
     assert get_pokemon(["Garchomp"], include_moves=True)["Garchomp"]["moves"]
 
 
+def test_include_moves_does_not_return_the_shared_dex_record() -> None:
+    record = get_pokemon(["Garchomp"], include_moves=True)["Garchomp"]
+    record["moves"].clear()
+    assert POKEMON["garchomp"]["moves"]
+
+
 def test_move_names_are_normalised() -> None:
     assert get_move(["Stone Edge"])["Stone Edge"]["type"] == "rock"
 
 
 def test_unknown_move_reports_a_miss() -> None:
     assert "does not exist" in get_move(["Nonsense Beam"])["Nonsense Beam"]
+
+
+def test_move_lookup_does_not_return_the_shared_dex_record() -> None:
+    record = get_move(["Stone Edge"])["Stone Edge"]
+    record["power"] = 1
+    assert get_move(["Stone Edge"])["Stone Edge"]["power"] == 100
 
 
 def test_matchups_multiply_across_both_types() -> None:
@@ -77,7 +89,8 @@ def test_attacking_immunity_does_not_hide_other_stab_options() -> None:
     # Dragon does nothing to Fairy, but Garchomp's Ground STAB hits Fairy
     # neutrally, so Fairy should be omitted as neutral rather than listed as 0.
     entry = get_type_matchups(["Garchomp"], "attacking")["matchups"]["Garchomp"]
-    assert "fairy" not in entry["attacking"].get("0", [])
+    listed = {t for types in entry["attacking"].values() for t in types}
+    assert "fairy" not in listed
 
 
 def test_immunity_beats_any_number_of_weaknesses() -> None:
@@ -99,6 +112,7 @@ def test_matchups_report_the_generation_used() -> None:
 def test_ability_the_pokemon_can_have_returns_its_effect() -> None:
     entry = get_type_matchups(["Flygon"], "defending", "Levitate")["matchups"]["Flygon"]
     assert entry["ability"]["name"] == "Levitate"
+    assert entry["ability"]["effect"] == "Evades Ground moves."
     assert "ability_warning" not in entry
 
 

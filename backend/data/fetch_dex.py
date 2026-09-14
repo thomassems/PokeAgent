@@ -207,6 +207,8 @@ def build_pokemon(
     for r in rows("pokemon_stats.csv"):
         if r["stat_id"] in STAT_IDS:
             stats[r["pokemon_id"]][STAT_IDS[r["stat_id"]]] = int(r["base_stat"])
+    for pokemon_stats in stats.values():
+        pokemon_stats["total"] = sum(pokemon_stats[stat] for stat in STAT_IDS.values())
 
     # One flat set of distinct moves per Pokemon. The CSV carries a row per
     # version group, learn method and level; none of that is in the schema the
