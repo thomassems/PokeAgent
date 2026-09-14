@@ -22,6 +22,11 @@
   expect: 160
   check: { kind: stat, pokemon: snorlax, stat: hp }
 
+- id: garchomp-base-stat-total
+  question: What is Garchomp's base stat total?
+  expect: 600
+  check: { kind: stat, pokemon: garchomp, stat: total }
+
 - id: garchomp-typing
   question: What types is Garchomp?
   expect: [dragon, ground]
