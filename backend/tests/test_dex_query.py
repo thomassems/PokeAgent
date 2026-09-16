@@ -69,6 +69,14 @@ def test_results_are_sorted_descending_by_the_requested_stat() -> None:
     assert speeds == sorted(speeds, reverse=True)
 
 
+def test_sorting_picks_the_best_form_before_deduping_by_name() -> None:
+    result = find_pokemon(types=["psychic"], sort_by="speed", limit=1)
+    [fastest] = result["pokemon"]
+    assert fastest["name"] == "Deoxys"
+    assert fastest["id"] == "deoxys-speed"
+    assert fastest["speed"] == 180
+
+
 def test_sort_by_total_sums_the_six_base_stats() -> None:
     # "total" is stored with the other stats so filtering/sorting code does not
     # have to recompute it for every candidate.
@@ -78,11 +86,7 @@ def test_sort_by_total_sums_the_six_base_stats() -> None:
     # Necrozma's Ultra form, not the psychic-only base form of the same name.
     wanted = {"dragon"}
     for entry in find_pokemon(types=list(wanted), sort_by="total", limit=5)["pokemon"]:
-        record = next(
-            r
-            for r in POKEMON.values()
-            if r["name"] == entry["name"] and wanted <= set(r["types"])
-        )
+        record = POKEMON[entry["id"]]
         expected = sum(
             record["stats"][stat]
             for stat in (
