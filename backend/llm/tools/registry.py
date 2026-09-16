@@ -3,7 +3,7 @@ from copy import deepcopy
 from data.dex import MOVES, POKEMON
 from services.search import web_search
 from tools.dex_query import find_pokemon
-from tools.matchups import type_matchups
+from tools.matchups import type_effectiveness, type_matchups
 
 
 # data tool
@@ -29,7 +29,7 @@ def get_pokemon(pokemon, include_moves=False):
                 trimmed["move_count"] = len(record["moves"])
                 pokemonmap[p] = trimmed
         else:
-            pokemonmap[p] = f"Pokemon {p_norm} does not exist" # OR don't have any info on this pokemon
+            pokemonmap[p] = f"Pokemon {p_norm} does not exist"
     return pokemonmap
 
 def get_move(moves):
@@ -40,12 +40,13 @@ def get_move(moves):
         if m_norm in MOVES:
             movemap[m] = deepcopy(MOVES[m_norm])
         else:
-            movemap[m] = "Move does not exist" # OR no info on this
+            movemap[m] = "Move does not exist"
     return movemap
 
 
 # Thin wrapper: the arithmetic lives in tools/ where it is pure and tested.
 get_type_matchups = type_matchups
+get_type_effectiveness = type_effectiveness
 
 
 # web search tool
@@ -154,8 +155,58 @@ TOOLS = [
                         "apply; it is not applied to the numbers for you."
                     ),
                 },
+                "generation": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9,
+                    "description": (
+                        "Optional. Which generation's type chart to use. Defaults "
+                        "to the latest generation."
+                    ),
+                },
             },
             "required": ["pokemon", "direction"],
+        },
+    },
+    {
+        "name": "get_type_effectiveness",
+        "description": (
+            "Look up one attacking type into one defending type in a specific "
+            "generation. Use this for raw chart questions like 'Ghost into Steel "
+            "in generation 4'. Neutral pairs return 1.0, immunities return 0."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "attacker": {
+                    "type": "string",
+                    "enum": [
+                        "normal", "fighting", "flying", "poison", "ground", "rock",
+                        "bug", "ghost", "steel", "fire", "water", "grass",
+                        "electric", "psychic", "ice", "dragon", "dark", "fairy",
+                    ],
+                    "description": "The attacking move type.",
+                },
+                "defender": {
+                    "type": "string",
+                    "enum": [
+                        "normal", "fighting", "flying", "poison", "ground", "rock",
+                        "bug", "ghost", "steel", "fire", "water", "grass",
+                        "electric", "psychic", "ice", "dragon", "dark", "fairy",
+                    ],
+                    "description": "The defending target type.",
+                },
+                "generation": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9,
+                    "description": (
+                        "Optional. Which generation's type chart to use. Defaults "
+                        "to the latest generation."
+                    ),
+                },
+            },
+            "required": ["attacker", "defender"],
         },
     },
     {
@@ -254,6 +305,7 @@ TOOL_FUNCTIONS = {
     "get_pokemon": get_pokemon,
     "get_move": get_move,
     "get_type_matchups": get_type_matchups,
+    "get_type_effectiveness": get_type_effectiveness,
     "web_search": web_search,
     "find_pokemon": find_pokemon,
 }
