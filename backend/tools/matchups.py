@@ -117,3 +117,29 @@ def type_matchups(
         results[name] = entry
 
     return {"generation": int(chart_key), "matchups": results}
+
+
+def type_effectiveness(
+    attacker: str,
+    defender: str,
+    generation: int | None = None,
+) -> dict[str, Any]:
+    """One attacking type into one defending type."""
+    chart_key = str(generation) if generation is not None else LATEST_GENERATION
+    if chart_key not in ATTACKING_CHARTS:
+        return {"error": f"No type chart for generation {generation}."}
+
+    attacking_type = _normalise(attacker)
+    defending_type = _normalise(defender)
+    chart = ATTACKING_CHARTS[chart_key]
+    if attacking_type not in chart:
+        return {"error": f"Unknown attacking type '{attacker}'."}
+    if defending_type not in chart:
+        return {"error": f"Unknown defending type '{defender}'."}
+
+    return {
+        "generation": int(chart_key),
+        "attacker": attacking_type,
+        "defender": defending_type,
+        "multiplier": chart[attacking_type].get(defending_type, 1.0),
+    }

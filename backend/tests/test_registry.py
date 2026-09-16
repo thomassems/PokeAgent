@@ -6,6 +6,7 @@ from llm.tools.registry import (
     TOOLS,
     get_move,
     get_pokemon,
+    get_type_effectiveness,
     get_type_matchups,
 )
 
@@ -107,6 +108,31 @@ def test_neutral_types_are_omitted() -> None:
 
 def test_matchups_report_the_generation_used() -> None:
     assert get_type_matchups(["Garchomp"], "defending")["generation"] == 9
+
+
+def test_matchups_accept_a_generation() -> None:
+    gen4 = get_type_matchups(["Registeel"], "defending", generation=4)
+    gen6 = get_type_matchups(["Registeel"], "defending", generation=6)
+    assert "ghost" in gen4["matchups"]["Registeel"]["defending"]["0.5"]
+    assert "ghost" not in {
+        attack_type
+        for types in gen6["matchups"]["Registeel"]["defending"].values()
+        for attack_type in types
+    }
+
+
+def test_type_effectiveness_reads_raw_generation_chart() -> None:
+    gen4 = get_type_effectiveness("ghost", "steel", generation=4)
+    gen6 = get_type_effectiveness("ghost", "steel", generation=6)
+    assert gen4["multiplier"] == 0.5
+    assert gen6["multiplier"] == 1.0
+
+
+def test_type_effectiveness_keeps_zero_and_neutral_distinct() -> None:
+    immune = get_type_effectiveness("electric", "ground")
+    neutral = get_type_effectiveness("fire", "normal")
+    assert immune["multiplier"] == 0.0
+    assert neutral["multiplier"] == 1.0
 
 
 def test_ability_the_pokemon_can_have_returns_its_effect() -> None:
