@@ -52,14 +52,10 @@ def find_pokemon(
     wanted = {t.strip().lower() for t in types} if types else set()
     limit = max(1, min(limit, MAX_LIMIT))
 
-    # Aliases and alternate forms mean one display name covers several records,
-    # so dedupe by name. The surviving entry carries its dex id, because the form
-    # that matched is often not the one you get by looking the plain name up:
-    # filtering for Dragons returns Necrozma's Ultra form, psychic/dragon at 754,
-    # while get_pokemon("Necrozma") returns the base form, psychic at 600. Without
-    # the id the model cannot tell those apart, and both are called Necrozma.
-    seen: set[str] = set()
-    matches: list[dict[str, Any]] = []
+    # Aliases and alternate forms mean one display name covers several records.
+    # Keep all matching forms until after sorting, then dedupe by name so the
+    # visible result is the best matching form for the requested stat.
+    candidates: list[dict[str, Any]] = []
     for identifier, record in POKEMON.items():
         if wanted and not wanted <= set(record["types"]):
             continue
@@ -69,9 +65,6 @@ def find_pokemon(
             continue
         if is_mythical is not None and record.get("is_mythical") is not is_mythical:
             continue
-        if record["name"] in seen:
-            continue
-        seen.add(record["name"])
         entry: dict[str, Any] = {
             "id": identifier,
             "name": record["name"],
@@ -84,9 +77,16 @@ def find_pokemon(
                 f"This is the {identifier} form. Use id '{identifier}' with "
                 "get_pokemon, not the name, or you will get a different form."
             )
-        matches.append(entry)
+        candidates.append(entry)
 
-    matches.sort(key=lambda m: m[sort_by], reverse=True)
+    candidates.sort(key=lambda m: m[sort_by], reverse=True)
+    seen: set[str] = set()
+    matches: list[dict[str, Any]] = []
+    for entry in candidates:
+        if entry["name"] in seen:
+            continue
+        seen.add(entry["name"])
+        matches.append(entry)
     return {
         "count": len(matches),
         "returned": min(len(matches), limit),
