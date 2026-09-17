@@ -56,6 +56,19 @@ against the dex/tools without calling a model. If this test fails, the fixture
 or data is wrong. If this passes but a live retrieval eval fails, the agent
 hallucinated or chose the wrong tool.
 
+`test_strategy_data.py`
+
+Validates the canonical strategy corpus before it is sent to the hosted vector
+index. This covers stable unique IDs, normalised filter metadata, supported
+generation/topic coverage, and explicit dataset versioning.
+
+`test_strategy_search.py`
+
+Checks strategy retrieval without calling Pinecone. This covers missing
+configuration, generation/format/Pokemon filters, candidate retrieval followed
+by reranking, usage reporting, and exclusion of repository-only licensing
+metadata from indexed records.
+
 `test_health.py`
 
 Checks the FastAPI health endpoint response shape.

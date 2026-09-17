@@ -174,6 +174,30 @@ Result panels carry deliberately uneven placeholder content and sit in a grid
 with `items-start`, so each keeps its natural height. Equal-height columns would
 have hidden the layout question the probe exists to answer.
 
+## 10. Strategy retrieval: canonical JSONL plus a hosted Pinecone index
+
+Strategy knowledge is authored and reviewed as versioned JSONL in the repo.
+Pinecone is a rebuildable search index over that corpus, not the only copy of
+the data. Each focused passage carries generation, format, battle style, topic,
+Pokemon, source kind, and update metadata so retrieval can exclude incompatible
+advice before semantic ranking.
+
+The index uses Pinecone integrated embedding and reranking. A query is embedded,
+filtered, used to retrieve a small candidate set, then reranked in one hosted
+search operation. This avoids adding a second inference provider and stays within
+the Starter plan's included usage while the corpus is small.
+
+Rejected: **web search as the only strategy source**. It is useful for current
+events and usage, but its prose is unversioned and can silently mix generations
+or formats.
+
+Rejected: **Pinecone as the source of truth**. Records edited only in a hosted
+index cannot be reviewed in pull requests or reproduced after an index mistake.
+
+Licensing metadata remains in the canonical record for ingestion review but is
+not uploaded to Pinecone or shown to the agent. Source kind, name, URL, and date
+remain indexed because they affect how retrieved advice should be presented.
+
 ---
 
 ## Open questions

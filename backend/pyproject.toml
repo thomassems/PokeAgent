@@ -7,6 +7,7 @@ dependencies = [
     "fastapi>=0.141.1",
     "httpx2>=2.12.0",
     "openai>=3.7.0",
+    "pinecone>=10.0.0",
 ]
 
 [tool.uv]
