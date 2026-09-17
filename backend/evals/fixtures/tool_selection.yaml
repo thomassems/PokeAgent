@@ -39,6 +39,13 @@
   why: Tiers and current metagame are not in the dex and cannot be inferred from
     any field in it. Substituting high base stat totals is the silent failure.
 
+- id: strategy-question-uses-curated-retrieval
+  prompt: In generation 9 OU, how should I preserve Great Tusk as my hazard remover?
+  expect_tool: search_strategy
+  forbid_tools: [web_search]
+  why: A role-specific game plan belongs in the curated strategy corpus, while
+    current popularity or usage would require web search.
+
 - id: character-question-uses-search
   prompt: What Pokemon does Cynthia use?
   expect_tool: web_search
