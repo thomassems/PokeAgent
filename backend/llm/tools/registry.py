@@ -2,6 +2,7 @@ from copy import deepcopy
 
 from data.dex import MOVES, POKEMON
 from services.search import web_search
+from services.strategy_search import search_strategy
 from tools.dex_query import find_pokemon
 from tools.matchups import type_effectiveness, type_matchups
 
@@ -238,6 +239,54 @@ TOOLS = [
         },
     },
     {
+        "name": "search_strategy",
+        "description": (
+            "Search a curated strategy corpus for generation- and format-specific "
+            "battle advice. Results are semantically retrieved, reranked, and include "
+            "source metadata. Use this for roles, movesets, teammates, counters, team "
+            "archetypes, and game plans. Use dex tools instead for exact stats, move "
+            "properties, typings, and type effectiveness."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "description": (
+                        "A focused strategy question to retrieve evidence for."
+                    ),
+                },
+                "generation": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9,
+                    "description": "The generation whose strategy should be searched.",
+                },
+                "format": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "description": "Optional format identifier, for example 'ou'.",
+                },
+                "pokemon": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "maxItems": 6,
+                    "description": "Optional Pokemon names used to filter results.",
+                },
+                "limit": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10,
+                    "description": (
+                        "How many reranked passages to return. Defaults to 5."
+                    ),
+                },
+            },
+            "required": ["query", "generation"],
+        },
+    },
+    {
         "name": "find_pokemon",
         "description": (
             "Find Pokemon matching filters, when you do not already know the names. "
@@ -307,5 +356,6 @@ TOOL_FUNCTIONS = {
     "get_type_matchups": get_type_matchups,
     "get_type_effectiveness": get_type_effectiveness,
     "web_search": web_search,
+    "search_strategy": search_strategy,
     "find_pokemon": find_pokemon,
 }
