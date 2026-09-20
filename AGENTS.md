@@ -227,7 +227,9 @@ Use these precisely. Drift here causes real bugs.
 Not building these. If a change starts heading toward one, stop and say so.
 
 - User accounts, auth, or login
-- A database (team state lives in the URL)
+- General application databases (team state lives in the URL). A hosted vector
+  store is allowed specifically for strategy retrieval, provided the design
+  prioritizes a free tier or very low operating cost.
 - Battle simulation or damage calculation
 - Multiplayer, sharing feeds, or social features
 - Mobile apps
