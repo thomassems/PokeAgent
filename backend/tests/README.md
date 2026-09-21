@@ -69,6 +69,12 @@ configuration, generation/format/Pokemon filters, candidate retrieval followed
 by reranking, usage reporting, and exclusion of repository-only licensing
 metadata from indexed records.
 
+`test_jev.py`
+
+Checks the experimental Jev adapter and local benchmark without making model
+calls. This covers typed Choice requests, missing configuration, invalid model
+choices, fixture labels, and deterministic accuracy, latency, and usage metrics.
+
 `test_health.py`
 
 Checks the FastAPI health endpoint response shape.
@@ -86,6 +92,9 @@ The files under `backend/evals/fixtures/` are not all live evals by themselves:
 Only the deterministic retrieval fixture check runs with `uv run pytest`.
 Tool-selection and team-quality evals require the future eval runner/model call
 path and should be reported separately from unit test results.
+
+The Jev classifier benchmark is also on demand. Its command and committed output
+format are documented in `backend/evals/results/README.md`.
 
 ## What Belongs Here
 
