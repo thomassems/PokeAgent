@@ -1,0 +1,113 @@
+# Offline labels for the Jev tool-routing experiment. These are separate from
+# the live agent fixtures because Jev chooses one route but does not execute a
+# tool, generate arguments, or complete a multi-step answer.
+
+- id: pokemon-base-stats
+  prompt: What are Garchomp's base stats?
+  expected_choice: get_pokemon
+  why: A named Pokemon's exact record belongs to the dex lookup.
+
+- id: pokemon-types-and-abilities
+  prompt: What types and abilities does Rotom-Wash have?
+  expected_choice: get_pokemon
+  why: Typing and abilities are exact fields on a named Pokemon record.
+
+- id: pokemon-movepool
+  prompt: Can Garchomp learn Fire Fang?
+  expected_choice: get_pokemon
+  why: A Pokemon's learnset is available through get_pokemon with moves included.
+
+- id: move-properties
+  prompt: What type, power, and accuracy does Earthquake have?
+  expected_choice: get_move
+  why: These are exact fields on a named move record.
+
+- id: compare-move-accuracy
+  prompt: Compare the accuracy of Thunderbolt and Fire Blast.
+  expected_choice: get_move
+  why: Multiple named moves can be looked up in one get_move call.
+
+- id: pokemon-defensive-matchups
+  prompt: What is Ferrothorn weak to defensively?
+  expected_choice: get_type_matchups
+  why: This requires dual-type defensive effectiveness multiplication.
+
+- id: team-defensive-matchups
+  prompt: Which attacking types threaten both Garchomp and Salamence?
+  expected_choice: get_type_matchups
+  why: The matchup tool accepts multiple Pokemon and computes their profiles.
+
+- id: raw-generation-type-chart
+  prompt: In generation 4, how effective is a Ghost move against Steel?
+  expected_choice: get_type_effectiveness
+  why: This asks for one generation-specific cell of the type chart.
+
+- id: find-fastest-type
+  prompt: What is the fastest Dragon-type Pokemon from generation 4?
+  expected_choice: find_pokemon
+  why: The name is unknown and must be found by filters and sorting.
+
+- id: find-legendaries
+  prompt: Give me three legendary Pokemon introduced in generation 4.
+  expected_choice: find_pokemon
+  why: This is a category query over generation and legendary status.
+
+- id: find-mythical-psychic
+  prompt: Find a mythical Psychic-type Pokemon.
+  expected_choice: find_pokemon
+  why: This combines category filters rather than looking up a known name.
+
+- id: strategy-preserve-great-tusk
+  prompt: In generation 9 OU, how should I preserve Great Tusk as my hazard remover?
+  expected_choice: search_strategy
+  why: This asks for format-specific game-plan advice.
+
+- id: strategy-kingambit-teammates
+  prompt: What teammates support Kingambit in generation 9 OU?
+  expected_choice: search_strategy
+  why: Teammate recommendations belong to curated strategy retrieval.
+
+- id: strategy-dragapult-role
+  prompt: What role does Dragapult play on generation 9 OU offensive teams?
+  expected_choice: search_strategy
+  why: A format-specific competitive role is strategic advice.
+
+- id: current-tier-trends
+  prompt: Which Pokemon are currently most common in OU this month?
+  expected_choice: web_search
+  why: Current usage is time-sensitive and absent from the local corpus.
+
+- id: character-team
+  prompt: Which Pokemon does Cynthia use in Pokemon Platinum?
+  expected_choice: web_search
+  why: Character teams are outside the dex and strategy corpus.
+
+- id: recent-tournament
+  prompt: What team won the most recent Pokemon world championship?
+  expected_choice: web_search
+  why: Recent tournament results require current external information.
+
+- id: greeting-needs-no-tool
+  prompt: Hello! Can you help me build a Pokemon team?
+  expected_choice: no_tool
+  why: A greeting and capability question needs no lookup.
+
+- id: vocabulary-needs-no-tool
+  prompt: What does STAB mean?
+  expected_choice: no_tool
+  why: This is stable vocabulary already defined for the agent.
+
+- id: missing-generation-needs-clarification
+  prompt: What is the best strategy for using Salamence?
+  expected_choice: no_tool
+  why: Strategy depends on generation and format, so the agent should clarify first.
+
+- id: full-team-build-needs-planning
+  prompt: Build me a balanced team of six Pokemon for generation 4.
+  expected_choice: needs_agent_planning
+  why: Team construction needs a sequence of candidate, matchup, and detail lookups.
+
+- id: repair-team-needs-planning
+  prompt: My team is Garchomp, Salamence, Flygon, Haxorus, Dragonite, and Landorus. Fix its shared weaknesses.
+  expected_choice: needs_agent_planning
+  why: The agent must inspect several records and matchups before proposing changes.
