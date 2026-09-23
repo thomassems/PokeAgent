@@ -42,6 +42,7 @@ class StrategyRecord(BaseModel):
     source_kind: SourceKind = "pokeagent-authored"
     source_name: str = Field(min_length=3, max_length=120)
     source_url: str | None = None
+    discovery_urls: list[str] = Field(default_factory=list)
     source_updated_at: date
     license: str | None = None
     dataset_version: str = Field(pattern=r"^strategy-v[1-9][0-9]*$")
