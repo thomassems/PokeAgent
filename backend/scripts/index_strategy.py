@@ -16,7 +16,11 @@ EMBED_MODEL = "llama-text-embed-v2"
 
 def pinecone_record(record: StrategyRecord) -> dict[str, Any]:
     """Flatten one canonical record, excluding repository-only licensing data."""
-    payload = record.model_dump(mode="json", exclude={"license"}, exclude_none=True)
+    payload = record.model_dump(
+        mode="json",
+        exclude={"discovery_urls", "license"},
+        exclude_none=True,
+    )
     payload["_id"] = payload.pop("id")
     return payload
 
