@@ -80,8 +80,14 @@ def test_search_filters_then_reranks_candidates(monkeypatch) -> None:
 
 
 def test_pinecone_record_excludes_repository_only_license() -> None:
-    source = STRATEGY_RECORDS[0].model_copy(update={"license": "CC BY 4.0"})
+    source = STRATEGY_RECORDS[0].model_copy(
+        update={
+            "discovery_urls": ["https://www.reddit.com/r/stunfisk/example"],
+            "license": "CC BY 4.0",
+        }
+    )
     indexed = pinecone_record(source)
+    assert "discovery_urls" not in indexed
     assert "license" not in indexed
     assert indexed["source_kind"] == "pokeagent-authored"
     assert indexed["_id"] == source.id
