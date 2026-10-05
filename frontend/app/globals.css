@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "./chat.css";
+@import "./chat-composer.css";
 
 /*
  * Rotom plasma inside an appliance shell: warm amber against cool slate, meant
@@ -52,7 +54,6 @@
      by side. Naming it generates a `panels:` variant. */
   --breakpoint-panels: 56.25rem;
 }
-
 @layer base {
   body {
     background-color: var(--color-shell-950);
