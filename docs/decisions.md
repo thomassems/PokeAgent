@@ -200,6 +200,58 @@ remain indexed because they affect how retrieved advice should be presented.
 
 ---
 
+## 11. One custom-agent run over a POST SSE response
+
+The first live frontend path sends a prompt and the selected generation to
+`POST /api/runs`. FastAPI runs the custom agent and sends its progress and final
+answer as server-sent events. The agent emits one shared `TraceEvent` model;
+the API converts it to HTTP events, and the browser reads them with `fetch`.
+This keeps HTTP details out of the agent and uses the existing same-origin
+`/api` rewrite. Model calls still complete one step at a time, so progress is
+live while the final answer arrives as one event.
+
+Rejected: **native `EventSource` with a GET endpoint**. The run needs a prompt
+and generation in the request body. A separate create-run request would need
+server-side run coordination that this single-agent milestone does not need.
+Rejected: **a Next.js relay route**. It would add another streaming layer when
+the existing rewrite already reaches FastAPI. Rejected for now: **token-level
+model streaming**, which would change the provider call and agent loop beyond
+what is needed to show each agent step.
+
+## 12. Follow-ups carry completed conversation turns
+
+The browser sends prior completed prompt and answer pairs with each new
+`POST /api/runs`. Each pair includes the generation selected when its prompt was
+sent. The API validates these turns, and the agent appends them as alternating
+user and assistant messages before the new prompt. Tool traces and failed turns
+are not replayed. Each HTTP request is still a bounded run, but the model sees
+the earlier conversation. Refreshing the page clears this in-memory transcript.
+
+Rejected: **server-side session state**. Vercel workers do not provide durable
+per-user memory, and a database is outside this project's scope. Rejected:
+**replaying all tool calls**, which would increase context size and couple
+follow-ups to old tool results when the visible conversation needs only the
+answers. The run-wide output budget is now 10,000 tokens after a 2,000-token
+budget stopped a short question before its final answer. Step, tool-call, and
+time limits remain unchanged.
+
+## 13. Stream answer text during each model step
+
+The custom agent now consumes the provider's message stream and emits each text
+chunk as an `answer_delta` trace event. It still reads the complete provider
+message after the stream ends, so tool calls, token accounting, and the final
+`answer` event use the assembled result. The browser appends deltas immediately
+and replaces them with the final answer when that event arrives. If a model step
+ends in a tool call, its provisional text is cleared when the tool event arrives.
+The same event type belongs to the shared protocol for the future second agent.
+
+Rejected: **revealing a completed answer gradually in the browser**. It looks
+similar but leaves the user waiting for the full model response before the first
+word appears. The tradeoff with real streaming is that a step can show provisional
+text before deciding to call a tool. The UI clears that text when the tool starts.
+For scrolling, a new turn is positioned once at its start. Later text chunks do
+not move the viewport, so the reader chooses when to see more.
+
 ## Open questions
 
 Not decided. Each needs its own proposal before code depends on it.
