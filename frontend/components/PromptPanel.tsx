@@ -1,55 +1,42 @@
-import type { View } from "@/lib/types";
+type PromptPanelProps = {
+  prompt: string;
+  isRunning: boolean;
+  onPromptChange: (prompt: string) => void;
+  onSubmit: () => void;
+};
 
-const EXAMPLE_PROMPTS: readonly string[] = [
-  "Build me a balanced team around Infernape.",
-  "My team loses to Ice types. Fix it.",
-  "Fill the remaining slots, favouring speed over bulk.",
-];
-
-export function PromptPanel({ view }: { view: View }) {
+export function PromptPanel({ prompt, isRunning, onPromptChange, onSubmit }: PromptPanelProps) {
   return (
-    <section className="rounded-md border border-shell-700 bg-shell-900 p-4">
-      <label htmlFor="prompt" className="text-xs font-semibold tracking-widest text-ink-500 uppercase">
-        Prompt
-      </label>
+    <form
+      className="chat-composer"
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSubmit();
+      }}
+    >
+      <label htmlFor="prompt" className="sr-only">Message PokeAgent</label>
       <textarea
         id="prompt"
-        rows={3}
-        placeholder="Describe the team you want…"
-        className="mt-2 w-full resize-y rounded-sm border border-shell-700 bg-screen-950 p-3 text-sm text-ink-100 placeholder:text-shell-600"
+        rows={2}
+        value={prompt}
+        onChange={(event) => onPromptChange(event.target.value)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+            event.preventDefault();
+            if (!isRunning) onSubmit();
+          }
+        }}
+        placeholder="Message PokeAgent"
+        className="chat-input"
       />
-      <div className="mt-3 flex items-center justify-between gap-4">
-        <p className="text-xs text-ink-500">Both agents run the same prompt.</p>
-        {/* Inert by design - this shell makes no calls. */}
-        <button
-          type="button"
-          className="rounded-sm bg-plasma-600 px-3 py-1.5 text-sm font-medium text-ink-100 transition-colors hover:bg-plasma-500"
-        >
-          Compare
+      <div className="chat-composer-actions">
+        <span>Shift + Enter for a new line</span>
+        <button type="submit" disabled={isRunning || !prompt.trim()} aria-label="Send message">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M12 19V5m0 0-6 6m6-6 6 6" />
+          </svg>
         </button>
       </div>
-
-      {view === "before" && (
-        <div className="mt-4 border-t border-shell-800 pt-4">
-          <h2 className="text-xs font-semibold tracking-widest text-ink-500 uppercase">
-            Nothing run yet
-          </h2>
-          <p className="mt-2 text-sm text-ink-300">
-            Fill some slots on the left, or just describe what you want. Both agents solve the same
-            problem and their traces appear here side by side.
-          </p>
-          <ul className="mt-3 space-y-1.5">
-            {EXAMPLE_PROMPTS.map((prompt) => (
-              <li key={prompt} className="font-mono text-xs text-ink-500">
-                <span aria-hidden className="mr-2 text-shell-600">
-                  →
-                </span>
-                {prompt}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </section>
+    </form>
   );
 }

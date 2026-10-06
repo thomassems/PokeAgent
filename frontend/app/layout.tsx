@@ -18,7 +18,7 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: "PokeAgent",
-  description: "Two agent implementations, one team-building problem, traced side by side.",
+  description: "Ask a Pokémon agent questions and explore a team builder preview.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
