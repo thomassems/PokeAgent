@@ -158,7 +158,6 @@ api/  ->  agents/  ->  llm/tools/  ->  services/
 Both agents implement the same interface. If a change makes them diverge in
 signature, stop and flag it - that breaks the comparison.
 
-- No file over 300 lines.
 - Pydantic models for every boundary crossing. No bare dicts across layers.
 - Trace event schema defined once, in one place, emitted by both agents.
 - Type hints on every Python signature. `strict` mode in TypeScript.
