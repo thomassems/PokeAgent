@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 type AgentRunPanelProps = {
   id: number;
@@ -34,7 +35,24 @@ export function AgentRunPanel({ id, prompt, status, currentActivity, answer, err
       <div className="chat-assistant-message">
         <div className="chat-assistant-mark" aria-hidden="true">P</div>
         <div className="chat-assistant-content">
-          {answer && <div className="chat-answer"><ReactMarkdown skipHtml disallowedElements={["img"]}>{answer}</ReactMarkdown></div>}
+          {answer && (
+            <div className="chat-answer">
+              <ReactMarkdown
+                skipHtml
+                disallowedElements={["img"]}
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  table: ({ children }) => (
+                    <div className="chat-table-scroll" role="region" aria-label="Response table" tabIndex={0}>
+                      <table>{children}</table>
+                    </div>
+                  ),
+                }}
+              >
+                {answer}
+              </ReactMarkdown>
+            </div>
+          )}
           {status === "running" && (
             <div className="chat-activity" role="status" aria-live="polite">
               <span className="chat-activity-dot" aria-hidden="true" />
