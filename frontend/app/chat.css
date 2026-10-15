@@ -1,3 +1,5 @@
+@import "./chat-table.css";
+
 /* The chat route uses a reading surface; the team builder keeps its existing
    darker workspace palette. */
 .chat-page {
