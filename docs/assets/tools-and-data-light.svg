@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 690" width="1200" height="690" role="img" aria-label="PokeAgent tool surface: seven model-facing tools and the data each one reads">
+<rect fill="none" width="1200" height="690" />
+
+
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="13px" font-weight="700" letter-spacing=".04em" fill="#656d76" x="24" y="54">AGENT</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="13px" font-weight="700" letter-spacing=".04em" fill="#656d76" x="214" y="54">REGISTRY</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="13px" font-weight="700" letter-spacing=".04em" fill="#656d76" x="424" y="54">TOOL IMPLEMENTATION</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="13px" font-weight="700" letter-spacing=".04em" fill="#656d76" x="742" y="54">DATA IT READS</text>
+
+
+<rect fill="#ddf4ff" stroke="#0969da" x="24" y="300" width="150" height="76" rx="8" stroke-width="1.5" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5px" fill="#656d76" x="99" y="324" text-anchor="middle">agents/</text>
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14px" font-weight="600" fill="#1f2328" x="99" y="344" text-anchor="middle">custom.py</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="99" y="364" text-anchor="middle">the hand-written loop</text>
+
+
+<path stroke="#8c959f" fill="none" d="M174 338 H206" stroke-width="1.5" />
+<polygon fill="#8c959f" points="206,333 214,338 206,343" />
+
+
+<rect fill="#fbefff" stroke="#8250df" x="214" y="276" width="170" height="124" rx="8" stroke-width="1.5" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14px" font-weight="600" fill="#1f2328" x="299" y="302" text-anchor="middle">llm/tools/</text>
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14px" font-weight="600" fill="#1f2328" x="299" y="320" text-anchor="middle">registry.py</text>
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5px" fill="#656d76" x="299" y="346" text-anchor="middle">TOOLS</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="299" y="360" text-anchor="middle">schemas the model sees</text>
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5px" fill="#656d76" x="299" y="378" text-anchor="middle">TOOL_FUNCTIONS</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="299" y="392" text-anchor="middle">name to function</text>
+
+
+<path stroke="#8250df" fill="none" d="M384 338 H404" stroke-width="1.5" />
+<path stroke="#8250df" fill="none" d="M404 128 V524" stroke-width="1.5" />
+
+
+<path stroke="#8250df" fill="none" d="M404 128 H416" stroke-width="1.5" /><polygon fill="#8c959f" points="416,123 424,128 416,133" />
+<path stroke="#8250df" fill="none" d="M404 184 H416" stroke-width="1.5" /><polygon fill="#8c959f" points="416,179 424,184 416,189" />
+<path stroke="#8250df" fill="none" d="M404 270 H416" stroke-width="1.5" /><polygon fill="#8c959f" points="416,265 424,270 416,275" />
+<path stroke="#8250df" fill="none" d="M404 326 H416" stroke-width="1.5" /><polygon fill="#8c959f" points="416,321 424,326 416,331" />
+<path stroke="#8250df" fill="none" d="M404 382 H416" stroke-width="1.5" /><polygon fill="#8c959f" points="416,377 424,382 416,387" />
+<path stroke="#8250df" fill="none" d="M404 468 H416" stroke-width="1.5" /><polygon fill="#8c959f" points="416,463 424,468 416,473" />
+<path stroke="#8250df" fill="none" d="M404 524 H416" stroke-width="1.5" /><polygon fill="#8c959f" points="416,519 424,524 416,529" />
+
+
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="10.5px" font-weight="700" letter-spacing=".05em" fill="#8250df" x="424" y="86">INLINE IN REGISTRY.PY</text>
+<rect fill="#ffffff" stroke="#d0d7de" x="424" y="104" width="250" height="48" rx="6" stroke-width="1.5" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14px" font-weight="600" fill="#1f2328" x="438" y="124">get_pokemon</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="438" y="141">stats, typing, abilities, move count</text>
+<rect fill="#ffffff" stroke="#d0d7de" x="424" y="160" width="250" height="48" rx="6" stroke-width="1.5" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14px" font-weight="600" fill="#1f2328" x="438" y="180">get_move</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="438" y="197">type, category, power, accuracy, PP</text>
+
+
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="10.5px" font-weight="700" letter-spacing=".05em" fill="#1a7f37" x="424" y="228">TOOLS/ · PURE, NO I/O, UNIT TESTED</text>
+<rect fill="#ffffff" stroke="#1a7f37" x="424" y="246" width="250" height="48" rx="6" stroke-width="1.5" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14px" font-weight="600" fill="#1f2328" x="438" y="266">find_pokemon</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="438" y="283">filter by type, gen, legendary; sort</text>
+<rect fill="#ffffff" stroke="#1a7f37" x="424" y="302" width="250" height="48" rx="6" stroke-width="1.5" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14px" font-weight="600" fill="#1f2328" x="438" y="322">get_type_matchups</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="438" y="339">dual-type math done, grouped 4x..0</text>
+<rect fill="#ffffff" stroke="#1a7f37" x="424" y="358" width="250" height="48" rx="6" stroke-width="1.5" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14px" font-weight="600" fill="#1f2328" x="438" y="378">get_type_effectiveness</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="438" y="395">one attacker into one defender</text>
+
+
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="10.5px" font-weight="700" letter-spacing=".05em" fill="#bc4c00" x="424" y="426">SERVICES/ · CROSSES THE NETWORK</text>
+<rect fill="#ffffff" stroke="#bc4c00" x="424" y="444" width="250" height="48" rx="6" stroke-width="1.5" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14px" font-weight="600" fill="#1f2328" x="438" y="464">search_strategy</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="438" y="481">retrieve + rerank strategy passages</text>
+<rect fill="#ffffff" stroke="#bc4c00" x="424" y="500" width="250" height="48" rx="6" stroke-width="1.5" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14px" font-weight="600" fill="#1f2328" x="438" y="520">web_search</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="438" y="537">tiers, formats, anything not in dex</text>
+
+
+<rect fill="#f6f8fa" stroke="#d0d7de" x="742" y="94" width="434" height="198" rx="8" stroke-width="1.5" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14px" font-weight="600" fill="#1f2328" x="760" y="118">data/dex.py</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="866" y="118">read once at import, then in memory</text>
+<rect fill="#ffffff" stroke="#d0d7de" x="756" y="130" width="406" height="34" rx="5" stroke-width="1" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5px" fill="#1f2328" x="768" y="152">pokemon.json</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="1150" y="152" text-anchor="end">2.9 MB</text>
+<rect fill="#ffffff" stroke="#d0d7de" x="756" y="170" width="406" height="34" rx="5" stroke-width="1" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5px" fill="#1f2328" x="768" y="192">moves.json</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="1150" y="192" text-anchor="end">152 KB</text>
+<rect fill="#ffffff" stroke="#d0d7de" x="756" y="210" width="406" height="34" rx="5" stroke-width="1" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5px" fill="#1f2328" x="768" y="232">abilities.json</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="1150" y="232" text-anchor="end">44 KB</text>
+<rect fill="#ffffff" stroke="#d0d7de" x="756" y="250" width="406" height="34" rx="5" stroke-width="1" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5px" fill="#1f2328" x="768" y="272">type-chart.json</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="1150" y="272" text-anchor="end">one chart per generation</text>
+
+
+<rect fill="#f6f8fa" stroke="#d0d7de" x="742" y="340" width="434" height="128" rx="8" stroke-width="1.5" />
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="14px" font-weight="600" fill="#1f2328" x="760" y="366">Pinecone</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="760" y="386">integrated inference, metadata filter by generation</text>
+<rect fill="#ffffff" stroke="#d0d7de" x="756" y="398" width="406" height="34" rx="5" stroke-width="1" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5px" fill="#1f2328" x="768" y="420">pokeagent-strategy / strategy-v1</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="760" y="452">reranked with bge-reranker-v2-m3</text>
+
+
+<rect fill="#f6f8fa" stroke="#d0d7de" x="742" y="500" width="434" height="68" rx="8" stroke-width="1.5" />
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="14px" font-weight="600" fill="#1f2328" x="760" y="526">Brave Search API</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="760" y="546">capped query length, snippets truncated</text>
+
+
+<rect fill="#ffffff" stroke="#d0d7de" x="424" y="596" width="250" height="48" rx="6" stroke-width="1.5" stroke-dasharray="4 3" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14px" font-weight="600" fill="#1f2328" x="438" y="616">data/strategy/seed.jsonl</text>
+<text font-family="ui-sans-serif, -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif" font-size="11.5px" fill="#656d76" x="438" y="633">Pydantic-validated corpus</text>
+<path stroke="#8c959f" fill="none" d="M674 620 C 720 620 720 470 742 444" stroke-width="1.5" stroke-dasharray="4 3" />
+<polygon fill="#8c959f" points="737,437 742,444 734,446" />
+<text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5px" fill="#656d76" x="438" y="664">built by scripts/index_strategy.py</text>
+
+
+<path stroke="#8c959f" fill="none" d="M674 128 C 710 128 716 147 742 147" stroke-width="1.5" />
+<polygon fill="#8c959f" points="734,142 742,147 734,152" />
+<path stroke="#8c959f" fill="none" d="M674 184 C 710 184 716 187 742 187" stroke-width="1.5" />
+<polygon fill="#8c959f" points="734,182 742,187 734,192" />
+<path stroke="#8c959f" fill="none" d="M674 270 C 706 270 712 147 742 147" stroke-width="1.5" />
+<polygon fill="#8c959f" points="734,142 742,147 734,152" />
+<path stroke="#8c959f" fill="none" d="M674 320 C 700 320 706 147 742 147" stroke-width="1.5" />
+<polygon fill="#8c959f" points="734,142 742,147 734,152" />
+<path stroke="#8c959f" fill="none" d="M674 326 C 710 326 716 227 742 227" stroke-width="1.5" />
+<polygon fill="#8c959f" points="734,222 742,227 734,232" />
+<path stroke="#8c959f" fill="none" d="M674 332 C 714 332 720 267 742 267" stroke-width="1.5" />
+<polygon fill="#8c959f" points="734,262 742,267 734,272" />
+<path stroke="#8c959f" fill="none" d="M674 382 C 710 382 716 267 742 267" stroke-width="1.5" />
+<polygon fill="#8c959f" points="734,262 742,267 734,272" />
+<path stroke="#bc4c00" fill="none" d="M674 468 C 710 468 716 415 742 415" stroke-width="1.5" />
+<polygon fill="#bc4c00" points="734,410 742,415 734,420" />
+<path stroke="#bc4c00" fill="none" d="M674 524 C 710 524 716 534 742 534" stroke-width="1.5" />
+<polygon fill="#bc4c00" points="734,529 742,534 734,539" />
+</svg>
