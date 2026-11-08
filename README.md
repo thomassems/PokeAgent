@@ -12,10 +12,12 @@ the answer arriving token by token.
   <img src="docs/assets/screenshot-chat.png" alt="The PokeAgent chat interface, with a generation selector in the header and example prompts" width="100%">
 </p>
 
-> **Status.** The hand-rolled agent is built and streaming against all seven
-> tools. The LangChain implementation, the guard stages, and the eval harness
-> are the next pieces of work, so the head-to-head comparison the project is
-> named for cannot be run yet. Nothing here is deployed.
+> **Status.** Both agents are built and streaming against all seven tools,
+> under the same prompt, the same caps, and the same trace-event schema. The
+> LangChain side is covered by unit tests against a fake model but has not been
+> confirmed end to end against a live provider yet, and the frontend still shows
+> placeholder output for it. The guard stages and the eval harness are the next
+> pieces of work. Nothing here is deployed.
 
 ## Why it exists
 
@@ -54,12 +56,33 @@ Failures are sanitised on the way out. Stack traces and raw provider errors go
 to the server log, and the browser gets one `error` event carrying a short
 message that leaks nothing.
 
+## The two implementations
+
+`agents/custom.py` is the loop above, written out by hand. `agents/framework.py`
+hands that loop to LangChain's `create_agent` and consumes the stream it
+produces: same system prompt, same tool surface, same four caps, same
+`TraceEvent` output. Both satisfy the one-method protocol in
+`agents/protocol.py`, so a signature drift between them becomes a type error
+rather than a quiet divergence in the benchmark.
+
+`POST /api/runs` takes an `agent` field, `"custom"` or `"langchain"`, which
+defaults to `"custom"`.
+
+What the framework took off our hands is the loop and the tool dispatch. What it
+did not take is the tool schemas, which have to be adapted into its own tool
+objects, or three of the four caps: two come from prebuilt middleware, the
+run-wide output-token budget needs middleware written here, and the wall-clock
+bound stays a deadline check in the stream loop. The LangChain module is the
+longer of the two.
+
 ## The tool surface
 
-Seven tools, defined once in `llm/tools/registry.py`. Both agents import the
-same list and pass it straight through, so neither can be handed a different
-tool surface than the other - that would invalidate the comparison before it
-started.
+Seven tools, defined once in `llm/tools/registry.py`. Both agents build their
+tool surface from that one list, so neither can be handed a different surface
+than the other - that would invalidate the comparison before it started. The
+hand-rolled agent passes the schemas straight to the provider; the LangChain
+agent adapts the same entries into the tool objects `create_agent` wants, rather
+than redeclaring them and letting the two definitions drift.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/tools-and-data-dark.svg">
@@ -123,7 +146,8 @@ api/  ->  agents/  ->  llm/tools/  ->  services/
 frontend/    Next.js 16, React 19, Tailwind 4, App Router, strict TypeScript
 backend/     FastAPI, Python 3.12
   api/         routes, SSE streaming, request and response models
-  agents/      the loop, the shared trace-event schema, the system prompt
+  agents/      the two implementations, their shared protocol, the event
+               schema, the system prompt
   llm/tools/   the model-facing registry: one schema per tool plus dispatch
   tools/       pure, deterministic functions over data/
   services/    anything that crosses the network
