@@ -105,7 +105,7 @@ def test_output_limit_has_an_actionable_error(monkeypatch: pytest.MonkeyPatch) -
         yield TraceEvent(type="status", message="Step 1 of 3")
         raise custom.OutputLimitReached()
 
-    monkeypatch.setattr(main, "call_agent", limited_agent)
+    monkeypatch.setitem(main.AGENTS, "custom", limited_agent)
     response = TestClient(main.app).post(
         "/api/runs", json={"prompt": "A long question", "generation": 4}
     )

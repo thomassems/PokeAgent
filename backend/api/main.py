@@ -1,16 +1,26 @@
 import logging
 from collections.abc import Iterator
+from typing import Literal
 
 from fastapi import FastAPI
 from fastapi.sse import EventSourceResponse, ServerSentEvent
 from pydantic import BaseModel, Field
 
+from agents import custom, framework
 from agents.conversation import ConversationTurn
-from agents.custom import OutputLimitReached, call_agent
+from agents.custom import OutputLimitReached
 from agents.events import TraceEvent
+from agents.protocol import Agent
 
 app = FastAPI(title="PokeAgent API")
 logger = logging.getLogger(__name__)
+
+# The two implementations the benchmark compares. Typed as the shared protocol
+# so a signature drift between them fails here rather than at request time.
+AGENTS: dict[str, Agent] = {
+    "custom": custom.call_agent,
+    "langchain": framework.call_agent,
+}
 
 
 class Health(BaseModel):
@@ -22,6 +32,9 @@ class RunRequest(BaseModel):
     prompt: str = Field(min_length=1, max_length=4000)
     generation: int = Field(ge=1, le=9)
     history: list[ConversationTurn] = Field(default_factory=list)
+    # Which implementation to run. Defaults to the hand-written one, so a client
+    # that predates the second agent keeps the behaviour it had.
+    agent: Literal["custom", "langchain"] = "custom"
 
 
 # Routes carry the /api prefix in the path itself rather than relying on a mount
@@ -34,9 +47,10 @@ def health() -> Health:
 
 @app.post("/api/runs", response_class=EventSourceResponse)
 def run_agent(request: RunRequest) -> Iterator[ServerSentEvent]:
-    """Send progress from one custom-agent run over a single HTTP response."""
+    """Send progress from one agent run over a single HTTP response."""
+    agent = AGENTS[request.agent]
     try:
-        for event in call_agent(request.prompt, request.generation, request.history):
+        for event in agent(request.prompt, request.generation, request.history):
             yield ServerSentEvent(data=event, event=event.type)
     except OutputLimitReached:
         logger.info("Agent run reached its output-token limit")
