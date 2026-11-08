@@ -230,7 +230,7 @@ def test_run_endpoint_sends_sse_and_sanitizes_errors(
         yield TraceEvent(type="answer_delta", message="Try a ")
         yield TraceEvent(type="answer", message="Try a Steel type.")
 
-    monkeypatch.setattr(main, "call_agent", fake_agent)
+    monkeypatch.setitem(main.AGENTS, "custom", fake_agent)
     response = TestClient(main.app).post(
         "/api/runs",
         json={
@@ -255,7 +255,7 @@ def test_run_endpoint_sends_sse_and_sanitizes_errors(
         yield TraceEvent(type="status", message="Step 1 of 3")
         raise RuntimeError("provider secret and internal path")
 
-    monkeypatch.setattr(main, "call_agent", failing_agent)
+    monkeypatch.setitem(main.AGENTS, "custom", failing_agent)
     failed = TestClient(main.app).post(
         "/api/runs", json={"prompt": "Help with Garchomp", "generation": 4}
     )
