@@ -47,7 +47,7 @@ from agents.custom import (
     NUM_ITERS,
     OutputLimitReached,
 )
-from agents.events import TraceEvent
+from agents.events import RunMetrics, TraceEvent
 from agents.prompts import SYSTEM_PROMPT
 from agents.protocol import Agent
 from llm.tools.registry import TOOL_FUNCTIONS, TOOLS
@@ -247,6 +247,11 @@ def call_agent(
     deadline = time.monotonic() + MAX_RUN_SECONDS
     step = 0
     announced = False
+    # Counted off the stream for the same reason the step number is: the graph
+    # owns the loop, so these are observed rather than kept.
+    tool_calls = 0
+    input_tokens = 0
+    output_tokens = 0
 
     def begin_step() -> Iterator[TraceEvent]:
         nonlocal step, announced
@@ -299,13 +304,33 @@ def call_agent(
                 yield from begin_step()
                 announced = False
 
+                # One usage record per model response. Replayed history turns
+                # carry none, so they add nothing, which is right: an earlier
+                # run paid for those.
+                if message.usage_metadata:
+                    input_tokens += message.usage_metadata["input_tokens"]
+                    output_tokens += message.usage_metadata["output_tokens"]
+
                 if message.tool_calls:
+                    # Counts what the model asked for, which is what
+                    # custom.py counts and what ToolCallLimitMiddleware bounds.
+                    tool_calls += len(message.tool_calls)
                     for call in message.tool_calls:
                         yield TraceEvent(type="tool", message=f"Using {call['name']}")
                     continue
                 if not message.text:
                     raise RuntimeError("Model ended without an answer")
                 yield TraceEvent(type="answer", message=message.text)
+                yield TraceEvent(
+                    type="metrics",
+                    message="",
+                    metrics=RunMetrics(
+                        steps=step,
+                        tool_calls=tool_calls,
+                        input_tokens=input_tokens,
+                        output_tokens=output_tokens,
+                    ),
+                )
                 return
 
     raise RuntimeError("Agent run ended without an answer")

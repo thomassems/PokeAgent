@@ -10,7 +10,7 @@ from anthropic.lib.streaming import MessageStreamManager
 from anthropic.types import Message
 
 from agents.conversation import ConversationTurn
-from agents.events import TraceEvent
+from agents.events import RunMetrics, TraceEvent
 from agents.prompts import SYSTEM_PROMPT
 from llm.tools.registry import TOOL_FUNCTIONS, TOOLS
 
@@ -72,6 +72,10 @@ def call_agent(
     deadline = time.monotonic() + MAX_RUN_SECONDS
     remaining_tokens = MAX_OUTPUT_TOKENS
     tool_calls = 0
+    # Totals for the run, reported once at the end. Separate from
+    # remaining_tokens, which is a budget being spent down rather than a count.
+    input_tokens = 0
+    output_tokens = 0
     client = anthropic.Anthropic()
 
     try:
@@ -89,6 +93,8 @@ def call_agent(
                 answer: Message = stream.get_final_message()
             _remaining_time(deadline)
             remaining_tokens -= answer.usage.output_tokens
+            input_tokens += answer.usage.input_tokens
+            output_tokens += answer.usage.output_tokens
             add_assistant_message(messages, answer.content)
 
             if answer.stop_reason == "max_tokens":
@@ -131,6 +137,16 @@ def call_agent(
                 if not final_text:
                     raise RuntimeError("Model ended without an answer")
                 yield TraceEvent(type="answer", message=final_text)
+                yield TraceEvent(
+                    type="metrics",
+                    message="",
+                    metrics=RunMetrics(
+                        steps=iteration,
+                        tool_calls=tool_calls,
+                        input_tokens=input_tokens,
+                        output_tokens=output_tokens,
+                    ),
+                )
                 return
 
             raise RuntimeError(f"Model stopped unexpectedly: {answer.stop_reason}")
