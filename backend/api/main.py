@@ -37,6 +37,18 @@ class RunRequest(BaseModel):
     agent: Literal["custom", "langchain"] = "custom"
 
 
+def _frame(event: TraceEvent) -> ServerSentEvent:
+    """One trace event as an SSE frame.
+
+    Serialised here rather than handed to `data=` so that `exclude_none` applies:
+    only a metrics event carries a `metrics` object, and every other event keeps
+    the two-field shape the frontend parser already reads.
+    """
+    return ServerSentEvent(
+        raw_data=event.model_dump_json(exclude_none=True), event=event.type
+    )
+
+
 # Routes carry the /api prefix in the path itself rather than relying on a mount
 # point. The same URL then resolves through the Next.js dev proxy and through the
 # Vercel rewrite, whose post-rewrite path handling is not yet confirmed.
@@ -51,7 +63,7 @@ def run_agent(request: RunRequest) -> Iterator[ServerSentEvent]:
     agent = AGENTS[request.agent]
     try:
         for event in agent(request.prompt, request.generation, request.history):
-            yield ServerSentEvent(data=event, event=event.type)
+            yield _frame(event)
     except OutputLimitReached:
         logger.info("Agent run reached its output-token limit")
         error = TraceEvent(
@@ -61,15 +73,15 @@ def run_agent(request: RunRequest) -> Iterator[ServerSentEvent]:
                 "Try a shorter question or ask for a shorter answer."
             ),
         )
-        yield ServerSentEvent(data=error, event=error.type)
+        yield _frame(error)
         return
     except Exception:
         logger.exception("Agent run failed")
         error = TraceEvent(
             type="error", message="The run failed. Check the server logs."
         )
-        yield ServerSentEvent(data=error, event=error.type)
+        yield _frame(error)
         return
 
     done = TraceEvent(type="done", message="")
-    yield ServerSentEvent(data=done, event=done.type)
+    yield _frame(done)
