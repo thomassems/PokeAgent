@@ -48,7 +48,7 @@ def test_custom_agent_yields_text_before_the_final_answer(
     reply = SimpleNamespace(
         stop_reason="end_turn",
         content=[SimpleNamespace(type="text", text="Try Jolteon.")],
-        usage=SimpleNamespace(output_tokens=4),
+        usage=SimpleNamespace(input_tokens=40, output_tokens=4),
     )
     monkeypatch.setattr(
         custom,
@@ -68,6 +68,7 @@ def test_custom_agent_yields_text_before_the_final_answer(
         ("answer_delta", "Try "),
         ("answer_delta", "Jolteon."),
         ("answer", "Try Jolteon."),
+        ("metrics", ""),
     ]
 
 
@@ -90,7 +91,7 @@ def test_output_limit_has_an_actionable_error(monkeypatch: pytest.MonkeyPatch) -
                 get_final_message=lambda: SimpleNamespace(
                     stop_reason="max_tokens",
                     content=[],
-                    usage=SimpleNamespace(output_tokens=max_tokens),
+                    usage=SimpleNamespace(input_tokens=10, output_tokens=max_tokens),
                 ),
             )
         )

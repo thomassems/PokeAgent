@@ -12,6 +12,8 @@ depend on how `create_agent` streams rather than only on our own code.
 
 import json
 from collections.abc import Iterator, Sequence
+from contextlib import nullcontext
+from types import SimpleNamespace
 from typing import Any
 
 import pytest
@@ -24,7 +26,7 @@ from langchain_core.outputs import ChatGenerationChunk
 
 from agents import custom, framework
 from agents.conversation import ConversationTurn
-from agents.events import TraceEvent
+from agents.events import RunMetrics, TraceEvent
 from agents.protocol import Agent
 from api import main
 
@@ -46,11 +48,13 @@ class Step:
         tool_calls: Sequence[dict[str, Any]] = (),
         output_tokens: int = 10,
         stop_reason: str = "end_turn",
+        input_tokens: int = 1,
     ) -> None:
         self.text = text
         self.tool_calls = tool_calls
         self.output_tokens = output_tokens
         self.stop_reason = stop_reason
+        self.input_tokens = input_tokens
 
 
 class FakeChatModel(BaseChatModel):
@@ -101,9 +105,9 @@ class FakeChatModel(BaseChatModel):
                     for index, call in enumerate(step.tool_calls)
                 ],
                 usage_metadata={
-                    "input_tokens": 1,
+                    "input_tokens": step.input_tokens,
                     "output_tokens": step.output_tokens,
-                    "total_tokens": 1 + step.output_tokens,
+                    "total_tokens": step.input_tokens + step.output_tokens,
                 },
                 response_metadata={"stop_reason": step.stop_reason},
             )
@@ -165,6 +169,7 @@ def test_framework_agent_streams_a_tool_step_and_answer(
         "answer_delta",
         "answer_delta",
         "answer",
+        "metrics",
     ]
     tool_events = [event.message for event in events if event.type == "tool"]
     assert tool_events == ["Using get_move", "get_move returned"]
@@ -172,7 +177,7 @@ def test_framework_agent_streams_a_tool_step_and_answer(
         "Step 1 of 5",
         "Step 2 of 5",
     ]
-    assert events[-1].message.strip() == "Body Slam has 85 power."
+    assert events[-2].message.strip() == "Body Slam has 85 power."
 
     # The tool ran for real and its output went back as the tool message.
     tool_message = model.seen_messages[1][-1]
@@ -197,7 +202,7 @@ def test_framework_agent_can_answer_on_fifth_step(
     assert [event.message for event in events if event.type == "status"] == [
         f"Step {step} of 5" for step in range(1, 6)
     ]
-    assert events[-1] == TraceEvent(type="answer", message="Try Jolteon. ")
+    assert events[-2] == TraceEvent(type="answer", message="Try Jolteon. ")
 
 
 def test_framework_agent_receives_prior_turns_and_the_generation_prefix(
@@ -232,7 +237,7 @@ def test_framework_agent_receives_prior_turns_and_the_generation_prefix(
         ("human", "Selected generation: 4\n\nWhich one is fastest?"),
     ]
     assert model.seen_messages[0][0].type == "system"
-    assert events[-1].type == "answer"
+    assert events[-2].type == "answer"
 
 
 def test_step_cap_raises_rather_than_running_on(
@@ -368,3 +373,68 @@ def test_an_unknown_agent_is_rejected_before_a_run_starts() -> None:
     )
 
     assert response.status_code == 422
+
+
+def test_both_agents_report_the_same_metrics_for_the_same_run(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The one assertion the whole comparison rests on.
+
+    Two implementations counting differently would show up as a difference in
+    architecture rather than as the measurement bug it is. Both are given the
+    same scripted run: one tool step spending 100 in and 20 out, then an answer
+    spending 200 in and 15 out.
+    """
+    script(
+        monkeypatch,
+        [
+            Step("Checking.", [GET_MOVE_CALL], 20, "tool_use", 100),
+            Step("Body Slam has 85 power.", (), 15, "end_turn", 200),
+        ],
+        {"get_move": lambda moves: {moves[0]: {"power": 85}}},
+    )
+    framework_events = list(framework.call_agent("Tell me about Body Slam", 4))
+
+    class FakeClient:
+        def close(self) -> None:
+            pass
+
+    monkeypatch.setattr(custom.anthropic, "Anthropic", FakeClient)
+    monkeypatch.setitem(
+        custom.TOOL_FUNCTIONS, "get_move", lambda moves: {moves[0]: {"power": 85}}
+    )
+    replies = iter(
+        [
+            SimpleNamespace(
+                stop_reason="tool_use",
+                content=[
+                    SimpleNamespace(
+                        type="tool_use",
+                        id="c1",
+                        name="get_move",
+                        input={"moves": ["Body Slam"]},
+                    )
+                ],
+                usage=SimpleNamespace(input_tokens=100, output_tokens=20),
+            ),
+            SimpleNamespace(
+                stop_reason="end_turn",
+                content=[SimpleNamespace(type="text", text="Body Slam has 85 power.")],
+                usage=SimpleNamespace(input_tokens=200, output_tokens=15),
+            ),
+        ]
+    )
+    monkeypatch.setattr(
+        custom,
+        "chat",
+        lambda client, messages, max_tokens, timeout: nullcontext(
+            SimpleNamespace(
+                text_stream=iter(()), get_final_message=lambda: next(replies)
+            )
+        ),
+    )
+    custom_events = list(custom.call_agent("Tell me about Body Slam", 4))
+
+    expected = RunMetrics(steps=2, tool_calls=1, input_tokens=300, output_tokens=35)
+    assert custom_events[-1] == TraceEvent(type="metrics", message="", metrics=expected)
+    assert framework_events[-1] == custom_events[-1]

@@ -53,12 +53,12 @@ def test_custom_agent_streams_a_tool_step_and_answer(
             SimpleNamespace(
                 stop_reason="tool_use",
                 content=[tool_use],
-                usage=SimpleNamespace(output_tokens=20),
+                usage=SimpleNamespace(input_tokens=200, output_tokens=20),
             ),
             SimpleNamespace(
                 stop_reason="end_turn",
                 content=[SimpleNamespace(type="text", text="Body Slam has 85 power.")],
-                usage=SimpleNamespace(output_tokens=15),
+                usage=SimpleNamespace(input_tokens=300, output_tokens=15),
             ),
         ]
     )
@@ -90,9 +90,10 @@ def test_custom_agent_streams_a_tool_step_and_answer(
         "status",
         "answer_delta",
         "answer",
+        "metrics",
     ]
     assert events[1].message == "Checking the move..."
-    assert events[-1].message == "Body Slam has 85 power."
+    assert events[-2].message == "Body Slam has 85 power."
     assert calls[0][1][0]["content"] == (
         "Selected generation: 4\n\nTell me about Body Slam"
     )
@@ -123,7 +124,7 @@ def test_custom_agent_can_answer_on_fifth_step(
                         input={"moves": ["Thunderbolt"]},
                     )
                 ],
-                usage=SimpleNamespace(output_tokens=100),
+                usage=SimpleNamespace(input_tokens=100, output_tokens=100),
             )
             for step in range(1, 5)
         ]
@@ -131,7 +132,7 @@ def test_custom_agent_can_answer_on_fifth_step(
             SimpleNamespace(
                 stop_reason="end_turn",
                 content=[SimpleNamespace(type="text", text="Try Jolteon.")],
-                usage=SimpleNamespace(output_tokens=100),
+                usage=SimpleNamespace(input_tokens=100, output_tokens=100),
             )
         ]
     )
@@ -150,7 +151,7 @@ def test_custom_agent_can_answer_on_fifth_step(
     assert [event.message for event in events if event.type == "status"] == [
         f"Step {step} of 5" for step in range(1, 6)
     ]
-    assert events[-1] == TraceEvent(type="answer", message="Try Jolteon.")
+    assert events[-2] == TraceEvent(type="answer", message="Try Jolteon.")
 
 
 def test_custom_agent_receives_prior_turns_and_ten_thousand_token_budget(
@@ -174,7 +175,7 @@ def test_custom_agent_receives_prior_turns_and_ten_thousand_token_budget(
             SimpleNamespace(
                 stop_reason="end_turn",
                 content=[SimpleNamespace(type="text", text="Jolteon is fast.")],
-                usage=SimpleNamespace(output_tokens=25),
+                usage=SimpleNamespace(input_tokens=50, output_tokens=25),
             )
         )
 
@@ -213,7 +214,7 @@ def test_custom_agent_receives_prior_turns_and_ten_thousand_token_budget(
             10_000,
         )
     ]
-    assert events[-1] == TraceEvent(type="answer", message="Jolteon is fast.")
+    assert events[-2] == TraceEvent(type="answer", message="Jolteon is fast.")
 
 
 def test_run_endpoint_sends_sse_and_sanitizes_errors(

@@ -3,16 +3,12 @@
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import type { RunState } from "@/lib/run-state";
 
 type AgentRunPanelProps = {
-  id: number;
-  prompt: string;
-  status: "running" | "complete" | "error";
-  currentActivity: string;
-  answer: string;
-  error: string | null;
-  startedAt: number;
-  finishedAt: number | null;
+  /** Which implementation produced this, shown so the two can be told apart. */
+  label: string;
+  run: RunState;
 };
 
 function elapsedLabel(startedAt: number, finishedAt: number | null, now: number): string {
@@ -20,7 +16,17 @@ function elapsedLabel(startedAt: number, finishedAt: number | null, now: number)
   return seconds < 60 ? `${seconds}s` : `${Math.floor(seconds / 60)}m ${String(seconds % 60).padStart(2, "0")}s`;
 }
 
-export function AgentRunPanel({ id, prompt, status, currentActivity, answer, error, startedAt, finishedAt }: AgentRunPanelProps) {
+function Metric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="chat-metric">
+      <span className="chat-metric-label">{label}</span>
+      <span className="chat-metric-value">{value}</span>
+    </div>
+  );
+}
+
+export function AgentRunPanel({ label, run }: AgentRunPanelProps) {
+  const { status, currentActivity, answer, error, startedAt, finishedAt, metrics } = run;
   const [now, setNow] = useState(startedAt);
 
   useEffect(() => {
@@ -29,11 +35,16 @@ export function AgentRunPanel({ id, prompt, status, currentActivity, answer, err
     return () => window.clearInterval(interval);
   }, [status]);
 
+  const elapsed = elapsedLabel(startedAt, finishedAt, now);
+
   return (
-    <section id={`chat-turn-${id}`} className="chat-turn">
-      <div className="chat-user-message"><p>{prompt}</p></div>
+    <section className="chat-agent-panel" aria-label={label}>
+      <header className="chat-agent-header">
+        <span aria-hidden="true" className="chat-agent-dot" />
+        <h3>{label}</h3>
+      </header>
+
       <div className="chat-assistant-message">
-        <div className="chat-assistant-mark" aria-hidden="true">P</div>
         <div className="chat-assistant-content">
           {answer && (
             <div className="chat-answer">
@@ -57,13 +68,33 @@ export function AgentRunPanel({ id, prompt, status, currentActivity, answer, err
             <div className="chat-activity" role="status" aria-live="polite">
               <span className="chat-activity-dot" aria-hidden="true" />
               <span className="chat-activity-label">{currentActivity}</span>
-              <span className="chat-elapsed">{elapsedLabel(startedAt, finishedAt, now)}</span>
+              <span className="chat-elapsed">{elapsed}</span>
             </div>
           )}
           {status === "error" && <p className="chat-error" role="alert">{error}</p>}
-          {status === "complete" && <span className="chat-finished">Answered in {elapsedLabel(startedAt, finishedAt, now)}</span>}
         </div>
       </div>
+
+      {/*
+        Elapsed is measured in the browser, so it is there even when a run fails
+        before reporting. Everything else comes from the run's metrics event, so
+        the footer stays partial rather than showing zeros for unknowns.
+      */}
+      {status !== "running" && (
+        <footer className="chat-agent-metrics">
+          <Metric label="Elapsed" value={elapsed} />
+          {metrics && (
+            <>
+              <Metric label="Steps" value={String(metrics.steps)} />
+              <Metric label="Tools" value={String(metrics.toolCalls)} />
+              <Metric
+                label="Tokens"
+                value={`${metrics.inputTokens.toLocaleString()} in / ${metrics.outputTokens.toLocaleString()} out`}
+              />
+            </>
+          )}
+        </footer>
+      )}
     </section>
   );
 }
