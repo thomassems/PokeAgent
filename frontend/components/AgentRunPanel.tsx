@@ -26,7 +26,8 @@ function Metric({ label, value }: { label: string; value: string }) {
 }
 
 export function AgentRunPanel({ label, run }: AgentRunPanelProps) {
-  const { status, currentActivity, answer, error, startedAt, finishedAt, metrics } = run;
+  const { status, currentActivity, currentStep, answer, error, startedAt, finishedAt, metrics } =
+    run;
   const [now, setNow] = useState(startedAt);
 
   useEffect(() => {
@@ -68,6 +69,7 @@ export function AgentRunPanel({ label, run }: AgentRunPanelProps) {
             <div className="chat-activity" role="status" aria-live="polite">
               <span className="chat-activity-dot" aria-hidden="true" />
               <span className="chat-activity-label">{currentActivity}</span>
+              {currentStep && <span className="chat-activity-step">{currentStep}</span>}
               <span className="chat-elapsed">{elapsed}</span>
             </div>
           )}
