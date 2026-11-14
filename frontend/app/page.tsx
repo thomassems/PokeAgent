@@ -29,6 +29,11 @@ export default function Home() {
   const [turns, setTurns] = useState<Turn[]>([]);
   const activeRequest = useRef<AbortController | null>(null);
   const nextTurnId = useRef(0);
+  // True while the reader is parked at the bottom. A running answer grows
+  // downward; following it keeps the new lines above the sticky composer.
+  // Scrolling up to read an earlier turn opts out until they return.
+  const followStream = useRef(true);
+  const scrollingSelf = useRef(false);
   const newestTurnId = turns.at(-1)?.id;
   const isRunning = turns.some((turn) =>
     AGENT_IDS.some((agent) => turn.runs[agent].status === "running"),
@@ -36,10 +41,31 @@ export default function Home() {
 
   useEffect(() => () => activeRequest.current?.abort(), []);
   useEffect(() => {
-    if (newestTurnId !== undefined) {
-      document.getElementById(`chat-turn-${newestTurnId}`)?.scrollIntoView({ block: "start" });
-    }
-  }, [newestTurnId]);
+    const onScroll = () => {
+      if (scrollingSelf.current) return;
+      const distance =
+        document.documentElement.scrollHeight - window.scrollY - window.innerHeight;
+      followStream.current = distance < 180;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  useEffect(() => {
+    if (newestTurnId === undefined || !followStream.current) return;
+    const running = turns.some(
+      (turn) =>
+        turn.id === newestTurnId &&
+        AGENT_IDS.some((agent) => turn.runs[agent].status === "running"),
+    );
+    if (!running) return;
+    const turn = document.getElementById(`chat-turn-${newestTurnId}`);
+    if (!turn) return;
+    scrollingSelf.current = true;
+    turn.scrollIntoView({ block: "end" });
+    requestAnimationFrame(() => {
+      scrollingSelf.current = false;
+    });
+  }, [newestTurnId, turns]);
 
   const handleRun = async () => {
     const submittedPrompt = prompt.trim();
@@ -48,6 +74,7 @@ export default function Home() {
     const id = nextTurnId.current++;
     const controller = new AbortController();
     activeRequest.current = controller;
+    followStream.current = true;
     const startedAt = Date.now();
 
     /**
