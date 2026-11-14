@@ -5,6 +5,7 @@ from typing import Literal
 from fastapi import FastAPI
 from fastapi.sse import EventSourceResponse, ServerSentEvent
 from pydantic import BaseModel, Field
+from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from agents import custom, framework
 from agents.conversation import ConversationTurn
@@ -12,7 +13,67 @@ from agents.custom import OutputLimitReached
 from agents.events import TraceEvent
 from agents.protocol import Agent
 
+
+def _is_event_stream(headers: list[tuple[bytes, bytes]]) -> bool:
+    return any(
+        name.lower() == b"content-type" and b"text/event-stream" in value
+        for name, value in headers
+    )
+
+
+def _with_no_transform(
+    headers: list[tuple[bytes, bytes]],
+) -> list[tuple[bytes, bytes]]:
+    """Add `no-transform` to Cache-Control and keep a single header.
+
+    Next's dev server gzips a proxied response when the browser sends
+    Accept-Encoding. The rewrite proxy never flushes that zlib stream, so
+    every server-sent event arrives together when the run ends. Compression
+    is skipped only when Cache-Control contains `no-transform`. FastAPI sets
+    `no-cache` on its own, and that value does not match.
+    """
+    directives: list[bytes] = []
+    for name, value in headers:
+        if name.lower() != b"cache-control":
+            continue
+        for part in value.split(b","):
+            item = part.strip()
+            if item and item not in directives:
+                directives.append(item)
+    if b"no-cache" not in directives:
+        directives.insert(0, b"no-cache")
+    if b"no-transform" not in directives:
+        directives.append(b"no-transform")
+    kept = [
+        (name, value) for name, value in headers if name.lower() != b"cache-control"
+    ]
+    kept.append((b"cache-control", b", ".join(directives)))
+    return kept
+
+
+class LeaveEventStreamUntransformed:
+    """Mark the agent event stream so a proxy will not compress it."""
+
+    def __init__(self, app: ASGIApp) -> None:
+        self.app = app
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+
+        async def send_event_stream(message: Message) -> None:
+            if message["type"] == "http.response.start":
+                headers = list(message.get("headers", []))
+                if _is_event_stream(headers):
+                    message = {**message, "headers": _with_no_transform(headers)}
+            await send(message)
+
+        await self.app(scope, receive, send_event_stream)
+
+
 app = FastAPI(title="PokeAgent API")
+app.add_middleware(LeaveEventStreamUntransformed)
 logger = logging.getLogger(__name__)
 
 # The two implementations the benchmark compares. Typed as the shared protocol
