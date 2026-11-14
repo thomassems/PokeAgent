@@ -269,6 +269,21 @@ for the whole server. Static pages and assets would go out uncompressed in
 `next dev` and `next start`. The header leaves that compression in place and
 matches the opt-out the middleware already implements.
 
+## 15. Pokemon news is in scope and goes to web search
+
+The shared system prompt treats Pokemon-related news and current events as in
+scope: the games, events, raids, tournaments, announcements, the anime, and the
+trading card game. Those questions are answered with `web_search`, and the
+answer names the sources the search returned. News that is not about Pokemon is
+declined briefly, with no search.
+
+Rejected: **leaving news outside the scope sentence**. That sentence listed
+only team building, matchups, stats, moves, typings, and battle strategy. The
+custom loop treated a Pokemon news question as off-topic and refused it, while
+the LangChain agent searched. The comparison was then measuring the wording,
+not the two loops. Rejected: **answering any current-events question**.
+Stock-market news and other news that is not about Pokemon stay out of scope.
+
 ## Open questions
 
 Not decided. Each needs its own proposal before code depends on it.
