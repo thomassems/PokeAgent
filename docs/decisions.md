@@ -252,6 +252,38 @@ text before deciding to call a tool. The UI clears that text when the tool start
 For scrolling, a new turn is positioned once at its start. Later text chunks do
 not move the viewport, so the reader chooses when to see more.
 
+## 14. Event streams opt out of proxy compression
+
+`POST /api/runs` is a server-sent event stream. Next's dev server gzips a
+proxied response when the browser sends `Accept-Encoding: gzip`, and the
+rewrite proxy never flushes that zlib stream. Measured locally, three events
+spaced 0.6s apart arrived together at 1.8s with gzip, and on time without it.
+The same compression middleware skips any response whose `Cache-Control`
+contains `no-transform`. FastAPI already sends `no-cache` and
+`X-Accel-Buffering: no`. Neither stops this gzip path. The API middleware
+adds `no-transform` to that one header on `text/event-stream` responses.
+
+Rejected: **`compress: false` in `next.config.ts`**. It also stops the
+buffering, but Next's own config docs advise against turning compression off
+for the whole server. Static pages and assets would go out uncompressed in
+`next dev` and `next start`. The header leaves that compression in place and
+matches the opt-out the middleware already implements.
+
+## 15. Pokemon news is in scope and goes to web search
+
+The shared system prompt treats Pokemon-related news and current events as in
+scope: the games, events, raids, tournaments, announcements, the anime, and the
+trading card game. Those questions are answered with `web_search`, and the
+answer names the sources the search returned. News that is not about Pokemon is
+declined briefly, with no search.
+
+Rejected: **leaving news outside the scope sentence**. That sentence listed
+only team building, matchups, stats, moves, typings, and battle strategy. The
+custom loop treated a Pokemon news question as off-topic and refused it, while
+the LangChain agent searched. The comparison was then measuring the wording,
+not the two loops. Rejected: **answering any current-events question**.
+Stock-market news and other news that is not about Pokemon stay out of scope.
+
 ## Open questions
 
 Not decided. Each needs its own proposal before code depends on it.

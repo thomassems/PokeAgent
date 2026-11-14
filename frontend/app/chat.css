@@ -8,6 +8,12 @@
   min-height: 100dvh;
 }
 
+/* The composer is sticky at the viewport bottom. scrollIntoView(block: end)
+   would otherwise park the newest line underneath it. */
+html:has(.chat-page) {
+  scroll-padding-bottom: 12rem;
+}
+
 .chat-page ::selection {
   background: #f7d6aa;
   color: #242620;

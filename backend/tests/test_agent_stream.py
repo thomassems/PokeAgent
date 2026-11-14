@@ -11,7 +11,7 @@ from fastapi.testclient import TestClient
 
 from agents import custom
 from agents.conversation import ConversationTurn
-from agents.events import TraceEvent
+from agents.events import RunMetrics, TraceEvent
 from api import main
 
 
@@ -101,6 +101,74 @@ def test_custom_agent_streams_a_tool_step_and_answer(
         "Body Slam": {"power": 85}
     }
     assert fake_client.closed
+
+
+def test_custom_agent_includes_cached_input_tokens(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Cache reads and writes count toward the same total LangChain reports.
+
+    The provider's `input_tokens` excludes them. A missing cache field and an
+    explicit None both contribute zero rather than failing the run.
+    """
+
+    class FakeClient:
+        def close(self) -> None:
+            pass
+
+    monkeypatch.setattr(custom.anthropic, "Anthropic", FakeClient)
+    monkeypatch.setitem(
+        custom.TOOL_FUNCTIONS, "get_move", lambda moves: {moves[0]: {"power": 85}}
+    )
+    replies = iter(
+        [
+            SimpleNamespace(
+                stop_reason="tool_use",
+                content=[
+                    SimpleNamespace(
+                        type="tool_use",
+                        id="call-1",
+                        name="get_move",
+                        input={"moves": ["Body Slam"]},
+                    )
+                ],
+                # cache_creation_input_tokens omitted on purpose.
+                usage=SimpleNamespace(
+                    input_tokens=100,
+                    output_tokens=20,
+                    cache_read_input_tokens=50,
+                ),
+            ),
+            SimpleNamespace(
+                stop_reason="end_turn",
+                content=[SimpleNamespace(type="text", text="Body Slam has 85 power.")],
+                usage=SimpleNamespace(
+                    input_tokens=200,
+                    output_tokens=15,
+                    cache_read_input_tokens=None,
+                    cache_creation_input_tokens=25,
+                ),
+            ),
+        ]
+    )
+
+    def fake_chat(
+        client: object,
+        messages: list[dict[str, Any]],
+        max_tokens: int,
+        timeout: float,
+    ) -> Any:
+        return fake_stream(next(replies))
+
+    monkeypatch.setattr(custom, "chat", fake_chat)
+    events = list(custom.call_agent("Tell me about Body Slam", generation=4))
+
+    # 100 + 50 cache read, then 200 + 25 cache write. The None read adds nothing.
+    assert events[-1] == TraceEvent(
+        type="metrics",
+        message="",
+        metrics=RunMetrics(steps=2, tool_calls=1, input_tokens=375, output_tokens=35),
+    )
 
 
 def test_custom_agent_can_answer_on_the_last_step(
@@ -245,6 +313,8 @@ def test_run_endpoint_sends_sse_and_sanitizes_errors(
 
     assert response.status_code == 200
     assert response.headers["content-type"].startswith("text/event-stream")
+    # no-transform stops the Next dev proxy from gzip-buffering the stream.
+    assert response.headers["cache-control"] == "no-cache, no-transform"
     assert "event: status" in response.text
     assert 'data: {"type":"answer_delta","message":"Try a "}' in response.text
     assert 'data: {"type":"answer","message":"Try a Steel type."}' in response.text
