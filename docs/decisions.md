@@ -252,6 +252,23 @@ text before deciding to call a tool. The UI clears that text when the tool start
 For scrolling, a new turn is positioned once at its start. Later text chunks do
 not move the viewport, so the reader chooses when to see more.
 
+## 14. Event streams opt out of proxy compression
+
+`POST /api/runs` is a server-sent event stream. Next's dev server gzips a
+proxied response when the browser sends `Accept-Encoding: gzip`, and the
+rewrite proxy never flushes that zlib stream. Measured locally, three events
+spaced 0.6s apart arrived together at 1.8s with gzip, and on time without it.
+The same compression middleware skips any response whose `Cache-Control`
+contains `no-transform`. FastAPI already sends `no-cache` and
+`X-Accel-Buffering: no`. Neither stops this gzip path. The API middleware
+adds `no-transform` to that one header on `text/event-stream` responses.
+
+Rejected: **`compress: false` in `next.config.ts`**. It also stops the
+buffering, but Next's own config docs advise against turning compression off
+for the whole server. Static pages and assets would go out uncompressed in
+`next dev` and `next start`. The header leaves that compression in place and
+matches the opt-out the middleware already implements.
+
 ## Open questions
 
 Not decided. Each needs its own proposal before code depends on it.

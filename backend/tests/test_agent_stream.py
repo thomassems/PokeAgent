@@ -245,6 +245,8 @@ def test_run_endpoint_sends_sse_and_sanitizes_errors(
 
     assert response.status_code == 200
     assert response.headers["content-type"].startswith("text/event-stream")
+    # no-transform stops the Next dev proxy from gzip-buffering the stream.
+    assert response.headers["cache-control"] == "no-cache, no-transform"
     assert "event: status" in response.text
     assert 'data: {"type":"answer_delta","message":"Try a "}' in response.text
     assert 'data: {"type":"answer","message":"Try a Steel type."}' in response.text
