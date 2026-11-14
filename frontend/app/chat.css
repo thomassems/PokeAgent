@@ -263,6 +263,12 @@
   overflow-wrap: anywhere;
 }
 
+.chat-activity-step {
+  color: #686f69;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
 .chat-elapsed,
 .chat-finished {
   color: #686f69;
