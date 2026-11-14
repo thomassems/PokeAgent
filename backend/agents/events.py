@@ -15,7 +15,9 @@ class RunMetrics(BaseModel):
     `input_tokens` is the sum over every model call in the run, not the size of
     the final message list. Each step resends the whole conversation plus all
     seven tool schemas, and the provider charges for each resend, so the sum is
-    what the run actually cost.
+    what the run actually cost. Cache reads and cache writes are part of that
+    sum: the provider reports them beside `input_tokens`, and both agents add
+    them back in.
     """
 
     steps: int
