@@ -56,6 +56,27 @@ def _remaining_time(deadline: float) -> float:
     return remaining
 
 
+def _input_token_total(usage: object) -> int:
+    """Input tokens this call cost, including prompt-cache reads and writes.
+
+    The provider's `input_tokens` leaves out tokens served from or written to
+    the prompt cache. The LangChain agent adds `cache_read_input_tokens` and
+    `cache_creation_input_tokens` back, and the comparison is only meaningful
+    if this loop reports that same total. A missing field or None counts as
+    zero.
+    """
+
+    def field(name: str) -> int:
+        value = getattr(usage, name, None)
+        return value if isinstance(value, int) else 0
+
+    return (
+        field("input_tokens")
+        + field("cache_read_input_tokens")
+        + field("cache_creation_input_tokens")
+    )
+
+
 def call_agent(
     user_message: str,
     generation: int,
@@ -93,7 +114,7 @@ def call_agent(
                 answer: Message = stream.get_final_message()
             _remaining_time(deadline)
             remaining_tokens -= answer.usage.output_tokens
-            input_tokens += answer.usage.input_tokens
+            input_tokens += _input_token_total(answer.usage)
             output_tokens += answer.usage.output_tokens
             add_assistant_message(messages, answer.content)
 
