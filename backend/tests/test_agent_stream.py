@@ -103,7 +103,7 @@ def test_custom_agent_streams_a_tool_step_and_answer(
     assert fake_client.closed
 
 
-def test_custom_agent_can_answer_on_fifth_step(
+def test_custom_agent_can_answer_on_the_last_step(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     class FakeClient:
@@ -126,7 +126,7 @@ def test_custom_agent_can_answer_on_fifth_step(
                 ],
                 usage=SimpleNamespace(input_tokens=100, output_tokens=100),
             )
-            for step in range(1, 5)
+            for step in range(1, custom.NUM_ITERS)
         ]
         + [
             SimpleNamespace(
@@ -149,12 +149,12 @@ def test_custom_agent_can_answer_on_fifth_step(
     events = list(custom.call_agent("What makes a fast Electric type?", generation=4))
 
     assert [event.message for event in events if event.type == "status"] == [
-        f"Step {step} of 5" for step in range(1, 6)
+        f"Step {step} of {custom.NUM_ITERS}" for step in range(1, custom.NUM_ITERS + 1)
     ]
     assert events[-2] == TraceEvent(type="answer", message="Try Jolteon.")
 
 
-def test_custom_agent_receives_prior_turns_and_ten_thousand_token_budget(
+def test_custom_agent_receives_prior_turns_and_the_full_token_budget(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     class FakeClient:
@@ -211,7 +211,7 @@ def test_custom_agent_receives_prior_turns_and_ten_thousand_token_budget(
                     "content": "Selected generation: 4\n\nWhich one is fastest?",
                 },
             ],
-            10_000,
+            custom.MAX_OUTPUT_TOKENS,
         )
     ]
     assert events[-2] == TraceEvent(type="answer", message="Jolteon is fast.")

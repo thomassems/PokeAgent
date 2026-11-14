@@ -174,8 +174,8 @@ def test_framework_agent_streams_a_tool_step_and_answer(
     tool_events = [event.message for event in events if event.type == "tool"]
     assert tool_events == ["Using get_move", "get_move returned"]
     assert [event.message for event in events if event.type == "status"] == [
-        "Step 1 of 5",
-        "Step 2 of 5",
+        f"Step 1 of {framework.NUM_ITERS}",
+        f"Step 2 of {framework.NUM_ITERS}",
     ]
     assert events[-2].message.strip() == "Body Slam has 85 power."
 
@@ -184,13 +184,16 @@ def test_framework_agent_streams_a_tool_step_and_answer(
     assert json.loads(tool_message.content) == {"Body Slam": {"power": 85}}
 
 
-def test_framework_agent_can_answer_on_fifth_step(
+def test_framework_agent_can_answer_on_the_last_step(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """The step cap allows an answer on the last step, as the custom agent does."""
     script(
         monkeypatch,
-        [Step("x", [GET_MOVE_CALL], 100, "tool_use") for _ in range(4)]
+        [
+            Step("x", [GET_MOVE_CALL], 100, "tool_use")
+            for _ in range(framework.NUM_ITERS - 1)
+        ]
         + [Step("Try Jolteon.", (), 100)],
         {"get_move": lambda moves: {}},
     )
@@ -200,7 +203,8 @@ def test_framework_agent_can_answer_on_fifth_step(
     )
 
     assert [event.message for event in events if event.type == "status"] == [
-        f"Step {step} of 5" for step in range(1, 6)
+        f"Step {step} of {framework.NUM_ITERS}"
+        for step in range(1, framework.NUM_ITERS + 1)
     ]
     assert events[-2] == TraceEvent(type="answer", message="Try Jolteon. ")
 
@@ -245,7 +249,10 @@ def test_step_cap_raises_rather_than_running_on(
 ) -> None:
     script(
         monkeypatch,
-        [Step("x", [GET_MOVE_CALL], 10, "tool_use") for _ in range(6)],
+        [
+            Step("x", [GET_MOVE_CALL], 10, "tool_use")
+            for _ in range(framework.NUM_ITERS + 1)
+        ],
         {"get_move": lambda moves: {}},
     )
 

@@ -64,7 +64,7 @@ def test_custom_agent_yields_text_before_the_final_answer(
     events = list(custom.call_agent("Suggest a fast Electric type", generation=4))
 
     assert [(event.type, event.message) for event in events] == [
-        ("status", "Step 1 of 5"),
+        ("status", f"Step 1 of {custom.NUM_ITERS}"),
         ("answer_delta", "Try "),
         ("answer_delta", "Jolteon."),
         ("answer", "Try Jolteon."),
