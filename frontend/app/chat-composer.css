@@ -1,12 +1,15 @@
 .chat-composer-wrap {
+  /* Full width of the transcript. The input stays narrow below, but a narrow
+     sticky bar lets the two answer columns show through on either side. */
+  z-index: 10;
   width: 100%;
-  max-width: 48rem;
-  margin-inline: auto;
   padding: 1rem 0 0.6rem;
   background: #f8f7f4;
 }
 
 .chat-composer {
+  width: min(100%, 48rem);
+  margin-inline: auto;
   border-radius: 24px;
   background: #fffdfa;
   box-shadow: 0 3px 18px rgba(48, 43, 35, 0.11);
