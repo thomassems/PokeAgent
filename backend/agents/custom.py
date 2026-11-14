@@ -14,11 +14,11 @@ from agents.events import RunMetrics, TraceEvent
 from agents.prompts import SYSTEM_PROMPT
 from llm.tools.registry import TOOL_FUNCTIONS, TOOLS
 
-NUM_ITERS = 5
+NUM_ITERS = 8
 MAX_RESULT = 5
 MAX_TOOL_CALLS = 12
-MAX_OUTPUT_TOKENS = 10_000
-MAX_RUN_SECONDS = 60
+MAX_OUTPUT_TOKENS = 30_000
+MAX_RUN_SECONDS = 180
 
 
 class OutputLimitReached(RuntimeError):

@@ -1,3 +1,4 @@
+import { stepLabel, THINKING, toolActivity } from "./activity";
 import type { AgentEvent, RunMetrics } from "./agent-stream";
 import type { Generation } from "./types";
 
@@ -7,6 +8,8 @@ export type RunState = {
   generation: Generation;
   status: "running" | "complete" | "error";
   currentActivity: string;
+  /** "step 3 of 8", shown beside the activity. Null until the first step. */
+  currentStep: string | null;
   answer: string;
   error: string | null;
   startedAt: number;
@@ -16,9 +19,15 @@ export type RunState = {
 };
 
 export function applyAgentEvent(run: RunState, event: AgentEvent): RunState {
-  if (event.type === "status") return { ...run, currentActivity: event.message };
+  if (event.type === "status") {
+    return {
+      ...run,
+      currentActivity: THINKING,
+      currentStep: stepLabel(event.message) ?? run.currentStep,
+    };
+  }
   if (event.type === "tool") {
-    return { ...run, currentActivity: event.message, answer: "" };
+    return { ...run, currentActivity: toolActivity(event.message), answer: "" };
   }
   if (event.type === "answer_delta") {
     return { ...run, currentActivity: "Writing answer", answer: run.answer + event.message };
@@ -42,7 +51,8 @@ export function newRun(
     prompt,
     generation,
     status: "running",
-    currentActivity: "Thinking…",
+    currentActivity: THINKING,
+    currentStep: null,
     answer: "",
     error: null,
     startedAt,
