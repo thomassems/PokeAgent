@@ -40,6 +40,12 @@ combinations, deduping form/name results, sorting by stats, stored base stat
 total, limit clamping, count versus returned page size, and erroring on unknown
 sort keys.
 
+`test_go_feed.py`
+
+Checks the Pokemon GO event and raid cache without calling GitHub. This covers
+the 3 hour TTL, serving the previous payload when a refresh fails, an error
+when nothing is cached, HTML stripping, and dropping image fields.
+
 `test_registry.py`
 
 Checks the model-facing tool layer in `llm/tools/registry.py`. This covers name

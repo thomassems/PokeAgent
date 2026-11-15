@@ -137,6 +137,14 @@ html:has(.chat-page) {
   justify-content: flex-end;
 }
 
+.chat-user-game {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  color: #6d6458;
+}
+
 .chat-user-message p {
   max-width: min(36rem, 88%);
   padding: 0.85rem 1.15rem;

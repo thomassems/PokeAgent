@@ -1,10 +1,14 @@
+import type { Game } from "@/lib/game";
 import type { Generation } from "@/lib/types";
+import { GameChip } from "./GameChip";
 import { GenerationChip } from "./GenerationChip";
 
 type PromptPanelProps = {
   prompt: string;
   isRunning: boolean;
+  game: Game;
   generation: Generation | null;
+  onGameChange: (game: Game) => void;
   onGenerationChange: (generation: Generation | null) => void;
   onPromptChange: (prompt: string) => void;
   onSubmit: () => void;
@@ -13,7 +17,9 @@ type PromptPanelProps = {
 export function PromptPanel({
   prompt,
   isRunning,
+  game,
   generation,
+  onGameChange,
   onGenerationChange,
   onPromptChange,
   onSubmit,
@@ -42,12 +48,17 @@ export function PromptPanel({
         className="chat-input"
       />
       <div className="chat-composer-actions">
-        <GenerationChip
-          generation={generation}
-          onChange={onGenerationChange}
-          tone="light"
-          placement="up"
-        />
+        <div className="chat-composer-chips">
+          <GameChip game={game} onChange={onGameChange} tone="light" placement="up" />
+          {game === "main" && (
+            <GenerationChip
+              generation={generation}
+              onChange={onGenerationChange}
+              tone="light"
+              placement="up"
+            />
+          )}
+        </div>
         <div className="chat-composer-submit">
           <span>Shift + Enter for a new line</span>
           <button type="submit" disabled={isRunning || !prompt.trim()} aria-label="Send message">
