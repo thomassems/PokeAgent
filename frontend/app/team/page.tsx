@@ -4,18 +4,19 @@ import { useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { PokemonPicker } from "@/components/PokemonPicker";
 import { TeamBuilder } from "@/components/TeamBuilder";
+import { useSharedGeneration } from "@/lib/generation";
 import { DEFENSIVE_GAPS, INITIAL_TEAM, OFFENSIVE_GAPS } from "@/lib/mock-data";
-import type { Generation, Pokemon, Slot } from "@/lib/types";
+import type { Slot, SlotPokemon } from "@/lib/types";
 
 export default function TeamPage() {
-  const [generation, setGeneration] = useState<Generation>(4);
+  const [generation, setGeneration] = useSharedGeneration();
   const [team, setTeam] = useState<readonly Slot[]>(INITIAL_TEAM);
   const [pickerSlot, setPickerSlot] = useState<number | null>(null);
 
   const replaceSlot = (index: number, slot: Slot) =>
     setTeam((current) => current.map((existing, i) => (i === index ? slot : existing)));
 
-  const handleSelect = (pokemon: Pokemon) => {
+  const handleSelect = (pokemon: SlotPokemon) => {
     if (pickerSlot === null) return;
     replaceSlot(pickerSlot, { kind: "filled", pokemon, origin: "chosen" });
     setPickerSlot(null);
@@ -23,12 +24,13 @@ export default function TeamPage() {
 
   return (
     <div className="min-h-screen">
-      <AppHeader activePage="team" generation={generation} onGenerationChange={setGeneration} />
+      <AppHeader activePage="team" />
 
-      <main className="mx-auto grid max-w-[1600px] gap-4 p-4 lg:grid-cols-[minmax(18rem,30%)_1fr]">
+      <main className="mx-auto grid max-w-[1600px] gap-4 p-4 lg:grid-cols-[minmax(22rem,34%)_1fr]">
         <TeamBuilder
           team={team}
           generation={generation}
+          onGenerationChange={setGeneration}
           defensiveGaps={DEFENSIVE_GAPS}
           offensiveGaps={OFFENSIVE_GAPS}
           onOpenPicker={setPickerSlot}
@@ -43,13 +45,7 @@ export default function TeamPage() {
         </section>
       </main>
 
-      <PokemonPicker
-        slotIndex={pickerSlot}
-        generation={generation}
-        onGenerationChange={setGeneration}
-        onSelect={handleSelect}
-        onClose={() => setPickerSlot(null)}
-      />
+      <PokemonPicker slotIndex={pickerSlot} onSelect={handleSelect} onClose={() => setPickerSlot(null)} />
     </div>
   );
 }

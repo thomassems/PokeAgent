@@ -1,74 +1,45 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { POKEMON, typesForGeneration } from "@/lib/mock-data";
-import type { Generation, Pokemon, StatKey, TypeName } from "@/lib/types";
-import { GENERATIONS } from "@/lib/types";
-import { TypeChip } from "./TypeChip";
-
-const STAT_OPTIONS: readonly { key: StatKey; label: string }[] = [
-  { key: "speed", label: "Speed" },
-  { key: "attack", label: "Attack" },
-  { key: "defense", label: "Defense" },
-  { key: "spAttack", label: "Sp. Attack" },
-  { key: "spDefense", label: "Sp. Defense" },
-  { key: "hp", label: "HP" },
-];
-
-const selectClass =
-  "rounded-sm border border-shell-700 bg-shell-800 px-2 py-1 text-xs text-ink-100";
+import { useEffect, useId, useRef, useState } from "react";
+import {
+  loadPokemonDetails,
+  loadPokemonNames,
+  searchPokemonNames,
+  type PokemonName,
+} from "@/lib/pokeapi";
+import type { SlotPokemon } from "@/lib/types";
 
 type PokemonPickerProps = {
   slotIndex: number | null;
-  generation: Generation;
-  onGenerationChange: (generation: Generation) => void;
-  onSelect: (pokemon: Pokemon) => void;
+  onSelect: (pokemon: SlotPokemon) => void;
   onClose: () => void;
 };
 
-export function PokemonPicker({
-  slotIndex,
-  generation,
-  onGenerationChange,
-  onSelect,
-  onClose,
-}: PokemonPickerProps) {
+export function PokemonPicker({ slotIndex, onSelect, onClose }: PokemonPickerProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const [typeFilter, setTypeFilter] = useState<TypeName | "all">("all");
-  const [sortStat, setSortStat] = useState<StatKey>("speed");
-
   const isOpen = slotIndex !== null;
 
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
-    // showModal() throws if the dialog is already open, so both directions are guarded.
     if (isOpen && !dialog.open) dialog.showModal();
     if (!isOpen && dialog.open) dialog.close();
+    if (isOpen) dialog.querySelector<HTMLInputElement>("#pokemon-search")?.focus();
   }, [isOpen]);
-
-  // A Pokemon is pickable in a generation if it had debuted by then.
-  const candidates = POKEMON.filter(
-    (pokemon) =>
-      pokemon.generation <= generation &&
-      (typeFilter === "all" || pokemon.types.includes(typeFilter)),
-  ).toSorted((a, b) => b.stats[sortStat] - a.stats[sortStat]);
 
   return (
     <dialog
       ref={dialogRef}
-      // Fires for Escape as well as close(); the browser also restores focus to
-      // whatever was focused before showModal(), so the slot button gets it back.
       onClose={onClose}
       onClick={(event) => {
         if (event.target === dialogRef.current) onClose();
       }}
       aria-labelledby="picker-title"
-      className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-md border border-shell-700 bg-shell-900 p-0 text-ink-100 backdrop:bg-shell-950/70"
+      className="m-auto w-[min(28rem,calc(100vw-2rem))] rounded-md border border-shell-700 bg-shell-900 p-0 text-ink-100 backdrop:bg-shell-950/70"
     >
       <div className="flex items-center justify-between border-b border-shell-800 px-4 py-3">
         <h2 id="picker-title" className="text-sm font-semibold">
-          Choose for slot {(slotIndex ?? 0) + 1}
+          {slotIndex === null ? "Choose a Pokémon" : `Choose for slot ${slotIndex + 1}`}
         </h2>
         <button
           type="button"
@@ -79,97 +50,168 @@ export function PokemonPicker({
           <span aria-hidden>✕</span>
         </button>
       </div>
-
-      <div className="flex flex-wrap gap-3 border-b border-shell-800 px-4 py-3">
-        <div className="flex items-center gap-1.5">
-          <label htmlFor="picker-type" className="text-xs text-ink-500">
-            Type
-          </label>
-          <select
-            id="picker-type"
-            value={typeFilter}
-            onChange={(event) => setTypeFilter(event.target.value as TypeName | "all")}
-            className={`${selectClass} capitalize`}
-          >
-            <option value="all">All</option>
-            {typesForGeneration(generation).map((type) => (
-              <option key={type} value={type} className="capitalize">
-                {type}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="flex items-center gap-1.5">
-          <label htmlFor="picker-gen" className="text-xs text-ink-500">
-            Gen
-          </label>
-          {/* Bound to app-level state, so changing it here also moves the header. */}
-          <select
-            id="picker-gen"
-            value={generation}
-            onChange={(event) => onGenerationChange(Number(event.target.value) as Generation)}
-            className={selectClass}
-          >
-            {GENERATIONS.map((value) => (
-              <option key={value} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="flex items-center gap-1.5">
-          <label htmlFor="picker-sort" className="text-xs text-ink-500">
-            Sort
-          </label>
-          <select
-            id="picker-sort"
-            value={sortStat}
-            onChange={(event) => setSortStat(event.target.value as StatKey)}
-            className={selectClass}
-          >
-            {STAT_OPTIONS.map(({ key, label }) => (
-              <option key={key} value={key}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div className="max-h-[50vh] overflow-y-auto p-2">
-        {candidates.length === 0 ? (
-          <p className="p-4 text-center text-sm text-ink-500">
-            Nothing matches those filters in generation {generation}.
-          </p>
-        ) : (
-          <ul className="space-y-1">
-            {candidates.map((pokemon) => (
-              <li key={pokemon.id}>
-                <button
-                  type="button"
-                  onClick={() => onSelect(pokemon)}
-                  className="flex w-full items-center gap-3 rounded-sm px-2 py-1.5 text-left transition-colors hover:bg-shell-800"
-                >
-                  <span className="min-w-0 flex-1 truncate text-sm">{pokemon.name}</span>
-                  <span className="flex shrink-0 gap-1">
-                    {pokemon.types.map((type) => (
-                      <TypeChip key={type} type={type} />
-                    ))}
-                  </span>
-                  <span className="w-16 shrink-0 text-right font-mono text-xs text-ink-500">
-                    gen {pokemon.generation}
-                  </span>
-                  <span className="w-8 shrink-0 text-right font-mono text-xs text-plasma-300">
-                    {pokemon.stats[sortStat]}
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      {slotIndex !== null && (
+        <PokemonSearch key={slotIndex} onSelect={onSelect} />
+      )}
     </dialog>
+  );
+}
+
+function PokemonSearch({ onSelect }: { onSelect: (pokemon: SlotPokemon) => void }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const listId = useId();
+  const [query, setQuery] = useState("");
+  const [names, setNames] = useState<readonly PokemonName[] | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [loadAttempt, setLoadAttempt] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [adding, setAdding] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const alive = useRef(true);
+
+  const suggestions = names ? searchPokemonNames(names, query) : [];
+  const highlighted =
+    suggestions.length === 0 ? 0 : Math.min(activeIndex, suggestions.length - 1);
+
+  useEffect(() => {
+    alive.current = true;
+    return () => {
+      alive.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadPokemonNames()
+      .then((loaded) => {
+        if (!cancelled) {
+          setNames(loaded);
+          setLoadError(null);
+        }
+      })
+      .catch((error: unknown) => {
+        if (!cancelled) {
+          setLoadError(error instanceof Error ? error.message : "Could not load Pokémon names.");
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [loadAttempt]);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  const choose = async (entry: PokemonName) => {
+    if (adding) return;
+    setAdding(entry.name);
+    setActionError(null);
+    try {
+      const details = await loadPokemonDetails(entry);
+      if (!alive.current) return;
+      onSelect({
+        id: String(details.id),
+        name: details.name,
+        types: details.types,
+        spriteUrl: details.spriteUrl,
+      });
+    } catch (error) {
+      if (!alive.current) return;
+      setActionError(error instanceof Error ? error.message : `Could not load ${entry.name}.`);
+      setAdding(null);
+    }
+  };
+
+  const status = (() => {
+    if (adding) return `Adding ${adding}…`;
+    if (actionError) return actionError;
+    if (loadError) return loadError;
+    if (!names) return "Loading Pokémon names…";
+    if (query.trim().length >= 2 && suggestions.length === 0) {
+      return `No Pokémon named "${query.trim()}".`;
+    }
+    return null;
+  })();
+
+  return (
+    <div className="px-4 py-3">
+      <label htmlFor="pokemon-search" className="sr-only">
+        Search Pokémon by name
+      </label>
+      <input
+        ref={inputRef}
+        id="pokemon-search"
+        role="combobox"
+        aria-expanded={suggestions.length > 0}
+        aria-controls={listId}
+        aria-autocomplete="list"
+        aria-activedescendant={
+          suggestions[highlighted] ? `${listId}-${suggestions[highlighted].id}` : undefined
+        }
+        value={query}
+        disabled={adding !== null}
+        autoComplete="off"
+        spellCheck={false}
+        placeholder="Search by name"
+        onChange={(event) => {
+          setQuery(event.target.value);
+          setActiveIndex(0);
+          setActionError(null);
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "ArrowDown") {
+            event.preventDefault();
+            setActiveIndex((index) => Math.min(index + 1, Math.max(suggestions.length - 1, 0)));
+          } else if (event.key === "ArrowUp") {
+            event.preventDefault();
+            setActiveIndex((index) => Math.max(index - 1, 0));
+          } else if (event.key === "Enter" && suggestions[highlighted]) {
+            event.preventDefault();
+            void choose(suggestions[highlighted]);
+          }
+        }}
+        className="w-full rounded-sm border border-shell-700 bg-shell-800 px-3 py-2 text-sm text-ink-100 placeholder:text-ink-500 disabled:opacity-60"
+      />
+
+      {status && (
+        <p className="mt-3 flex items-center justify-between gap-3 text-sm text-ink-500" role="status">
+          <span>{status}</span>
+          {loadError && (
+            <button
+              type="button"
+              onClick={() => setLoadAttempt((attempt) => attempt + 1)}
+              className="shrink-0 rounded-sm px-2 py-1 text-ink-100 hover:bg-shell-800"
+            >
+              Try again
+            </button>
+          )}
+        </p>
+      )}
+
+      {suggestions.length > 0 && (
+        <ul id={listId} role="listbox" aria-label="Matching Pokémon" className="mt-2 space-y-1">
+          {suggestions.map((entry, index) => (
+            <li key={entry.id}>
+              <button
+                id={`${listId}-${entry.id}`}
+                type="button"
+                role="option"
+                aria-selected={index === highlighted}
+                disabled={adding !== null}
+                onMouseEnter={() => setActiveIndex(index)}
+                onClick={() => void choose(entry)}
+                className={`flex w-full items-center justify-between rounded-sm px-2 py-1.5 text-left text-sm ${
+                  index === highlighted ? "bg-shell-800" : "hover:bg-shell-800"
+                }`}
+              >
+                <span>{entry.name}</span>
+                <span className="font-mono text-xs text-ink-500">#{entry.id}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }

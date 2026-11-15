@@ -9,10 +9,10 @@ import anthropic
 from anthropic.lib.streaming import MessageStreamManager
 from anthropic.types import Message
 
-from agents.conversation import ConversationTurn
+from agents.conversation import ConversationTurn, format_user_message
 from agents.events import RunMetrics, TraceEvent
 from agents.prompts import SYSTEM_PROMPT
-from llm.tools.registry import TOOL_FUNCTIONS, TOOLS
+from llm.tools.registry import TOOL_FUNCTIONS, TOOLS, apply_selected_generation
 
 NUM_ITERS = 8
 MAX_RESULT = 5
@@ -79,17 +79,15 @@ def _input_token_total(usage: object) -> int:
 
 def call_agent(
     user_message: str,
-    generation: int,
+    generation: int | None,
     history: Sequence[ConversationTurn] = (),
 ) -> Iterator[TraceEvent]:
     """Continue a conversation and yield progress and answer text as it arrives."""
     messages: list[dict[str, Any]] = []
     for turn in history:
-        add_user_message(
-            messages, f"Selected generation: {turn.generation}\n\n{turn.prompt}"
-        )
+        add_user_message(messages, format_user_message(turn.prompt, turn.generation))
         add_assistant_message(messages, turn.answer)
-    add_user_message(messages, f"Selected generation: {generation}\n\n{user_message}")
+    add_user_message(messages, format_user_message(user_message, generation))
     deadline = time.monotonic() + MAX_RUN_SECONDS
     remaining_tokens = MAX_OUTPUT_TOKENS
     tool_calls = 0
@@ -136,6 +134,12 @@ def call_agent(
                     tool_input = dict(block.input)
                     if block.name == "web_search":
                         tool_input.setdefault("max_results", MAX_RESULT)
+                    # Same fill as the LangChain agent: a selected generation
+                    # reaches matchup tools when the model leaves it out, and
+                    # an explicit generation on the call is left alone.
+                    tool_input = apply_selected_generation(
+                        block.name, tool_input, generation
+                    )
                     result = TOOL_FUNCTIONS[block.name](**tool_input)
                     _remaining_time(deadline)
                     tool_results.append(

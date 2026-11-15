@@ -1,14 +1,10 @@
 import Link from "next/link";
-import type { Generation } from "@/lib/types";
-import { GENERATIONS } from "@/lib/types";
 
 type AppHeaderProps = {
   activePage: "chat" | "team";
-  generation: Generation;
-  onGenerationChange: (generation: Generation) => void;
 };
 
-export function AppHeader({ activePage, generation, onGenerationChange }: AppHeaderProps) {
+export function AppHeader({ activePage }: AppHeaderProps) {
   return (
     <header className={activePage === "chat" ? "chat-header" : "border-b border-shell-800 bg-shell-900"}>
       <div className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3">
@@ -33,24 +29,6 @@ export function AppHeader({ activePage, generation, onGenerationChange }: AppHea
             Team builder
           </Link>
         </nav>
-
-        <div className="flex items-center gap-2">
-          <label htmlFor="generation" className="text-xs text-ink-500">
-            Generation
-          </label>
-          <select
-            id="generation"
-            value={generation}
-            onChange={(event) => onGenerationChange(Number(event.target.value) as Generation)}
-            className="rounded-sm border border-shell-700 bg-shell-800 px-2 py-1 font-mono text-xs text-ink-100"
-          >
-            {GENERATIONS.map((value) => (
-              <option key={value} value={value}>
-                Gen {value}
-              </option>
-            ))}
-          </select>
-        </div>
 
         <div className="ml-auto flex items-center gap-2 text-xs">
           <span className="text-ink-500">Model</span>

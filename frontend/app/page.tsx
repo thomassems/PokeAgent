@@ -6,6 +6,7 @@ import { ComparisonTurn } from "@/components/ComparisonTurn";
 import { PromptPanel } from "@/components/PromptPanel";
 import { AGENT_IDS, type AgentId } from "@/lib/agents";
 import { readAgentStream } from "@/lib/agent-stream";
+import { useSharedGeneration } from "@/lib/generation";
 import { applyAgentEvent, newRun, type RunState } from "@/lib/run-state";
 import type { Generation } from "@/lib/types";
 
@@ -19,12 +20,12 @@ const EXAMPLE_PROMPTS = [
 type Turn = {
   id: number;
   prompt: string;
-  generation: Generation;
+  generation: Generation | null;
   runs: Record<AgentId, RunState>;
 };
 
 export default function Home() {
-  const [generation, setGeneration] = useState<Generation>(4);
+  const [generation, setGeneration] = useSharedGeneration();
   const [prompt, setPrompt] = useState("");
   const [turns, setTurns] = useState<Turn[]>([]);
   const activeRequest = useRef<AbortController | null>(null);
@@ -160,7 +161,7 @@ export default function Home() {
 
   return (
     <div className="chat-page flex min-h-screen flex-col">
-      <AppHeader activePage="chat" generation={generation} onGenerationChange={setGeneration} />
+      <AppHeader activePage="chat" />
       <main className="chat-main mx-auto flex w-full max-w-[1200px] flex-1 flex-col px-4 sm:px-6">
         {turns.length === 0 ? (
           <div className="chat-welcome flex flex-1 flex-col items-center justify-center text-center">
@@ -186,6 +187,8 @@ export default function Home() {
           <PromptPanel
             prompt={prompt}
             isRunning={isRunning}
+            generation={generation}
+            onGenerationChange={setGeneration}
             onPromptChange={setPrompt}
             onSubmit={handleRun}
           />
