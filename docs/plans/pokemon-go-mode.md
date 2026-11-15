@@ -1,9 +1,9 @@
 # Pokemon GO mode
 
-Status: **proposed**. Nothing here is decided and nothing here is built.
-Decision 17 in `docs/decisions.md` records the same proposal in short form.
-Implementation waits on Thomas's yes, including the confirm-first items at
-the end: the shared prompt, the agent protocol, and the tool list.
+Status: **phase 1 approved**. Thomas accepted this plan on 15 November 2026.
+Decision 17 records the decisions. Phase 1 is the game selector, the shared
+prompt and tool list, and the events and raids tools. The GO guides namespace
+and the type helper are phase 2. Later phases are still design.
 
 Checked against the repo and the upstream sources on 15 November 2026.
 
@@ -307,8 +307,7 @@ answer uses a GO tool. The LeekDuck `link` on an event is the right URL
 to show. A one-line credit in the GO empty state ("Event data from
 LeekDuck, via ScrapedDuck") covers the cards later.
 
-The license files do not agree with each other, and this plan does not
-paper over that:
+The license files do not agree with each other:
 
 - `package.json` on `master` says `"license": "MIT"`.
 - The full tree of `master` and of `data` contains no `LICENSE` or
@@ -316,10 +315,10 @@ paper over that:
 - The repository metadata object returned `license.spdx_id` of
   `AGPL-3.0`.
 
-Until those point at the same file, do not vendor ScrapedDuck source and
-do not copy its scraper. Fetching the published JSON is what the README
-invites. AGPL would matter if we distributed their program. We should
-not.
+Thomas accepted this as a note, not a blocker. PokeAgent is not monetized.
+Phase 1 may fetch the published JSON. Still do not vendor ScrapedDuck's
+scraper or copy its source into this repo. The disagreement stays written
+down here so a later decision to sell or advertise has to look at it again.
 
 ### Cache and staleness
 
@@ -327,18 +326,24 @@ One module, `backend/services/go_feed.py`, fetches the five minimized
 files. Phase 1 only needs events and raids. The cache is a dict in the
 process: feed name to `(fetched_at, payload)`.
 
-Proposed constants, written as constants rather than settings:
+Constants, not settings. Thomas set the two intervals by how fast the
+data moves:
 
-- Refresh after 3 hours.
-- If a refresh fails and the last good payload is under 24 hours old,
-  return it with `stale: true` and the original `fetched_at`.
-- If there is no payload, or the last good one is older than 24 hours,
-  return an `error` string the model can read. Log the exception. Do not
-  put the upstream body, status line, or a stack into that string. Same
-  pattern as `web_search`.
+- Events and raids refresh every 3 hours. These are the live feeds.
+- Research, eggs, and Rocket lineups refresh every 24 hours. Those feeds
+  change more slowly and are not part of phase 1.
+- If a refresh fails and a previous payload is in memory, return it with
+  `stale: true` and the original `fetched_at`. The prompt tells the model
+  to say so, and to use `web_search` when the question needs to be current.
+- If there is no payload, return an `error` string the model can read.
+  Log the exception. Do not put the upstream body, status line, or a stack
+  into that string. Same pattern as `web_search`.
+
+The 24 hour figure is the TTL for the slower feeds. It is not a second
+deadline after which a failed live refresh must be thrown away.
 
 Vercel isolates do not share this dict, and a cold start fetches again.
-That is acceptable at a 3 hour TTL. A shared store would be a new
+That is acceptable at these TTLs. A shared store would be a new
 dependency and a database-shaped service. Both are out.
 
 Every tool result includes `source` (`LeekDuck via ScrapedDuck`),
@@ -482,8 +487,12 @@ GO tools section, phase 1:
   not a GO mechanic, so the model does not pass one. The chart is pinned
   to the latest generation inside the tool wrapper, because a stored
   Gen 4 selection would bring back the old Steel resistances.
-- `web_search` for Pokemon GO news the feeds do not hold, and for the
-  fallback in the cache section.
+- `web_search` is the fallback. In phase 1 it also covers how-to
+  questions, because `search_go_guides` does not exist yet. Phase 2
+  changes this sentence: guides first for how something works, live tools
+  for what is happening now, both together for advice about a current
+  event, and `web_search` only when those miss or return `error` or
+  `stale: true`.
 
 Not on the GO list:
 
@@ -496,10 +505,87 @@ When those tools are absent, a main-series stat question in GO mode gets
 a short reply that the selector is on Pokemon GO and the main-series dex
 is on the other setting. It does not reconstruct the dex from
 `web_search`. The app still covers that question: the user switches the
-chip. This is the behaviour to confirm, because the other reading is
-"GO mode should keep the dex tools and hope the prompt warns the model."
-That warning is how decision 15's news bug happened. The tool list is
-what both loops actually see.
+chip. Thomas approved this tool list. The tool list is what both loops
+actually see. A prompt warning on top of a dex tool is how decision 15's
+news bug happened.
+
+### GO guides (phase 2)
+
+How-to questions (quick catch, Candy XL, trading, the Mega Evolution
+candy bonus) are evergreen mechanics. They do not belong in the live
+feeds, and they go stale if the only source is Brave. They also do not
+belong in namespace `strategy-v1`. That namespace is main-series advice
+filtered by generation and format. A GO passage retrieved from it would
+mix the two games.
+
+Phase 2 adds a second corpus in the same Pinecone index the strategy
+tool already uses, `pokeagent-strategy`, under a new namespace
+`go-guides-v1`. Decision 10 still holds: the source of truth is versioned
+JSONL in the repo, and Pinecone is a rebuildable index. The records are
+their own model. `StrategyRecord` requires a main-series generation and a
+singles or doubles format, which a GO guide does not have.
+
+Shape, mirroring `backend/data/strategy.py` and
+`backend/scripts/index_strategy.py`:
+
+- JSONL under something like `backend/data/go_guides/guides.jsonl`.
+- Fields worth filtering on: `id`, `chunk_text`, `title`, `topic`
+  (catching, candy, trading, mega, items, and so on), `pokemon` when the
+  passage is about one species, `source_kind`, `source_name`,
+  `source_url`, `source_updated_at`, `dataset_version` (`go-guides-v1`).
+  Licensing metadata stays in the repo record and is not uploaded, same
+  as the strategy corpus.
+- An ingestion script, modeled on `backend/scripts/index_strategy.py`,
+  dry-runs by default and upserts into `go-guides-v1` with `--apply`.
+  Same index, same embedding field (`chunk_text`). It must not write
+  `strategy-v1`.
+- Refresh is occasional: re-run the script when the JSONL changes. This
+  is not the 3 hour live cache and not a scrape. Queries hit Pinecone on
+  the call, the same way `search_strategy` does.
+
+`search_go_guides` is registered only on the GO tool list. Both agents
+get it from `tools_for("go")`. It takes a query and an optional topic
+enum. It does not take a generation. The wrapper lives in `services/`,
+next to `strategy_search.py`, because it crosses the network.
+
+The GO prompt, once this tool exists, routes like this:
+
+- How something works: `search_go_guides` first. Do not answer a mechanic
+  from memory.
+- What is happening now: `get_current_events` and `get_raid_bosses`.
+- Advice about a current event: call the live tool and the guides tool,
+  then combine them. The Pawniard question below is this case.
+- `web_search` only when the guides and the live tools miss, error, or
+  come back `stale` and the question needs to be current. Name those
+  sources. Do not start at the web for a question the other tools hold.
+
+This waits until phase 2. Putting the namespace, the corpus, and the
+prompt change into phase 1 would bundle a new knowledge base into the
+protocol change. Phase 1 how-to questions use `web_search` and say so.
+The phase 2 prompt edit removes that.
+
+### Type effectiveness and Mega candy
+
+`get_type_matchups` and `get_type_effectiveness` stay on the GO list in
+phase 1, pinned to the latest chart. They answer "what hits Dark/Steel
+super effectively." That is the right tool for a raid counter question.
+
+"Which Mega should I evolve for the most candy" is a different question.
+The Mega catch-candy bonus follows the Mega Pokemon's type matching the
+catch, not which attack is super effective. Pawniard is Dark/Steel. A
+chart lookup suggests Fighting, Ground, Bug, Fairy, and Fire. The candy
+bonus wants a Dark or Steel Mega. Using the chart alone gives the wrong
+recommendation.
+
+A new helper is worth having, and it fits phase 2 beside the guides, not
+phase 1. Phase 1's tool list is already approved, and the helper is only
+useful once the candy rule is somewhere the model is told to read. The
+helper is a pure function in `tools/`: given the caught species' types,
+return the types that share a type with it (the candy bonus) and, from
+the latest chart, the types that are super effective (the raid counter).
+No network. The prompt tells the model to use the guide for the rule and
+the helper for the types, and the live event tool for which species is
+featured today. It does not compute damage.
 
 Generation section in the GO prompt: there is no selected generation.
 Type matchups use the modern chart. Say so in one or two sentences. Do
@@ -640,9 +726,11 @@ so a wiki-shaped parser cannot be the only one that passes.
 `test_go_feed.py`
 
 - A fresh cache returns the trimmed payload and `stale: false`.
-- A second call inside 3 hours does not fetch again.
-- A failed refresh with a payload younger than 24 hours returns
-  `stale: true` and the old `fetched_at`.
+- A second events or raids call inside 3 hours does not fetch again.
+- A slower feed, once those tools exist, does not fetch again inside
+  24 hours.
+- A failed refresh with a previous payload returns `stale: true` and the
+  old `fetched_at`.
 - A failed refresh with nothing cached returns `error` and does not raise.
 - Images are removed and a `<span>` in research text is stripped.
 - A local timestamp is marked `local`. A timestamp ending in `Z` is
@@ -717,10 +805,8 @@ Proposed cases:
 
 The last row keeps today's news rule on the Main series tool list. The
 GO tools are not registered there, so a main-series run cannot call
-them. The Garchomp row locks the "do not quietly use the main-series
-dex" choice. If Thomas would rather keep `get_pokemon` on the GO list,
-that row is the one to delete, and the risk to accept is a GO answer
-quoting main-series stats.
+them. The Garchomp row locks the approved choice to keep `get_pokemon`
+off the GO list.
 
 A Mega or Shadow raid question is a two-tool case: `get_raid_bosses`
 for the raids file, and `get_current_events` because that snapshot kept
@@ -728,7 +814,24 @@ Mega and Shadow bosses on `raid-battles` events only. Add that row when
 the phase 1 prompt text for it is settled, so the expected call list
 matches the prompt rather than the other way around.
 
-Phase 2 and 3 add rows the same way (`get_research_rewards` for a field
+Phase 2 adds these rows with `search_go_guides`. They are not phase 1
+cases: the tool is not registered yet, and a phase 1 run that is graded
+against it would fail for that reason.
+
+| id | prompt | game | expect | forbid |
+| --- | --- | --- | --- | --- |
+| `go-quick-catch-uses-guides` | How do I quick catch? | go | `search_go_guides` | `web_search`, `get_current_events` |
+| `go-candy-xl-uses-guides` | How can I get more Candy XL? | go | `search_go_guides` | `web_search`, `get_raid_bosses` |
+| `go-community-day-mega-candy` | For today's Pawniard Community Day, which Pokemon should I Mega Evolve to get the most candy? | go | `get_current_events` and `search_go_guides` | `web_search` |
+
+The third row is the combine case. The event tool says what is featured
+today. The guide holds the Mega candy rule. `web_search` is a fallback
+only if one of those returns nothing useful. The type helper, if it is
+built, may also be called. It is not required for the row to pass as
+long as the two sources above are both used. Grading this row on the
+answer text would hide a run that guessed the Mega from memory.
+
+Later phases add rows the same way (`get_research_rewards` for a field
 research question, `get_pvp_rankings` for a Great League question) when
 those tools exist. A prompt change, including landing the GO string,
 is a reason to run the suite. The project already says prompts break
@@ -749,9 +852,22 @@ are filters over one cache. The team page does not change.
 
 ### Phase 2
 
-`get_research_rewards`, `get_egg_pool`, and `get_rocket_lineups` on the
-cache from phase 1. Prompt lines and eval rows for each. No new
-upstream and no UI beyond the tools the model can call.
+The guides namespace first. That is the next slice after events and
+raids, because the how-to questions are the gap phase 1 fills with Brave,
+and because the corpus is a new dataset rather than three more filters
+on the feed cache.
+
+- Authored JSONL, `search_go_guides`, ingestion into `go-guides-v1` on
+  the existing `pokeagent-strategy` index, and the prompt routing in the
+  guides section above.
+- The type helper that separates Mega candy types from super-effective
+  types.
+- The three eval rows for quick catch, Candy XL, and the Pawniard Mega
+  question.
+
+Research, eggs, and Rocket lineups stay in this phase, after the guides.
+They are filters on the phase 1 cache with a 24 hour TTL. Prompt lines
+and eval rows for each. No new UI.
 
 ### Phase 3
 
@@ -772,8 +888,9 @@ Phase 1 is a protocol change plus a small service. The files it touches
 are the ones in the table above. Most of the care is keeping both agents
 on the same prompt, the same prefix, and the same tool list.
 
-Phase 2 is three more functions and schemas on a cache that already
-exists.
+Phase 2 starts with a corpus and an ingestion script in the shape of
+the strategy index, then a tool and a prompt edit both agents share.
+The research, egg, and Rocket tools after that are filters on the cache.
 
 Phase 3 is a second client, trimming megabyte-sized JSON down to one
 species or a short list, and an allowlist so a cup name cannot become a
@@ -841,48 +958,49 @@ builder, whose slots are still not sent to the agent. Scope it when the
 provider can take an image and when there is a reason to connect the
 team page to a run.
 
-## Open questions for Thomas
+## Decisions from Thomas
 
-1. Confirm the team builder stays main-series and ignores the game chip.
-2. Confirm GO mode drops `get_pokemon`, `get_move`, `find_pokemon`, and
-   `search_strategy`, keeps the two type-chart tools pinned to the latest
-   chart, and answers a main-series stat question by pointing at the
-   Main series chip.
-3. Are ScrapedDuck's README terms enough to ship the feed, given LeekDuck
-   has no terms page we could find? The alternative is a note to
-   `hello@leekduck.com` before the first public deploy.
-4. The license signals disagree (`package.json` says MIT, there is no
-   LICENSE file, GitHub's repo metadata said AGPL-3.0). Confirm the
-   implementation only fetches JSON and does not vendor the scraper.
-5. Are the cache constants right: refresh at 3 hours, serve a failed
-   refresh for up to 24 hours, then `web_search`?
-6. Phase 3 may fetch PvPoke's MIT-licensed gamemaster and ranking JSON,
+Answered 15 November 2026.
+
+1. The team builder stays main-series and ignores the game chip.
+2. The phase 1 tool list is approved: events, raids, the two type-chart
+   tools pinned to the latest chart, and `web_search`. The main-series
+   dex tools and `search_strategy` stay off the GO list.
+3. Licensing is a note, not a gate. He is not monetizing. The
+   disagreement is recorded above. Do not vendor the scraper.
+4. Live feeds (events, raids) cache for 3 hours. Slower-changing feeds
+   cache for 24 hours. A failed refresh serves the last payload with
+   `stale: true`, or an error when there is no payload, and Brave is the
+   fallback.
+5. The guides namespace is phase 2, after events and raids. Phase 1 does
+   not register `search_go_guides`.
+6. A GO type helper is worth adding in phase 2 for the Mega candy
+   question. It is not part of the approved phase 1 tool list.
+
+## Still open
+
+1. Phase 3 may fetch PvPoke's MIT-licensed gamemaster and ranking JSON,
    and will not fetch the PokeMiners game master. Rankings would be
    quoted as PvPoke simulations. Is that acceptable?
-7. Happening now cards wait until phase 4, use the browser clock, and
+2. Happening now cards wait until phase 4, use the browser clock, and
    do not hotlink LeekDuck images. Confirm that can wait.
-8. Should every GO answer that used a feed include the LeekDuck credit
+3. Should every GO answer that used a feed include the LeekDuck credit
    in the text, or is the empty-state credit plus the source fields in
    the tool result enough for the model to mention when it matters?
 
-A yes on 1, 2, and 5 is enough to start phase 1. 3 and 4 should be
-answered before a public deploy. 6 blocks only phase 3. 7 blocks only
-phase 4.
+## Approved to code
 
-## Confirm before any of this is coded
-
-These are the changes `CLAUDE.md` already treats as confirm-first. This
-document is the proposal. It is not the confirmation.
+Phase 1 is approved. These are the confirm-first changes that approval
+covers:
 
 - The shared prompt gains `system_prompt(game)` and a GO text.
 - `Agent`, `RunRequest`, and `ConversationTurn` gain `game`.
 - The GO tool list differs from the main list. Both agents still receive
   the same list for a given game.
-- New tools: the phase 1 pair, then the later ones.
+- New tools in phase 1: `get_current_events` and `get_raid_bosses`.
 - `format_user_message` grows a game prefix and suppresses the generation
   prefix on GO turns.
 
-The trace event schema does not change.
-
-When this is accepted, move decision 17 from proposed to decided and
-record which of the open questions were answered which way.
+The trace event schema does not change. `search_go_guides`, the guides
+corpus, and the type helper are phase 2 and are not part of this approval
+to code.
