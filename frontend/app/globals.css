@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "./chat.css";
 @import "./chat-composer.css";
+@import "./generation-chip.css";
 
 /*
  * Rotom plasma inside an appliance shell: warm amber against cool slate, meant

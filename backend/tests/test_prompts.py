@@ -21,6 +21,19 @@ def test_pokemon_news_is_in_scope_and_uses_web_search() -> None:
     ) not in SYSTEM_PROMPT
 
 
+def test_no_selected_generation_defaults_to_the_latest_games() -> None:
+    assert (
+        "When no generation is selected and the question does not name one, "
+        "answer for the latest games."
+    ) in SYSTEM_PROMPT
+    assert "Mention generation differences briefly when they matter." in SYSTEM_PROMPT
+    # The previous instruction treated a generation as always selected.
+    assert (
+        "Use the selected generation as the default when the question leaves "
+        "it unspecified."
+    ) not in SYSTEM_PROMPT
+
+
 def test_news_that_is_not_about_pokemon_is_declined_without_search() -> None:
     assert "News that is not linked to Pokemon is outside what you do." in SYSTEM_PROMPT
     assert "Decline it briefly and politely" in SYSTEM_PROMPT

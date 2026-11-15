@@ -5,7 +5,7 @@ import type { Generation } from "./types";
 export type RunState = {
   id: number;
   prompt: string;
-  generation: Generation;
+  generation: Generation | null;
   status: "running" | "complete" | "error";
   currentActivity: string;
   /** "step 3 of 8", shown beside the activity. Null until the first step. */
@@ -43,7 +43,7 @@ export function applyAgentEvent(run: RunState, event: AgentEvent): RunState {
 export function newRun(
   id: number,
   prompt: string,
-  generation: Generation,
+  generation: Generation | null,
   startedAt: number,
 ): RunState {
   return {

@@ -1,4 +1,5 @@
 from copy import deepcopy
+from typing import Any
 
 from data.dex import MOVES, POKEMON
 from services.search import web_search
@@ -161,8 +162,9 @@ TOOLS = [
                     "minimum": 1,
                     "maximum": 9,
                     "description": (
-                        "Optional. Which generation's type chart to use. Defaults "
-                        "to the latest generation."
+                        "Optional. Which generation's type chart to use. When "
+                        "omitted, this uses the generation selected for the "
+                        "question, or the latest generation if none is selected."
                     ),
                 },
             },
@@ -202,8 +204,9 @@ TOOLS = [
                     "minimum": 1,
                     "maximum": 9,
                     "description": (
-                        "Optional. Which generation's type chart to use. Defaults "
-                        "to the latest generation."
+                        "Optional. Which generation's type chart to use. When "
+                        "omitted, this uses the generation selected for the "
+                        "question, or the latest generation if none is selected."
                     ),
                 },
             },
@@ -359,3 +362,25 @@ TOOL_FUNCTIONS = {
     "search_strategy": search_strategy,
     "find_pokemon": find_pokemon,
 }
+
+# Matchup tools fall back to the latest chart when generation is omitted.
+# Both agents fill in a selected generation before the call, so the chart
+# matches the question. An explicit generation on the call is left alone:
+# the user may have named a different one in the text. find_pokemon's
+# generation is a debut filter, not a chart, so it is not in this set.
+SELECTED_GENERATION_TOOLS = frozenset({"get_type_matchups", "get_type_effectiveness"})
+
+
+def apply_selected_generation(
+    tool_name: str,
+    arguments: dict[str, Any],
+    generation: int | None,
+) -> dict[str, Any]:
+    """Copy `arguments` with the selected generation filled in when needed."""
+    if (
+        generation is None
+        or tool_name not in SELECTED_GENERATION_TOOLS
+        or arguments.get("generation") is not None
+    ):
+        return arguments
+    return {**arguments, "generation": generation}
