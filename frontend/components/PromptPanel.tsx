@@ -1,11 +1,23 @@
+import type { Generation } from "@/lib/types";
+import { GenerationChip } from "./GenerationChip";
+
 type PromptPanelProps = {
   prompt: string;
   isRunning: boolean;
+  generation: Generation | null;
+  onGenerationChange: (generation: Generation | null) => void;
   onPromptChange: (prompt: string) => void;
   onSubmit: () => void;
 };
 
-export function PromptPanel({ prompt, isRunning, onPromptChange, onSubmit }: PromptPanelProps) {
+export function PromptPanel({
+  prompt,
+  isRunning,
+  generation,
+  onGenerationChange,
+  onPromptChange,
+  onSubmit,
+}: PromptPanelProps) {
   return (
     <form
       className="chat-composer"
@@ -30,12 +42,20 @@ export function PromptPanel({ prompt, isRunning, onPromptChange, onSubmit }: Pro
         className="chat-input"
       />
       <div className="chat-composer-actions">
-        <span>Shift + Enter for a new line</span>
-        <button type="submit" disabled={isRunning || !prompt.trim()} aria-label="Send message">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M12 19V5m0 0-6 6m6-6 6 6" />
-          </svg>
-        </button>
+        <GenerationChip
+          generation={generation}
+          onChange={onGenerationChange}
+          tone="light"
+          placement="up"
+        />
+        <div className="chat-composer-submit">
+          <span>Shift + Enter for a new line</span>
+          <button type="submit" disabled={isRunning || !prompt.trim()} aria-label="Send message">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 19V5m0 0-6 6m6-6 6 6" />
+            </svg>
+          </button>
+        </div>
       </div>
     </form>
   );

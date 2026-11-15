@@ -284,6 +284,34 @@ the LangChain agent searched. The comparison was then measuring the wording,
 not the two loops. Rejected: **answering any current-events question**.
 Stock-market news and other news that is not about Pokemon stay out of scope.
 
+## 16. Generation is optional context, off by default
+
+A question that names no generation, with none selected in the UI, is answered
+for the latest games. The system prompt says so, and asks for a brief mention
+when a generation difference changes the answer. Pokemon news stays in scope
+and still goes to web search. News that is not about Pokemon is still declined.
+
+When the user does select a generation, both agents prefix that turn with the
+same `Selected generation: N` line, including on replayed history. A turn sent
+with generation left off has no prefix. The wording lives in one function,
+`format_user_message`, so the two loops cannot drift.
+
+Matchup tools still fall back to the latest chart when the model omits
+generation and nothing is selected. When a generation is selected, both agents
+fill that argument before the call if the model left it out. An explicit
+generation on the tool call is kept, because the question may have named a
+different one. `find_pokemon`'s generation filter means "debuted in", so it is
+not filled in.
+
+The chat page and the team builder share the selection in localStorage. With
+nothing selected, the team builder's type list uses the latest generation, so
+Fairy stays available.
+
+Rejected: **prefixing every turn, including a marker that no generation was
+selected.** That would keep a generation in front of general questions.
+Rejected: **a different prefix in each agent.** The benchmark compares the two
+loops, so the question text has to be the same string.
+
 ## Open questions
 
 Not decided. Each needs its own proposal before code depends on it.
