@@ -14,6 +14,8 @@ const TOOL_LABELS: Record<string, string> = {
   web_search: "Searching the web",
   get_current_events: "Checking current events",
   get_raid_bosses: "Checking raid bosses",
+  search_go_guides: "Reading GO guides",
+  get_go_type_roles: "Checking candy types",
 };
 
 export const THINKING = "Thinking";
