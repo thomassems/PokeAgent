@@ -40,6 +40,17 @@ combinations, deduping form/name results, sorting by stats, stored base stat
 total, limit clamping, count versus returned page size, and erroring on unknown
 sort keys.
 
+`test_go_guides.py`
+
+Checks the authored GO guides corpus, that an upload payload omits licensing
+notes, that a Dark/Steel catch's candy types are not its weaknesses, and that
+the phase 2 tool-selection rows load.
+
+`test_go_guide_search.py`
+
+Checks GO guide retrieval without calling Pinecone. This covers a missing API
+key, the `go-guides-v1` namespace, and an optional topic filter.
+
 `test_go_feed.py`
 
 Checks the Pokemon GO event and raid cache without calling GitHub. This covers
