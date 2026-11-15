@@ -44,6 +44,12 @@
   outline: none;
 }
 
+.chat-composer-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 .chat-composer-actions {
   display: flex;
   align-items: center;

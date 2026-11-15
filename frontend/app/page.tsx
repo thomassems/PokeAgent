@@ -6,6 +6,7 @@ import { ComparisonTurn } from "@/components/ComparisonTurn";
 import { PromptPanel } from "@/components/PromptPanel";
 import { AGENT_IDS, type AgentId } from "@/lib/agents";
 import { readAgentStream } from "@/lib/agent-stream";
+import { useSharedGame, type Game } from "@/lib/game";
 import { useSharedGeneration } from "@/lib/generation";
 import { applyAgentEvent, newRun, type RunState } from "@/lib/run-state";
 import type { Generation } from "@/lib/types";
@@ -16,16 +17,25 @@ const EXAMPLE_PROMPTS = [
   "How did Steel resist Ghost in Generation 4?",
 ];
 
+const GO_EXAMPLE_PROMPTS = [
+  "What raid bosses are in Pokemon GO right now?",
+  "When is the next Community Day?",
+  "What is this week's Spotlight Hour?",
+];
+
 /** One question, answered by every implementation. */
 type Turn = {
   id: number;
   prompt: string;
   generation: Generation | null;
+  game: Game;
   runs: Record<AgentId, RunState>;
 };
 
 export default function Home() {
   const [generation, setGeneration] = useSharedGeneration();
+  const [game, setGame] = useSharedGame();
+  const examples = game === "go" ? GO_EXAMPLE_PROMPTS : EXAMPLE_PROMPTS;
   const [prompt, setPrompt] = useState("");
   const [turns, setTurns] = useState<Turn[]>([]);
   const activeRequest = useRef<AbortController | null>(null);
@@ -90,6 +100,7 @@ export default function Home() {
           prompt: turn.prompt,
           answer: turn.runs[agent].answer,
           generation: turn.generation,
+          game: turn.game,
         }));
 
     const histories = Object.fromEntries(
@@ -103,8 +114,12 @@ export default function Home() {
         id,
         prompt: submittedPrompt,
         generation,
+        game,
         runs: Object.fromEntries(
-          AGENT_IDS.map((agent) => [agent, newRun(id, submittedPrompt, generation, startedAt)]),
+          AGENT_IDS.map((agent) => [
+            agent,
+            newRun(id, submittedPrompt, generation, game, startedAt),
+          ]),
         ) as Record<AgentId, RunState>,
       },
     ]);
@@ -132,6 +147,7 @@ export default function Home() {
           body: JSON.stringify({
             prompt: submittedPrompt,
             generation,
+            game,
             history: histories[agent],
             agent,
           }),
@@ -167,9 +183,16 @@ export default function Home() {
           <div className="chat-welcome flex flex-1 flex-col items-center justify-center text-center">
             <div className="chat-mark" aria-hidden="true">P</div>
             <h2>Ask PokeAgent</h2>
-            <p>Explore Pokémon, moves, matchups, and strategy.</p>
+            <p>
+              {game === "go"
+                ? "Raids, events, and what is happening in Pokémon GO."
+                : "Explore Pokémon, moves, matchups, and strategy."}
+            </p>
+            {game === "go" && (
+              <p>Event data from LeekDuck, via ScrapedDuck.</p>
+            )}
             <div className="chat-examples" aria-label="Example prompts">
-              {EXAMPLE_PROMPTS.map((example) => (
+              {examples.map((example) => (
                 <button key={example} type="button" onClick={() => setPrompt(example)}>
                   {example}
                 </button>
@@ -179,15 +202,23 @@ export default function Home() {
         ) : (
           <div className="chat-transcript flex-1" aria-label="Conversation">
             {turns.map((turn) => (
-              <ComparisonTurn key={turn.id} id={turn.id} prompt={turn.prompt} runs={turn.runs} />
+              <ComparisonTurn
+                key={turn.id}
+                id={turn.id}
+                prompt={turn.prompt}
+                game={turn.game}
+                runs={turn.runs}
+              />
             ))}
           </div>
         )}
         <div className="chat-composer-wrap sticky bottom-0">
-          <PromptPanel
+            <PromptPanel
             prompt={prompt}
             isRunning={isRunning}
+            game={game}
             generation={generation}
+            onGameChange={setGame}
             onGenerationChange={setGeneration}
             onPromptChange={setPrompt}
             onSubmit={handleRun}

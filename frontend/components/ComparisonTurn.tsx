@@ -2,23 +2,28 @@
 
 import { useState } from "react";
 import { AGENTS, type AgentId } from "@/lib/agents";
+import type { Game } from "@/lib/game";
 import type { RunState } from "@/lib/run-state";
 import { AgentRunPanel } from "./AgentRunPanel";
 
 type ComparisonTurnProps = {
   id: number;
   prompt: string;
+  game: Game;
   runs: Record<AgentId, RunState>;
 };
 
-export function ComparisonTurn({ id, prompt, runs }: ComparisonTurnProps) {
+export function ComparisonTurn({ id, prompt, game, runs }: ComparisonTurnProps) {
   const [visibleAgent, setVisibleAgent] = useState<AgentId>(AGENTS[0].id);
 
   return (
     <section id={`chat-turn-${id}`} className="chat-turn">
       {/* The prompt is shown once. Both panels answered this same question. */}
       <div className="chat-user-message">
-        <p>{prompt}</p>
+        <p>
+          {game === "go" && <span className="chat-user-game">Pokémon GO</span>}
+          {prompt}
+        </p>
       </div>
 
       {/*

@@ -1,11 +1,13 @@
 import { stepLabel, THINKING, toolActivity } from "./activity";
 import type { AgentEvent, RunMetrics } from "./agent-stream";
+import type { Game } from "./game";
 import type { Generation } from "./types";
 
 export type RunState = {
   id: number;
   prompt: string;
   generation: Generation | null;
+  game: Game;
   status: "running" | "complete" | "error";
   currentActivity: string;
   /** "step 3 of 8", shown beside the activity. Null until the first step. */
@@ -44,12 +46,14 @@ export function newRun(
   id: number,
   prompt: string,
   generation: Generation | null,
+  game: Game,
   startedAt: number,
 ): RunState {
   return {
     id,
     prompt,
     generation,
+    game,
     status: "running",
     currentActivity: THINKING,
     currentStep: null,

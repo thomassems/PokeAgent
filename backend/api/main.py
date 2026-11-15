@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from agents import custom, framework
-from agents.conversation import ConversationTurn
+from agents.conversation import ConversationTurn, Game
 from agents.custom import OutputLimitReached
 from agents.events import TraceEvent
 from agents.protocol import Agent
@@ -96,6 +96,8 @@ class RunRequest(BaseModel):
     # Which implementation to run. Defaults to the hand-written one, so a client
     # that predates the second agent keeps the behaviour it had.
     agent: Literal["custom", "langchain"] = "custom"
+    # Main series when a client from before the game selector omits it.
+    game: Game = "main"
 
 
 def _frame(event: TraceEvent) -> ServerSentEvent:
@@ -123,7 +125,9 @@ def run_agent(request: RunRequest) -> Iterator[ServerSentEvent]:
     """Send progress from one agent run over a single HTTP response."""
     agent = AGENTS[request.agent]
     try:
-        for event in agent(request.prompt, request.generation, request.history):
+        for event in agent(
+            request.prompt, request.generation, request.history, game=request.game
+        ):
             yield _frame(event)
     except OutputLimitReached:
         logger.info("Agent run reached its output-token limit")
