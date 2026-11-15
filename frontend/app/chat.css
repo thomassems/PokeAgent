@@ -49,10 +49,6 @@ html:has(.chat-page) {
   color: #242620;
 }
 
-.chat-header select {
-  color: #242620;
-}
-
 .chat-main {
   min-height: calc(100dvh - 57px);
 }

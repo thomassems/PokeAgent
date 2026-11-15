@@ -23,13 +23,14 @@ class Agent(Protocol):
     """One run, from prompt to final answer, as a stream of trace events.
 
     `history` is the completed turns of the conversation so far. `generation` is
-    the app-level selection, passed in rather than inferred, since type charts
-    and a Pokemon's own typing depend on it.
+    the app-level selection when the user has one, and None when they have not.
+    Type charts and a Pokemon's own typing depend on it, so a selection is
+    passed in rather than inferred. None means the question carries no generation.
     """
 
     def __call__(
         self,
         user_message: str,
-        generation: int,
+        generation: int | None,
         history: Sequence[ConversationTurn] = (),
     ) -> Iterator[TraceEvent]: ...

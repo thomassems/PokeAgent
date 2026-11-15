@@ -1,5 +1,5 @@
 import type { Generation, Pokemon, Slot, TypeName } from "./types";
-import { TYPE_NAMES } from "./types";
+import { LATEST_GENERATION, TYPE_NAMES } from "./types";
 
 /**
  * Placeholder dex for the layout shell. Base stats are real values so the stat
@@ -63,27 +63,22 @@ export const POKEMON: readonly Pokemon[] = ROWS.map(([id, name, types, generatio
 }));
 
 /**
- * Dark and Steel arrived in Gen 2, Fairy in Gen 6. Hardcoded so the generation
- * control has a visible effect - pick an early generation and chips disappear.
+ * Dark and Steel arrived in Gen 2, Fairy in Gen 6. With no generation selected,
+ * the latest chart is used, so Fairy stays in the list.
  */
-export function typesForGeneration(generation: Generation): readonly TypeName[] {
+export function typesForGeneration(generation: Generation | null): readonly TypeName[] {
+  const effective = generation ?? LATEST_GENERATION;
   return TYPE_NAMES.filter((type) => {
-    if (type === "fairy") return generation >= 6;
-    if (type === "dark" || type === "steel") return generation >= 2;
+    if (type === "fairy") return effective >= 6;
+    if (type === "dark" || type === "steel") return effective >= 2;
     return true;
   });
 }
 
-const byId = (id: string): Pokemon => {
-  const found = POKEMON.find((pokemon) => pokemon.id === id);
-  if (!found) throw new Error(`Unknown placeholder pokemon: ${id}`);
-  return found;
-};
-
-/** One chosen and one suggested slot, so the two states are visible side by side. */
+/** Six empty slots. The user fills them by searching for a Pokémon. */
 export const INITIAL_TEAM: readonly Slot[] = [
-  { kind: "filled", pokemon: byId("infernape"), origin: "chosen" },
-  { kind: "filled", pokemon: byId("rotom"), origin: "suggested" },
+  { kind: "empty" },
+  { kind: "empty" },
   { kind: "empty" },
   { kind: "empty" },
   { kind: "empty" },

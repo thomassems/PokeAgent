@@ -91,7 +91,7 @@ class Health(BaseModel):
 
 class RunRequest(BaseModel):
     prompt: str = Field(min_length=1, max_length=4000)
-    generation: int = Field(ge=1, le=9)
+    generation: int | None = Field(default=None, ge=1, le=9)
     history: list[ConversationTurn] = Field(default_factory=list)
     # Which implementation to run. Defaults to the hand-written one, so a client
     # that predates the second agent keeps the behaviour it had.
