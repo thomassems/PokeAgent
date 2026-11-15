@@ -312,6 +312,26 @@ selected.** That would keep a generation in front of general questions.
 Rejected: **a different prefix in each agent.** The benchmark compares the two
 loops, so the question text has to be the same string.
 
+## 17. Proposed: Pokemon GO as a game mode beside generation
+
+**Status: proposed, not decided.** The full write-up is
+`docs/plans/pokemon-go-mode.md`. This entry exists so the log points at the
+proposal. Move it to "decided" only after the open questions in that plan are
+answered.
+
+Pokemon GO would be a second game on the chat composer, defaulting to the main
+series. While GO is selected the generation chip hides, the stored generation
+is left alone, and both agents receive the same GO prompt section and the same
+GO tool list. Current events and raid bosses would come from the ScrapedDuck
+mirror of LeekDuck, cached in `services/`. The team builder would stay
+main-series. The trace event schema would not change.
+
+Rejected for this proposal: **treating GO as another generation.** GO CP, moves,
+and events do not follow the generation charts. Rejected: **a GO prompt that
+lives in only one agent.** Decision 15 already showed that a wording difference
+is what the benchmark then measures. Rejected: **scraping LeekDuck directly, or
+vendoring ScrapedDuck.** The plan fetches the published JSON only.
+
 ## Open questions
 
 Not decided. Each needs its own proposal before code depends on it.
