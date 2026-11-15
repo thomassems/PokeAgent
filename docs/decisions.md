@@ -344,6 +344,30 @@ benchmark then measures. Rejected: **scraping LeekDuck directly, or vendoring
 ScrapedDuck.** Rejected: **putting GO guides in `strategy-v1`.** That index
 is main-series advice filtered by generation and format.
 
+## 18. Chat theme follows the selected game (proposed)
+
+Proposed 15 November 2026. Not decided. The write-up is the Themed UI
+section of `docs/plans/pokemon-go-mode.md`.
+
+Thomas wants the chat to feel less plain, and he wants the selected game
+to change how the page looks. Pokemon GO would use bright map-like greens
+and blues, rounded cards, a CSS ball button, team-colour accents, and an
+event-card frame. Main series would use a dialogue-box frame, a pixel face
+for headings only, the PokeAPI sprites the app already loads, a Pokedex-red
+accent, and menu-like chips. The game chip from decision 17 picks the
+token set. The team builder stays on the main-series theme because it does
+not have a game chip.
+
+This is CSS. It does not change the prompt, the tool list, or the trace
+event schema. It is phase 5 in the plan so it is not bundled into the
+guides work. No official logos, fonts, or ripped art.
+
+The open questions are still open: how much of the chrome changes, whether
+the main-series frame sits on the dark shell or a light page, which pixel
+face is legal to ship, whether team colours appear before the app knows a
+team, and whether an event card is only a frame around the streamed
+answer. Nothing here is approved to code.
+
 ## Open questions
 
 Not decided. Each needs its own proposal before code depends on it.
