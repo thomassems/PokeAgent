@@ -69,6 +69,8 @@ def test_custom_agent_streams_a_tool_step_and_answer(
         messages: list[dict[str, Any]],
         max_tokens: int,
         timeout: float,
+        system: str | None = None,
+        tools: object = None,
     ) -> Any:
         calls.append((client, list(messages), max_tokens, timeout))
         reply = next(replies)
@@ -157,6 +159,8 @@ def test_custom_agent_includes_cached_input_tokens(
         messages: list[dict[str, Any]],
         max_tokens: int,
         timeout: float,
+        system: str | None = None,
+        tools: object = None,
     ) -> Any:
         return fake_stream(next(replies))
 
@@ -210,6 +214,8 @@ def test_custom_agent_can_answer_on_the_last_step(
         messages: list[dict[str, Any]],
         max_tokens: int,
         timeout: float,
+        system: str | None = None,
+        tools: object = None,
     ) -> Any:
         return fake_stream(next(replies))
 
@@ -237,6 +243,8 @@ def test_custom_agent_receives_prior_turns_and_the_full_token_budget(
         messages: list[dict[str, Any]],
         max_tokens: int,
         timeout: float,
+        system: str | None = None,
+        tools: object = None,
     ) -> Any:
         calls.append((list(messages), max_tokens))
         return fake_stream(
@@ -289,7 +297,10 @@ def test_run_endpoint_sends_sse_and_sanitizes_errors(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     def fake_agent(
-        prompt: str, generation: int, history: list[ConversationTurn]
+        prompt: str,
+        generation: int,
+        history: list[ConversationTurn],
+        game: str = "main",
     ) -> Iterator[TraceEvent]:
         assert (prompt, generation) == ("Help with Garchomp", 4)
         assert history == [
@@ -321,7 +332,10 @@ def test_run_endpoint_sends_sse_and_sanitizes_errors(
     assert "event: done" in response.text
 
     def failing_agent(
-        prompt: str, generation: int, history: list[ConversationTurn]
+        prompt: str,
+        generation: int,
+        history: list[ConversationTurn],
+        game: str = "main",
     ) -> Iterator[TraceEvent]:
         yield TraceEvent(type="status", message="Step 1 of 3")
         raise RuntimeError("provider secret and internal path")

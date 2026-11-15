@@ -15,7 +15,7 @@ same way, which is what actually catches a drift.
 from collections.abc import Iterator, Sequence
 from typing import Protocol
 
-from agents.conversation import ConversationTurn
+from agents.conversation import ConversationTurn, Game
 from agents.events import TraceEvent
 
 
@@ -26,6 +26,8 @@ class Agent(Protocol):
     the app-level selection when the user has one, and None when they have not.
     Type charts and a Pokemon's own typing depend on it, so a selection is
     passed in rather than inferred. None means the question carries no generation.
+    `game` is the selected game. It is keyword-only so a caller that still
+    passes generation positionally stays on the main series.
     """
 
     def __call__(
@@ -33,4 +35,6 @@ class Agent(Protocol):
         user_message: str,
         generation: int | None,
         history: Sequence[ConversationTurn] = (),
+        *,
+        game: Game = "main",
     ) -> Iterator[TraceEvent]: ...

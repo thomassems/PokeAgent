@@ -12,6 +12,8 @@ const TOOL_LABELS: Record<string, string> = {
   get_type_effectiveness: "Checking type effectiveness",
   search_strategy: "Reading strategy notes",
   web_search: "Searching the web",
+  get_current_events: "Checking current events",
+  get_raid_bosses: "Checking raid bosses",
 };
 
 export const THINKING = "Thinking";

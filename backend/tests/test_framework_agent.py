@@ -364,7 +364,9 @@ def test_the_route_runs_the_agent_the_request_asks_for(
 
     # Omitting the field keeps the behaviour clients had before there were two
     # agents: the scripted model above is exhausted, so reaching it would raise.
-    def stub(prompt: str, generation: int, history: Any) -> Iterator[TraceEvent]:
+    def stub(
+        prompt: str, generation: int, history: Any, game: str = "main"
+    ) -> Iterator[TraceEvent]:
         yield TraceEvent(type="answer", message="from the custom agent")
 
     monkeypatch.setitem(main.AGENTS, "custom", stub)
@@ -434,9 +436,12 @@ def test_both_agents_report_the_same_metrics_for_the_same_run(
     monkeypatch.setattr(
         custom,
         "chat",
-        lambda client, messages, max_tokens, timeout: nullcontext(
-            SimpleNamespace(
-                text_stream=iter(()), get_final_message=lambda: next(replies)
+        lambda client, messages, max_tokens, timeout, system=None, tools=None: (
+            nullcontext(
+                SimpleNamespace(
+                    text_stream=iter(()),
+                    get_final_message=lambda: next(replies),
+                )
             )
         ),
     )

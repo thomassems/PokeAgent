@@ -39,7 +39,7 @@ from langchain_core.messages import AIMessage, AIMessageChunk, BaseMessage, Tool
 from langchain_core.tools import StructuredTool
 from langgraph.graph.state import CompiledStateGraph
 
-from agents.conversation import ConversationTurn, format_user_message
+from agents.conversation import ConversationTurn, Game, format_user_message
 from agents.custom import (
     MAX_OUTPUT_TOKENS,
     MAX_RUN_SECONDS,
@@ -48,9 +48,9 @@ from agents.custom import (
     OutputLimitReached,
 )
 from agents.events import RunMetrics, TraceEvent
-from agents.prompts import SYSTEM_PROMPT
+from agents.prompts import system_prompt
 from agents.protocol import Agent
-from llm.tools.registry import TOOL_FUNCTIONS, TOOLS, apply_selected_generation
+from llm.tools.registry import TOOL_FUNCTIONS, apply_selected_generation, tools_for
 
 # Duplicates the literal in custom.py:chat, because the model id is written
 # inline there rather than being a named constant. Both agents must use the same
@@ -71,22 +71,23 @@ MODEL = "deepseek-v4-flash"
 RECURSION_LIMIT = 8 * NUM_ITERS
 
 
-def _bind_selected_generation(name: str, generation: int | None) -> Any:
-    """Fill a selected generation into matchup calls the model left blank.
+def _bind_selected_generation(name: str, generation: int | None, game: Game) -> Any:
+    """Fill the chart generation into matchup calls the model left blank.
 
     Looked up at call time, not build time, so a test can replace
     `TOOL_FUNCTIONS` before the run and still have this wrapper call it.
     The custom agent applies the same helper at its own dispatch site.
+    GO always uses the latest chart.
     """
 
     def run(**kwargs: Any) -> Any:
         function = TOOL_FUNCTIONS[name]
-        return function(**apply_selected_generation(name, kwargs, generation))
+        return function(**apply_selected_generation(name, kwargs, generation, game))
 
     return run
 
 
-def _langchain_tools(generation: int | None) -> list[StructuredTool]:
+def _langchain_tools(generation: int | None, game: Game) -> list[StructuredTool]:
     """Adapt the shared registry into the tool objects `create_agent` wants.
 
     The registry holds Anthropic-shaped entries: a name, a description, and an
@@ -94,7 +95,7 @@ def _langchain_tools(generation: int | None) -> list[StructuredTool]:
     `tools=`, but that path is for provider-side tools the model runs itself, not
     for functions we execute, so each entry becomes a `StructuredTool`.
 
-    Built from `TOOLS` and `TOOL_FUNCTIONS` rather than redeclared with `@tool`
+    Built from `tools_for` and `TOOL_FUNCTIONS` rather than redeclared with `@tool`
     and Pydantic models. Redeclaring would hand the two agents two tool surfaces
     that drift independently, and the benchmark would then be measuring the
     drift. `infer_schema=False` keeps LangChain from deriving a second schema
@@ -107,13 +108,13 @@ def _langchain_tools(generation: int | None) -> list[StructuredTool]:
     """
     return [
         StructuredTool.from_function(
-            func=_bind_selected_generation(schema["name"], generation),
+            func=_bind_selected_generation(schema["name"], generation, game),
             name=schema["name"],
             description=schema["description"],
             args_schema=schema["input_schema"],
             infer_schema=False,
         )
-        for schema in TOOLS
+        for schema in tools_for(game)
     ]
 
 
@@ -197,7 +198,9 @@ def _model() -> BaseChatModel:
     )
 
 
-def build_agent(generation: int | None) -> CompiledStateGraph[Any, Any, Any, Any]:
+def build_agent(
+    generation: int | None, game: Game = "main"
+) -> CompiledStateGraph[Any, Any, Any, Any]:
     """Compile the graph for one run.
 
     Built per run rather than once at import, matching `custom.py` constructing
@@ -206,8 +209,8 @@ def build_agent(generation: int | None) -> CompiledStateGraph[Any, Any, Any, Any
     """
     return create_agent(
         model=_model(),
-        tools=_langchain_tools(generation),
-        system_prompt=SYSTEM_PROMPT,
+        tools=_langchain_tools(generation, game),
+        system_prompt=system_prompt(game),
         middleware=[
             # Steps. A step is one model call, so this counts the same thing
             # NUM_ITERS bounds in the hand-written loop.
@@ -225,20 +228,23 @@ def _starting_messages(
     user_message: str,
     generation: int | None,
     history: Sequence[ConversationTurn],
+    game: Game,
 ) -> list[dict[str, str]]:
     """Replay the conversation in the shape `custom.py` sends it.
 
-    The generation prefix is part of the user turn in both agents, and only
-    when a generation was selected for that turn. `format_user_message` is the
-    one implementation of that wording.
+    The prefix is part of the user turn in both agents. `format_user_message`
+    is the one implementation of that wording.
     """
     messages: list[dict[str, str]] = []
     for turn in history:
-        prompt = format_user_message(turn.prompt, turn.generation)
+        prompt = format_user_message(turn.prompt, turn.generation, turn.game)
         messages.append({"role": "user", "content": prompt})
         messages.append({"role": "assistant", "content": turn.answer})
     messages.append(
-        {"role": "user", "content": format_user_message(user_message, generation)}
+        {
+            "role": "user",
+            "content": format_user_message(user_message, generation, game),
+        }
     )
     return messages
 
@@ -247,6 +253,8 @@ def call_agent(
     user_message: str,
     generation: int | None,
     history: Sequence[ConversationTurn] = (),
+    *,
+    game: Game = "main",
 ) -> Iterator[TraceEvent]:
     """Continue a conversation and yield progress and answer text as it arrives.
 
@@ -276,8 +284,8 @@ def call_agent(
             announced = True
             yield TraceEvent(type="status", message=f"Step {step} of {NUM_ITERS}")
 
-    for chunk in build_agent(generation).stream(
-        {"messages": _starting_messages(user_message, generation, history)},
+    for chunk in build_agent(generation, game).stream(
+        {"messages": _starting_messages(user_message, generation, history, game)},
         stream_mode=["messages", "updates"],
         version="v2",
         config={"recursion_limit": RECURSION_LIMIT},

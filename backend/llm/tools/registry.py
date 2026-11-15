@@ -1,7 +1,8 @@
 from copy import deepcopy
 from typing import Any
 
-from data.dex import MOVES, POKEMON
+from data.dex import LATEST_GENERATION, MOVES, POKEMON
+from services.go_feed import EVENT_TYPES, RAID_TIERS, load_feed
 from services.search import web_search
 from services.strategy_search import search_strategy
 from tools.dex_query import find_pokemon
@@ -34,6 +35,7 @@ def get_pokemon(pokemon, include_moves=False):
             pokemonmap[p] = f"Pokemon {p_norm} does not exist"
     return pokemonmap
 
+
 def get_move(moves):
     movemap = {}
     for m in moves:
@@ -49,6 +51,32 @@ def get_move(moves):
 # Thin wrapper: the arithmetic lives in tools/ where it is pure and tested.
 get_type_matchups = type_matchups
 get_type_effectiveness = type_effectiveness
+
+
+def get_current_events(event_type: str | None = None) -> dict[str, Any]:
+    """Current LeekDuck events. `event_type` filters the cached list."""
+    if event_type is not None and event_type not in EVENT_TYPES:
+        return {"error": f"Unknown event type '{event_type}'."}
+    payload = load_feed("events")
+    if "error" in payload:
+        return payload
+    events = payload["events"]
+    if event_type is not None:
+        events = [event for event in events if event.get("event_type") == event_type]
+    return {**payload, "events": events}
+
+
+def get_raid_bosses(tier: str | None = None) -> dict[str, Any]:
+    """Current raid bosses. An omitted tier returns every row in the feed."""
+    if tier is not None and tier not in RAID_TIERS:
+        return {"error": f"Unknown raid tier '{tier}'."}
+    payload = load_feed("raids")
+    if "error" in payload:
+        return payload
+    raids = payload["raids"]
+    if tier is not None:
+        raids = [boss for boss in raids if boss.get("tier") == tier]
+    return {**payload, "raids": raids}
 
 
 # web search tool
@@ -184,18 +212,48 @@ TOOLS = [
                 "attacker": {
                     "type": "string",
                     "enum": [
-                        "normal", "fighting", "flying", "poison", "ground", "rock",
-                        "bug", "ghost", "steel", "fire", "water", "grass",
-                        "electric", "psychic", "ice", "dragon", "dark", "fairy",
+                        "normal",
+                        "fighting",
+                        "flying",
+                        "poison",
+                        "ground",
+                        "rock",
+                        "bug",
+                        "ghost",
+                        "steel",
+                        "fire",
+                        "water",
+                        "grass",
+                        "electric",
+                        "psychic",
+                        "ice",
+                        "dragon",
+                        "dark",
+                        "fairy",
                     ],
                     "description": "The attacking move type.",
                 },
                 "defender": {
                     "type": "string",
                     "enum": [
-                        "normal", "fighting", "flying", "poison", "ground", "rock",
-                        "bug", "ghost", "steel", "fire", "water", "grass",
-                        "electric", "psychic", "ice", "dragon", "dark", "fairy",
+                        "normal",
+                        "fighting",
+                        "flying",
+                        "poison",
+                        "ground",
+                        "rock",
+                        "bug",
+                        "ghost",
+                        "steel",
+                        "fire",
+                        "water",
+                        "grass",
+                        "electric",
+                        "psychic",
+                        "ice",
+                        "dragon",
+                        "dark",
+                        "fairy",
                     ],
                     "description": "The defending target type.",
                 },
@@ -308,9 +366,24 @@ TOOLS = [
                     "items": {
                         "type": "string",
                         "enum": [
-                            "normal", "fighting", "flying", "poison", "ground", "rock",
-                            "bug", "ghost", "steel", "fire", "water", "grass",
-                            "electric", "psychic", "ice", "dragon", "dark", "fairy",
+                            "normal",
+                            "fighting",
+                            "flying",
+                            "poison",
+                            "ground",
+                            "rock",
+                            "bug",
+                            "ghost",
+                            "steel",
+                            "fire",
+                            "water",
+                            "grass",
+                            "electric",
+                            "psychic",
+                            "ice",
+                            "dragon",
+                            "dark",
+                            "fairy",
                         ],
                     },
                     "description": (
@@ -329,8 +402,13 @@ TOOLS = [
                 "sort_by": {
                     "type": "string",
                     "enum": [
-                        "hp", "attack", "defense", "special_attack",
-                        "special_defense", "speed", "total",
+                        "hp",
+                        "attack",
+                        "defense",
+                        "special_attack",
+                        "special_defense",
+                        "speed",
+                        "total",
                     ],
                     "description": "Sorted descending. Defaults to total base stats.",
                 },
@@ -361,13 +439,94 @@ TOOL_FUNCTIONS = {
     "web_search": web_search,
     "search_strategy": search_strategy,
     "find_pokemon": find_pokemon,
+    "get_current_events": get_current_events,
+    "get_raid_bosses": get_raid_bosses,
 }
+
+
+def _tool(name: str) -> dict[str, Any]:
+    for tool in TOOLS:
+        if tool["name"] == name:
+            return tool
+    raise KeyError(name)
+
+
+# Pokemon GO sees the live feeds and the modern type chart. The main-series
+# dex and the strategy corpus stay off this list: their numbers and advice
+# are the wrong answer for a GO question. Both agents take this list from
+# tools_for, so they cannot be handed different GO tools.
+GO_TOOLS: list[dict[str, Any]] = [
+    {
+        "name": "get_current_events",
+        "description": (
+            "List current Pokemon GO events from LeekDuck via ScrapedDuck. "
+            "Includes Community Day, Spotlight Hour, raid hours, seasons, and "
+            "raid-battles events. Mega and Shadow raid bosses are often on "
+            "raid-battles events rather than in get_raid_bosses. Each event "
+            "has start, end, and timing: local means the player's local time, "
+            "utc means one global instant. The result includes fetched_at and "
+            "stale."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "event_type": {
+                    "type": "string",
+                    "enum": list(EVENT_TYPES),
+                    "description": (
+                        "Optional. Limit the list to one event type, such as "
+                        "community-day, pokemon-spotlight-hour, or raid-battles."
+                    ),
+                },
+            },
+            "required": [],
+        },
+    },
+    {
+        "name": "get_raid_bosses",
+        "description": (
+            "List current Pokemon GO raid bosses from LeekDuck via ScrapedDuck, "
+            "with tier, types, catch CP, and weather boost. Omit tier to return "
+            "every boss in the raids feed, including a tier this schema does not "
+            "name. Mega and Shadow bosses may be absent here and present on "
+            "get_current_events with event_type raid-battles. The result includes "
+            "fetched_at and stale."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "tier": {
+                    "type": "string",
+                    "enum": list(RAID_TIERS),
+                    "description": "Optional. Limit the list to one raid tier.",
+                },
+            },
+            "required": [],
+        },
+    },
+    _tool("get_type_matchups"),
+    _tool("get_type_effectiveness"),
+    _tool("web_search"),
+]
+
+
+def tools_for(game: str) -> list[dict[str, Any]]:
+    """The tool list for this game. Main series is `TOOLS` unchanged."""
+    if game == "go":
+        return GO_TOOLS
+    if game == "main":
+        return TOOLS
+    raise ValueError(f"Unknown game: {game}")
+
 
 # Matchup tools fall back to the latest chart when generation is omitted.
 # Both agents fill in a selected generation before the call, so the chart
 # matches the question. An explicit generation on the call is left alone:
 # the user may have named a different one in the text. find_pokemon's
 # generation is a debut filter, not a chart, so it is not in this set.
+# Pokemon GO always uses the latest chart. A stored main-series generation
+# must not bring an old Steel resistance into a GO answer, so an explicit
+# generation on a GO call is replaced too.
 SELECTED_GENERATION_TOOLS = frozenset({"get_type_matchups", "get_type_effectiveness"})
 
 
@@ -375,12 +534,13 @@ def apply_selected_generation(
     tool_name: str,
     arguments: dict[str, Any],
     generation: int | None,
+    game: str = "main",
 ) -> dict[str, Any]:
-    """Copy `arguments` with the selected generation filled in when needed."""
-    if (
-        generation is None
-        or tool_name not in SELECTED_GENERATION_TOOLS
-        or arguments.get("generation") is not None
-    ):
+    """Copy `arguments` with the chart generation filled in when needed."""
+    if tool_name not in SELECTED_GENERATION_TOOLS:
+        return arguments
+    if game == "go":
+        return {**arguments, "generation": int(LATEST_GENERATION)}
+    if generation is None or arguments.get("generation") is not None:
         return arguments
     return {**arguments, "generation": generation}
