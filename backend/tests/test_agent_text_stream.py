@@ -53,10 +53,12 @@ def test_custom_agent_yields_text_before_the_final_answer(
     monkeypatch.setattr(
         custom,
         "chat",
-        lambda client, messages, max_tokens, timeout: nullcontext(
-            SimpleNamespace(
-                text_stream=iter(("Try ", "Jolteon.")),
-                get_final_message=lambda: reply,
+        lambda client, messages, max_tokens, timeout, system=None, tools=None: (
+            nullcontext(
+                SimpleNamespace(
+                    text_stream=iter(("Try ", "Jolteon.")),
+                    get_final_message=lambda: reply,
+                )
             )
         ),
     )
@@ -84,6 +86,8 @@ def test_output_limit_has_an_actionable_error(monkeypatch: pytest.MonkeyPatch) -
         messages: list[dict[str, Any]],
         max_tokens: int,
         timeout: float,
+        system: str | None = None,
+        tools: object = None,
     ) -> Any:
         return nullcontext(
             SimpleNamespace(
@@ -101,7 +105,10 @@ def test_output_limit_has_an_actionable_error(monkeypatch: pytest.MonkeyPatch) -
         list(custom.call_agent("A long question", generation=4))
 
     def limited_agent(
-        prompt: str, generation: int, history: list[ConversationTurn]
+        prompt: str,
+        generation: int,
+        history: list[ConversationTurn],
+        game: str = "main",
     ) -> Iterator[TraceEvent]:
         yield TraceEvent(type="status", message="Step 1 of 3")
         raise custom.OutputLimitReached()

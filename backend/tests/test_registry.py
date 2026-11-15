@@ -2,12 +2,16 @@
 
 from data.dex import POKEMON
 from llm.tools.registry import (
+    GO_TOOLS,
     TOOL_FUNCTIONS,
     TOOLS,
+    get_current_events,
     get_move,
     get_pokemon,
+    get_raid_bosses,
     get_type_effectiveness,
     get_type_matchups,
+    tools_for,
 )
 
 
@@ -169,20 +173,35 @@ def test_every_schema_matches_its_function_signature() -> None:
     """
     import inspect
 
-    for tool in TOOLS:
+    for tool in [*TOOLS, *GO_TOOLS]:
         properties = set(tool["input_schema"]["properties"])
         parameters = set(inspect.signature(TOOL_FUNCTIONS[tool["name"]]).parameters)
         assert properties <= parameters, tool["name"]
 
 
 def test_schemas_and_dispatch_map_agree() -> None:
-    assert {tool["name"] for tool in TOOLS} == set(TOOL_FUNCTIONS)
+    listed = {tool["name"] for tool in TOOLS} | {tool["name"] for tool in GO_TOOLS}
+    assert listed == set(TOOL_FUNCTIONS)
+
+
+def test_main_and_go_tool_lists() -> None:
+    assert tools_for("main") is TOOLS
+    go_names = {tool["name"] for tool in tools_for("go")}
+    assert go_names == {tool["name"] for tool in GO_TOOLS}
+    assert "get_current_events" in go_names
+    assert "get_raid_bosses" in go_names
+    assert "get_pokemon" not in go_names
+    assert "get_move" not in go_names
+    assert "find_pokemon" not in go_names
+    assert "search_strategy" not in go_names
+    assert get_current_events("not-a-type")["error"]
+    assert get_raid_bosses("Tier 3")["error"]
 
 
 def test_required_schema_fields_are_real_parameters() -> None:
     import inspect
 
-    for tool in TOOLS:
+    for tool in [*TOOLS, *GO_TOOLS]:
         required = set(tool["input_schema"].get("required", []))
         parameters = set(inspect.signature(TOOL_FUNCTIONS[tool["name"]]).parameters)
         assert required <= parameters, tool["name"]

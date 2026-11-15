@@ -1,12 +1,15 @@
 """The shared system prompt is the same text for both agents."""
 
 from agents import custom, framework
-from agents.prompts import SYSTEM_PROMPT
+from agents.prompts import GO_SYSTEM_PROMPT, SYSTEM_PROMPT, system_prompt
 
 
 def test_both_agents_share_one_system_prompt() -> None:
+    assert system_prompt("main") is SYSTEM_PROMPT
+    assert system_prompt("go") is GO_SYSTEM_PROMPT
+    assert custom.system_prompt is system_prompt
+    assert framework.system_prompt is system_prompt
     assert custom.SYSTEM_PROMPT is SYSTEM_PROMPT
-    assert framework.SYSTEM_PROMPT is SYSTEM_PROMPT
 
 
 def test_pokemon_news_is_in_scope_and_uses_web_search() -> None:
@@ -32,6 +35,15 @@ def test_no_selected_generation_defaults_to_the_latest_games() -> None:
         "Use the selected generation as the default when the question leaves "
         "it unspecified."
     ) not in SYSTEM_PROMPT
+
+
+def test_go_prompt_uses_live_tools_and_keeps_the_news_rule() -> None:
+    assert "get_current_events" in GO_SYSTEM_PROMPT
+    assert "get_raid_bosses" in GO_SYSTEM_PROMPT
+    assert "Name LeekDuck" in GO_SYSTEM_PROMPT
+    assert "Do not search for it" in GO_SYSTEM_PROMPT
+    assert "get_pokemon" not in GO_SYSTEM_PROMPT
+    assert "search_strategy" not in GO_SYSTEM_PROMPT
 
 
 def test_news_that_is_not_about_pokemon_is_declined_without_search() -> None:

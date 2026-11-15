@@ -9,10 +9,15 @@ import anthropic
 from anthropic.lib.streaming import MessageStreamManager
 from anthropic.types import Message
 
-from agents.conversation import ConversationTurn, format_user_message
+from agents.conversation import ConversationTurn, Game, format_user_message
 from agents.events import RunMetrics, TraceEvent
-from agents.prompts import SYSTEM_PROMPT
-from llm.tools.registry import TOOL_FUNCTIONS, TOOLS, apply_selected_generation
+from agents.prompts import SYSTEM_PROMPT, system_prompt
+from llm.tools.registry import (
+    TOOL_FUNCTIONS,
+    TOOLS,
+    apply_selected_generation,
+    tools_for,
+)
 
 NUM_ITERS = 8
 MAX_RESULT = 5
@@ -38,13 +43,15 @@ def chat(
     messages: list[dict[str, Any]],
     max_tokens: int,
     timeout: float,
+    system: str = SYSTEM_PROMPT,
+    tools: list[dict[str, Any]] | None = None,
 ) -> MessageStreamManager:
     return client.messages.stream(
         model="deepseek-v4-flash",
         max_tokens=max_tokens,
-        system=SYSTEM_PROMPT,
+        system=system,
         messages=messages,
-        tools=TOOLS,
+        tools=TOOLS if tools is None else tools,
         timeout=timeout,
     )
 
@@ -81,13 +88,20 @@ def call_agent(
     user_message: str,
     generation: int | None,
     history: Sequence[ConversationTurn] = (),
+    *,
+    game: Game = "main",
 ) -> Iterator[TraceEvent]:
     """Continue a conversation and yield progress and answer text as it arrives."""
     messages: list[dict[str, Any]] = []
     for turn in history:
-        add_user_message(messages, format_user_message(turn.prompt, turn.generation))
+        add_user_message(
+            messages, format_user_message(turn.prompt, turn.generation, turn.game)
+        )
         add_assistant_message(messages, turn.answer)
-    add_user_message(messages, format_user_message(user_message, generation))
+    add_user_message(messages, format_user_message(user_message, generation, game))
+    prompt = system_prompt(game)
+    tools = tools_for(game)
+    allowed = {tool["name"] for tool in tools}
     deadline = time.monotonic() + MAX_RUN_SECONDS
     remaining_tokens = MAX_OUTPUT_TOKENS
     tool_calls = 0
@@ -103,7 +117,12 @@ def call_agent(
             if remaining_tokens <= 0:
                 raise OutputLimitReached
             with chat(
-                client, messages, remaining_tokens, _remaining_time(deadline)
+                client,
+                messages,
+                remaining_tokens,
+                _remaining_time(deadline),
+                prompt,
+                tools,
             ) as stream:
                 for chunk in stream.text_stream:
                     _remaining_time(deadline)
@@ -128,17 +147,17 @@ def call_agent(
                     if tool_calls > MAX_TOOL_CALLS:
                         raise RuntimeError("Agent run exceeded its tool-call limit")
                     _remaining_time(deadline)
-                    if block.name not in TOOL_FUNCTIONS:
+                    if block.name not in allowed or block.name not in TOOL_FUNCTIONS:
                         raise ValueError(f"Unknown tool: {block.name}")
                     yield TraceEvent(type="tool", message=f"Using {block.name}")
                     tool_input = dict(block.input)
                     if block.name == "web_search":
                         tool_input.setdefault("max_results", MAX_RESULT)
-                    # Same fill as the LangChain agent: a selected generation
-                    # reaches matchup tools when the model leaves it out, and
-                    # an explicit generation on the call is left alone.
+                    # Same fill as the LangChain agent. Main series fills a
+                    # selected generation when the model leaves it out. GO
+                    # always uses the latest chart.
                     tool_input = apply_selected_generation(
-                        block.name, tool_input, generation
+                        block.name, tool_input, generation, game
                     )
                     result = TOOL_FUNCTIONS[block.name](**tool_input)
                     _remaining_time(deadline)
