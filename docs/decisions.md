@@ -312,6 +312,38 @@ selected.** That would keep a generation in front of general questions.
 Rejected: **a different prefix in each agent.** The benchmark compares the two
 loops, so the question text has to be the same string.
 
+## 17. Pokemon GO is a game mode beside generation
+
+Decided 15 November 2026. The full write-up is
+`docs/plans/pokemon-go-mode.md`.
+
+Pokemon GO is a second game on the chat composer. Main series stays the
+default. While GO is selected the generation chip hides, the stored generation
+is left alone, and both agents receive the same GO prompt section and the same
+GO tool list. Phase 1 tools are current events and raid bosses, from the
+ScrapedDuck mirror of LeekDuck, cached for 3 hours. Slower feeds, when they
+exist, cache for 24 hours. The main-series dex and `search_strategy` are not
+on the GO list. The two type-chart tools stay, pinned to the latest chart.
+The team builder stays main-series. The trace event schema does not change.
+
+Evergreen GO mechanics (quick catch, Candy XL, trading, Mega candy bonuses)
+go in a later phase: a JSONL corpus indexed into the existing
+`pokeagent-strategy` Pinecone index under namespace `go-guides-v1`, queried
+by `search_go_guides`. That namespace stays separate from `strategy-v1`.
+Brave search is the fallback, not the first stop, once the guides exist.
+
+The ScrapedDuck license files disagree (package.json says MIT, there is no
+LICENSE file, GitHub metadata said AGPL-3.0). That is a note. It does not
+block the work while the app is not monetized. The implementation fetches
+JSON and does not vendor the scraper.
+
+Rejected: **treating GO as another generation.** GO CP, moves, and events do
+not follow the generation charts. Rejected: **a GO prompt that lives in only
+one agent.** Decision 15 already showed that a wording difference is what the
+benchmark then measures. Rejected: **scraping LeekDuck directly, or vendoring
+ScrapedDuck.** Rejected: **putting GO guides in `strategy-v1`.** That index
+is main-series advice filtered by generation and format.
+
 ## Open questions
 
 Not decided. Each needs its own proposal before code depends on it.
