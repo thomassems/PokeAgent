@@ -9,7 +9,7 @@ from typing import Any
 import pytest
 from fastapi.testclient import TestClient
 
-from agents import custom
+from agents import custom, framework
 from agents.conversation import ConversationTurn
 from agents.events import RunMetrics, TraceEvent
 from api import main
@@ -291,6 +291,12 @@ def test_custom_agent_receives_prior_turns_and_the_full_token_budget(
         )
     ]
     assert events[-2] == TraceEvent(type="answer", message="Jolteon is fast.")
+
+
+def test_output_token_cap_is_one_shared_run_budget() -> None:
+    """Both agents spend the same output budget. It stays large enough to finish."""
+    assert custom.MAX_OUTPUT_TOKENS == 8_000
+    assert framework.MAX_OUTPUT_TOKENS == custom.MAX_OUTPUT_TOKENS
 
 
 def test_run_endpoint_sends_sse_and_sanitizes_errors(

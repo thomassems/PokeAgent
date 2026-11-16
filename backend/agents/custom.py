@@ -22,7 +22,13 @@ from llm.tools.registry import (
 NUM_ITERS = 8
 MAX_RESULT = 5
 MAX_TOOL_CALLS = 12
-MAX_OUTPUT_TOKENS = 30_000
+# One budget for the whole run, shared with the LangChain agent, which imports
+# this name. Tool-call JSON spends it too, so it has to fit a multi-step
+# analytical answer, not only the final paragraph. The longest how-to runs
+# before this change used about 1,000 output tokens. A counter-team run after
+# the shorter prompt used about 3,700. 8,000 finishes that kind of answer
+# and still stops a runaway. Short answers come from the prompt.
+MAX_OUTPUT_TOKENS = 8_000
 MAX_RUN_SECONDS = 180
 
 
