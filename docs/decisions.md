@@ -368,6 +368,33 @@ face is legal to ship, whether team colours appear before the app knows a
 team, and whether an event card is only a frame around the streamed
 answer. Nothing here is approved to code.
 
+## 19. Simple answers stay short
+
+Decided 16 November 2026. Numbered 19 because decision 18 is the theme
+proposal that landed with the theme plan.
+
+Both agents share one length rule. A simple factual question or a how-to is
+at most four sentences, or one short list plus one sentence of caveat.
+The answer comes first. There is no preamble, no second section, and no
+recap. The answer goes long only for an analytical question
+(team building, matchups, counters, comparisons) or when the user asks for
+more detail. The same paragraph is in the main-series prompt and the GO
+prompt, so the comparison is not measuring two writing styles.
+
+The run also has one output-token cap, `MAX_OUTPUT_TOKENS` in
+`agents/custom.py`. The LangChain agent imports that name, so the two
+cannot drift. It was 30,000. It is now 8,000. That is a safety limit for
+the whole run, including tool-call JSON. It is not what makes a how-to
+short. A counter-team run on the shorter prompt used about 3,700 output
+tokens, so 8,000 finishes that kind of answer. The prompt is what keeps a
+quick-catch answer short.
+
+Rejected: **a cap of a few hundred tokens.** Tool calls count as output, so
+that would cut a multi-step team answer off mid-sentence. Rejected: **a
+different length rule in each agent.** Decision 15 already showed that a
+wording difference is what the benchmark then measures.
+
+
 ## Open questions
 
 Not decided. Each needs its own proposal before code depends on it.
