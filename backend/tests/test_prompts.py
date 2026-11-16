@@ -40,8 +40,11 @@ def test_no_selected_generation_defaults_to_the_latest_games() -> None:
 def test_go_prompt_uses_live_tools_and_keeps_the_news_rule() -> None:
     assert "get_current_events" in GO_SYSTEM_PROMPT
     assert "get_raid_bosses" in GO_SYSTEM_PROMPT
+    assert "search_go_guides" in GO_SYSTEM_PROMPT
+    assert "get_go_type_roles" in GO_SYSTEM_PROMPT
     assert "Name LeekDuck" in GO_SYSTEM_PROMPT
     assert "Do not search for it" in GO_SYSTEM_PROMPT
+    assert "until a guides tool exists" not in GO_SYSTEM_PROMPT
     assert "get_pokemon" not in GO_SYSTEM_PROMPT
     assert "search_strategy" not in GO_SYSTEM_PROMPT
 
