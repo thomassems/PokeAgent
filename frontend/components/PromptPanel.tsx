@@ -1,5 +1,7 @@
 import type { Game } from "@/lib/game";
+import type { GoAccent } from "@/lib/go-accent";
 import type { Generation } from "@/lib/types";
+import { AccentChip } from "./AccentChip";
 import { GameChip } from "./GameChip";
 import { GenerationChip } from "./GenerationChip";
 
@@ -10,6 +12,8 @@ type PromptPanelProps = {
   generation: Generation | null;
   onGameChange: (game: Game) => void;
   onGenerationChange: (generation: Generation | null) => void;
+  accent: GoAccent;
+  onAccentChange: (accent: GoAccent) => void;
   onPromptChange: (prompt: string) => void;
   onSubmit: () => void;
 };
@@ -21,6 +25,8 @@ export function PromptPanel({
   generation,
   onGameChange,
   onGenerationChange,
+  accent,
+  onAccentChange,
   onPromptChange,
   onSubmit,
 }: PromptPanelProps) {
@@ -58,6 +64,7 @@ export function PromptPanel({
               placement="up"
             />
           )}
+          {game === "go" && <AccentChip accent={accent} onChange={onAccentChange} />}
         </div>
         <div className="chat-composer-submit">
           <span>Shift + Enter for a new line</span>
