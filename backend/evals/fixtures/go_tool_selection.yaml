@@ -26,3 +26,26 @@
   why: The event listing says which species and bonuses are scheduled. The
     guide says the Mega bonus is a shared type, not a super-effective type.
     The question is not "today", because the Community Day is a dated event.
+
+- id: go-egg-pool-uses-eggs
+  prompt: What can I get from 7km eggs right now?
+  game: go
+  expect_tools: [get_egg_pool]
+  forbid_tools: [web_search, search_go_guides]
+  why: The current hatch pool is a slow feed, not a guide and not a web search.
+
+- id: go-research-shiny-uses-research
+  prompt: What are the current field research rewards for a shiny?
+  game: go
+  expect_tools: [get_research_rewards]
+  forbid_tools: [web_search]
+  why: Shiny field research is a flag on the research feed. Untyped tasks
+    are part of that unfiltered list.
+
+- id: go-giovanni-uses-rockets
+  prompt: How do I beat Giovanni right now?
+  game: go
+  expect_tools: [get_rocket_lineups]
+  forbid_tools: [web_search]
+  why: Today's Giovanni lineup is the Rocket feed. The guides do not hold it.
+    A guide call is allowed. A web search is the fallback when the feed fails.
