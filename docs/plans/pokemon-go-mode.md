@@ -3,7 +3,8 @@
 Status: **phase 1 approved**. Thomas accepted this plan on 15 November 2026.
 Decision 17 records the decisions. Phase 1 is the game selector, the shared
 prompt and tool list, and the events and raids tools. The GO guides namespace
-and the type helper are phase 2. Later phases are still design.
+and the type helper are phase 2. A themed UI is proposed as phase 5 and is
+not approved. Decision 18 records that proposal. Later phases are still design.
 
 Checked against the repo and the upstream sources on 15 November 2026.
 
@@ -899,6 +900,9 @@ path.
 Phase 4 is one GET route and the empty state on the chat page. It should
 call the phase 1 cache rather than grow a second fetcher.
 
+Phase 5 is a class and a second set of CSS tokens on the chat page. The
+team page stays on the tokens it already has.
+
 ### Risks
 
 - The wiki is already behind the files: raid tier labels, the `1 km` egg,
@@ -932,6 +936,130 @@ call the phase 1 cache rather than grow a second fetcher.
   is not.
 - A GO prompt that is only wired into the custom loop makes the benchmark
   meaningless. The tests that compare the two user texts are the guard.
+- A theme that reads `pokeagent.game` on every page would restyle the team
+  builder, which does not have a game chip. The team page has to force the
+  main-series theme.
+
+### Phase 5
+
+Themed UI. Its own phase, after the guides work, so a visual pass is not
+bundled into the tool and prompt change. It does not depend on the PvPoke
+tools or the Happening now cards, and those stay phases 3 and 4 so the
+numbers already used in this plan do not move. The design is the Themed UI
+section below. It is not approved. The open questions there are unanswered.
+
+Phase 5 is CSS and a class on the chat page. No new tool, no prompt edit,
+no trace event, no new package, and no asset download beyond the PokeAPI
+sprites the app already uses.
+
+## Themed UI
+
+Proposed. Thomas wants the page to feel less plain, and he wants each game
+to look like itself: Pokemon GO while that chip is selected, and the main
+games while Main series is selected. This is presentation. It does not
+change what either agent is asked, which tools it can call, or what a run
+records.
+
+The switch is the game chip that phase 1 already stores in
+`pokeagent.game`. The chat page sets a theme token from that value. Main
+series is the default, including when storage is missing. Switching back
+restores the main-series theme in the same render as the generation chip.
+`/team` does not read the game. It keeps the main-series theme even if the
+chat page last stored `go`.
+
+### What each theme is aiming at
+
+These are original treatments inspired by the games. They are not a copy
+of a title screen, a HUD, or a map screenshot.
+
+Pokemon GO:
+
+- Bright, map-like greens and blues. The page reads as outdoors rather
+  than as the current dark device shell.
+- Rounded, bubbly cards for the answer panels and the composer, closer to
+  an item sheet than to a log.
+- A round send button with a simple ball-like disc: a circle, a band, and
+  a centre button, drawn in CSS. Not the official ball artwork.
+- Small accents in the three team colours (blue, red, yellow) used as
+  decoration next to a text label. Colour is never the only signal.
+- Event and raid answers can sit in a card with a short heading and a
+  list, so a raid boss list looks like a card rather than a wall of
+  prose. The text is still the agent's answer. The card is a frame.
+
+Main series:
+
+- The answer sits in a classic dialogue frame: a light panel, a dark
+  border, and a small continuation mark. The frame is CSS, not a ripped
+  text-box graphic.
+- A pixel face for headings and for the chip labels only. Body text stays
+  the current sans face so a long answer stays readable.
+- Pixel sprites where the UI already shows a species, from the PokeAPI
+  sprites the app already loads. No new sprite pack.
+- A Pokedex-red accent on the primary control and on the focus ring,
+  replacing the current amber plasma colour for this theme only.
+- The game chip and the generation chip read as menu rows: a stacked
+  list, a highlighted row, keyboard focus unchanged.
+
+### How it is built
+
+Colours, radii, and the heading face live as CSS variables on one
+ancestor. Today `frontend/app/globals.css` already puts every colour in
+`@theme`, and components are not supposed to carry their own hex values.
+The theme adds a second set of tokens, selected by a class such as
+`theme-go` or `theme-main` on the chat page, rather than a second
+stylesheet of raw colours in each component. Shared pieces (the header,
+the focus ring, the composer) read the tokens. A component that needs a
+different shape, such as the dialogue frame or the round send button,
+gets a class under that theme and does not fork the React tree.
+
+The team builder keeps the tokens it has now. It does not inherit
+`theme-go`.
+
+### Readability, motion, and small screens
+
+Text contrast stays at WCAG AA for body text on cards and on the dialogue
+frame. The bright GO greens are backgrounds. Text on them is a dark ink,
+not white-on-lime. Team-colour accents are borders or dots beside a word,
+not the text colour of a sentence.
+
+`globals.css` already shortens animation under
+`prefers-reduced-motion: reduce`. New motion has to live under that rule.
+The allowed motion is small: a send button that presses in, and a card
+that fades in. No map panning, no bouncing ball, no sprite bob. Reduced
+motion leaves the final state with no travel.
+
+The chat already stacks the two agent panels under the `panels`
+breakpoint. Themed cards and the dialogue frame use that same stack.
+Chips wrap instead of overflowing. The send control stays a visible tap
+target. A theme that only looks right as two columns is not done.
+
+### What this will not use
+
+No copied official logos, wordmarks, or title-screen art. No Nintendo,
+Game Freak, or Niantic font files. No ripped UI textures, map tiles, or
+item icons. A pixel heading face, if one is added, is an open font or
+none at all. PokeAPI sprites that the app already requests are the only
+outside images in scope. Hotlinking LeekDuck images stays out, as phase 4
+already says.
+
+### Open questions
+
+1. How far does the theme reach? Chat page and composer only, or the
+   header as well? The team builder stays main-series either way.
+2. Is the main-series dialogue frame a light panel on the current dark
+   shell, or does that theme lighten the whole chat page? GO wants a
+   light map. Two light pages are easier to keep accessible than a light
+   card on a near-black shell.
+3. Which pixel face, if any? Body text should stay the current sans. A
+   heading face still needs a license that allows shipping the file.
+4. Do the three team colours appear as a static decoration, or stay
+   unused until the app actually knows the player's team? There is no
+   team field today.
+5. Does an event or raid card change the markup of an answer, or only
+   the frame around the markdown the agent already streams? A structured
+   card wants a trace change, which this phase does not include.
+6. Should the empty state show a PokeAPI sprite? That is content, and it
+   overlaps the later Pokedex-card idea. The theme can ship without it.
 
 ## 6. Future ideas
 
@@ -987,6 +1115,11 @@ Answered 15 November 2026.
 3. Should every GO answer that used a feed include the LeekDuck credit
    in the text, or is the empty-state credit plus the source fields in
    the tool result enough for the model to mention when it matters?
+4. Themed UI, proposed as phase 5. The open questions are in that
+   section: how far the theme reaches, light versus dark for the
+   main-series frame, which pixel face, whether team colours appear
+   before a team exists, whether an event card is only a frame, and
+   whether the empty state shows a sprite.
 
 ## Approved to code
 
