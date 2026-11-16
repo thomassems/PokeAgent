@@ -1,11 +1,13 @@
 # Pokemon GO mode
 
-Status: **phase 1 approved**. Thomas accepted this plan on 15 November 2026.
+Status: **phase 2 complete**. Thomas accepted this plan on 15 November 2026
+and approved the research, egg, and Rocket filters on 16 November 2026.
 Decision 17 records the decisions. Phase 1 is the game selector, the shared
-prompt and tool list, and the events and raids tools. The GO guides namespace
-and the type helper are phase 2. Themed UI (phase 5) is implemented ahead of
-phases 3 and 4. Decision 18 records the defaults that were chosen. Phases 3
-and 4 are still design.
+prompt and tool list, and the events and raids tools. Phase 2 is the GO
+guides namespace, the type helper, and `get_research_rewards`,
+`get_egg_pool`, and `get_rocket_lineups`. Themed UI (phase 5) is implemented
+ahead of phases 3 and 4. Decision 18 records the defaults that were chosen.
+Phase 3 is not started. Later phases are still design.
 
 Checked against the repo and the upstream sources on 15 November 2026.
 
@@ -833,11 +835,11 @@ built, may also be called. It is not required for the row to pass as
 long as the two sources above are both used. Grading this row on the
 answer text would hide a run that guessed the Mega from memory.
 
-Later phases add rows the same way (`get_research_rewards` for a field
-research question, `get_pvp_rankings` for a Great League question) when
-those tools exist. A prompt change, including landing the GO string,
-is a reason to run the suite. The project already says prompts break
-silently.
+The research, egg, and Rocket rows are in the same fixture:
+`go-egg-pool-uses-eggs`, `go-research-shiny-uses-research`, and
+`go-giovanni-uses-rockets`. A Great League row waits for phase 3.
+A prompt change, including landing the GO string, is a reason to run
+the suite. The project already says prompts break silently.
 
 ## 5. Phased rollout
 
@@ -867,9 +869,12 @@ on the feed cache.
 - The three eval rows for quick catch, Candy XL, and the Pawniard Mega
   question.
 
-Research, eggs, and Rocket lineups stay in this phase, after the guides.
-They are filters on the phase 1 cache with a 24 hour TTL. Prompt lines
-and eval rows for each. No new UI.
+Research, eggs, and Rocket lineups are done in this phase, after the
+guides. They are filters on the phase 1 cache with a 24 hour TTL. Prompt
+lines and eval rows for each. No new UI. The live files, checked on 16
+November 2026, still disagree with the wiki: some research rows omit
+`type`, eggs include `1 km`, and `rocketLineups.min.json` exists even
+though the wiki's Endpoints page does not list it.
 
 ### Phase 3
 

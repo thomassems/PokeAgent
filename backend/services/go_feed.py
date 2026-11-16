@@ -18,8 +18,7 @@ import httpx2
 logger = logging.getLogger(__name__)
 
 # Events and raids move during the day. Research, eggs, and Rocket lineups
-# are slower. Phase 1 only fetches the live pair. The slow interval is named
-# here so the later feeds use the same constant.
+# change more slowly, so they keep a payload for a day.
 LIVE_TTL_SECONDS = 3 * 60 * 60
 SLOW_TTL_SECONDS = 24 * 60 * 60
 
@@ -27,6 +26,11 @@ _DATA_BRANCH = "https://raw.githubusercontent.com/bigfoott/ScrapedDuck/data"
 FEEDS: dict[str, tuple[str, int]] = {
     "events": (f"{_DATA_BRANCH}/events.min.json", LIVE_TTL_SECONDS),
     "raids": (f"{_DATA_BRANCH}/raids.min.json", LIVE_TTL_SECONDS),
+    "research": (f"{_DATA_BRANCH}/research.min.json", SLOW_TTL_SECONDS),
+    "eggs": (f"{_DATA_BRANCH}/eggs.min.json", SLOW_TTL_SECONDS),
+    # The wiki's Endpoints page does not list this file. It is on the data
+    # branch anyway, and the filename is not "rockets".
+    "rockets": (f"{_DATA_BRANCH}/rocketLineups.min.json", SLOW_TTL_SECONDS),
 }
 
 # The wiki's eventType table. A value outside this list is rejected before
@@ -73,6 +77,29 @@ EVENT_TYPES = (
 # Live raids.json uses the star labels. Mega is on the wiki. Shadow and Mega
 # bosses often arrive as raid-battles events instead of rows in this file.
 RAID_TIERS = ("1-Star Raids", "3-Star Raids", "5-Star Raids", "Mega")
+
+# Wiki task types. The live file omits `type` on some rows, and a snapshot
+# may not use every value. Rows with no type stay in the unfiltered list.
+RESEARCH_TYPES = (
+    "catch",
+    "throw",
+    "battle",
+    "explore",
+    "training",
+    "rocket",
+    "buddy",
+    "ar",
+    "sponsored",
+    "event",
+)
+
+# `1 km` is in the live eggs file and missing from the wiki's allowed list.
+EGG_DISTANCES = ("1 km", "2 km", "5 km", "7 km", "10 km", "12 km")
+
+# Leaders are these four names. An empty `type` is not enough: untyped
+# grunts and the decoy also have `type: ""`.
+ROCKET_LEADERS = frozenset({"Giovanni", "Cliff", "Arlo", "Sierra"})
+ROCKET_GROUPS = ("leader", "grunt")
 
 _TIMEOUT_SECONDS = 10.0
 _HTML_TAGS = re.compile(r"<[^>]+>")
@@ -199,6 +226,80 @@ def trim_event(row: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def trim_research(row: dict[str, Any]) -> dict[str, Any]:
+    text = row.get("text")
+    rewards: list[dict[str, Any]] = []
+    for reward in row.get("rewards") or []:
+        if not isinstance(reward, dict):
+            continue
+        name = reward.get("name")
+        rewards.append(
+            {
+                "name": clean_text(name) if isinstance(name, str) else None,
+                "can_be_shiny": reward.get("canBeShiny"),
+                "combat_power": reward.get("combatPower"),
+            }
+        )
+    trimmed: dict[str, Any] = {
+        "text": clean_text(text) if isinstance(text, str) else None,
+        "rewards": rewards,
+    }
+    # Absent on purpose. A missing type must not look like a real category.
+    if isinstance(row.get("type"), str):
+        trimmed["task_type"] = row["type"]
+    return trimmed
+
+
+def trim_egg(row: dict[str, Any]) -> dict[str, Any]:
+    name = row.get("name")
+    return {
+        "name": clean_text(name) if isinstance(name, str) else None,
+        "distance": row.get("eggType"),
+        "can_be_shiny": row.get("canBeShiny"),
+        "combat_power": row.get("combatPower"),
+        "is_adventure_sync": row.get("isAdventureSync"),
+        "is_regional": row.get("isRegional"),
+        "is_gift_exchange": row.get("isGiftExchange"),
+        "rarity": row.get("rarity"),
+    }
+
+
+def _rocket_slot(items: Any) -> list[dict[str, Any]]:
+    if not isinstance(items, list):
+        return []
+    slot: list[dict[str, Any]] = []
+    for mon in items:
+        if not isinstance(mon, dict) or not isinstance(mon.get("name"), str):
+            continue
+        types = mon.get("types")
+        slot.append(
+            {
+                "name": clean_text(mon["name"]),
+                "types": [item for item in types if isinstance(item, str)]
+                if isinstance(types, list)
+                else [],
+                "is_encounter": mon.get("isEncounter"),
+                "can_be_shiny": mon.get("canBeShiny"),
+            }
+        )
+    return slot
+
+
+def trim_rocket(row: dict[str, Any]) -> dict[str, Any]:
+    name = clean_text(row["name"]) if isinstance(row.get("name"), str) else None
+    title = row.get("title")
+    rocket_type = row.get("type")
+    return {
+        "name": name,
+        "title": clean_text(title) if isinstance(title, str) else None,
+        "type": rocket_type if isinstance(rocket_type, str) else "",
+        "group": "leader" if name in ROCKET_LEADERS else "grunt",
+        "first": _rocket_slot(row.get("firstPokemon")),
+        "second": _rocket_slot(row.get("secondPokemon")),
+        "third": _rocket_slot(row.get("thirdPokemon")),
+    }
+
+
 def trim_raid(row: dict[str, Any]) -> dict[str, Any]:
     types = row.get("types")
     weather = row.get("boostedWeather")
@@ -214,12 +315,27 @@ def trim_raid(row: dict[str, Any]) -> dict[str, Any]:
 
 def _trim(name: str, payload: list[Any]) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
-    trim = trim_event if name == "events" else trim_raid
     for row in payload:
-        if not isinstance(row, dict) or not isinstance(row.get("name"), str):
+        if not isinstance(row, dict):
+            logger.warning("Skipping a %s row that is not an object", name)
+            continue
+        if name == "research":
+            if not isinstance(row.get("text"), str):
+                logger.warning("Skipping a research row that has no text")
+                continue
+            rows.append(trim_research(row))
+            continue
+        if not isinstance(row.get("name"), str):
             logger.warning("Skipping a %s row that has no name", name)
             continue
-        rows.append(trim(row))
+        if name == "events":
+            rows.append(trim_event(row))
+        elif name == "eggs":
+            rows.append(trim_egg(row))
+        elif name == "rockets":
+            rows.append(trim_rocket(row))
+        else:
+            rows.append(trim_raid(row))
     return rows
 
 
