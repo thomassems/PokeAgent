@@ -76,6 +76,17 @@ class ToolSelectionCase(BaseModel):
     why: str
 
 
+class GoToolSelectionCase(BaseModel):
+    """A GO question that must call every tool in `expect_tools`."""
+
+    id: str
+    prompt: str
+    game: Literal["go"]
+    expect_tools: list[str] = Field(min_length=1)
+    forbid_tools: list[str] = []
+    why: str
+
+
 class JevToolSelectionCase(BaseModel):
     id: str
     prompt: str
@@ -101,6 +112,10 @@ def retrieval_cases() -> list[RetrievalCase]:
 
 def tool_selection_cases() -> list[ToolSelectionCase]:
     return [ToolSelectionCase(**case) for case in _load("tool_selection.yaml")]
+
+
+def go_tool_selection_cases() -> list[GoToolSelectionCase]:
+    return [GoToolSelectionCase(**case) for case in _load("go_tool_selection.yaml")]
 
 
 def jev_tool_selection_cases() -> list[JevToolSelectionCase]:

@@ -190,6 +190,8 @@ def test_main_and_go_tool_lists() -> None:
     assert go_names == {tool["name"] for tool in GO_TOOLS}
     assert "get_current_events" in go_names
     assert "get_raid_bosses" in go_names
+    assert "search_go_guides" in go_names
+    assert "get_go_type_roles" in go_names
     assert "get_pokemon" not in go_names
     assert "get_move" not in go_names
     assert "find_pokemon" not in go_names

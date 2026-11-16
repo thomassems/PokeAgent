@@ -1,11 +1,14 @@
 from copy import deepcopy
 from typing import Any
 
-from data.dex import LATEST_GENERATION, MOVES, POKEMON
+from data.dex import DEFENDING_CHARTS, LATEST_GENERATION, MOVES, POKEMON
+from data.go_guides import GO_GUIDE_TOPICS
 from services.go_feed import EVENT_TYPES, RAID_TIERS, load_feed
+from services.go_guide_search import search_go_guides
 from services.search import web_search
 from services.strategy_search import search_strategy
 from tools.dex_query import find_pokemon
+from tools.go_types import go_type_roles
 from tools.matchups import type_effectiveness, type_matchups
 
 
@@ -51,6 +54,7 @@ def get_move(moves):
 # Thin wrapper: the arithmetic lives in tools/ where it is pure and tested.
 get_type_matchups = type_matchups
 get_type_effectiveness = type_effectiveness
+get_go_type_roles = go_type_roles
 
 
 def get_current_events(event_type: str | None = None) -> dict[str, Any]:
@@ -441,6 +445,8 @@ TOOL_FUNCTIONS = {
     "find_pokemon": find_pokemon,
     "get_current_events": get_current_events,
     "get_raid_bosses": get_raid_bosses,
+    "search_go_guides": search_go_guides,
+    "get_go_type_roles": get_go_type_roles,
 }
 
 
@@ -507,6 +513,67 @@ GO_TOOLS: list[dict[str, Any]] = [
     _tool("get_type_matchups"),
     _tool("get_type_effectiveness"),
     _tool("web_search"),
+    {
+        "name": "search_go_guides",
+        "description": (
+            "Search evergreen Pokemon GO mechanics: catching technique, Candy, "
+            "Candy XL, trading, and the Mega Evolution catch-candy bonus. "
+            "Results are written summaries with source metadata. Use this for "
+            "how something works. Use the live event and raid tools for what "
+            "is happening now. Do not use this for main-series battle advice."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "description": "The mechanic to look up, phrased as a question.",
+                },
+                "topic": {
+                    "type": "string",
+                    "enum": list(GO_GUIDE_TOPICS),
+                    "description": (
+                        "Optional. Limit the search to one topic, such as "
+                        "catching, candy, trading, mega, or items."
+                    ),
+                },
+                "limit": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10,
+                    "description": "How many passages to return. Defaults to 5.",
+                },
+            },
+            "required": ["query"],
+        },
+    },
+    {
+        "name": "get_go_type_roles",
+        "description": (
+            "Split a catch's types into the Mega candy bonus and the raid "
+            "counters. candy_bonus_types are the types you pass in: a Mega "
+            "that shares one of them earns extra catch candy. super_effective "
+            "is which attacks hit that typing hardest on the latest chart. "
+            "Those are not the same choice. Pass one or two type names."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "types": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": sorted(DEFENDING_CHARTS[LATEST_GENERATION]),
+                    },
+                    "minItems": 1,
+                    "maxItems": 2,
+                    "description": "The types of the Pokemon being caught.",
+                },
+            },
+            "required": ["types"],
+        },
+    },
 ]
 
 
