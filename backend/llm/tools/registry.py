@@ -3,7 +3,14 @@ from typing import Any
 
 from data.dex import DEFENDING_CHARTS, LATEST_GENERATION, MOVES, POKEMON
 from data.go_guides import GO_GUIDE_TOPICS
-from services.go_feed import EVENT_TYPES, RAID_TIERS, load_feed
+from services.go_feed import (
+    EGG_DISTANCES,
+    EVENT_TYPES,
+    RAID_TIERS,
+    RESEARCH_TYPES,
+    ROCKET_GROUPS,
+    load_feed,
+)
 from services.go_guide_search import search_go_guides
 from services.search import web_search
 from services.strategy_search import search_strategy
@@ -68,6 +75,45 @@ def get_current_events(event_type: str | None = None) -> dict[str, Any]:
     if event_type is not None:
         events = [event for event in events if event.get("event_type") == event_type]
     return {**payload, "events": events}
+
+
+def get_research_rewards(task_type: str | None = None) -> dict[str, Any]:
+    """Field research tasks. Rows with no type appear only when unfiltered."""
+    if task_type is not None and task_type not in RESEARCH_TYPES:
+        return {"error": f"Unknown research type '{task_type}'."}
+    payload = load_feed("research")
+    if "error" in payload:
+        return payload
+    tasks = payload["research"]
+    if task_type is not None:
+        tasks = [task for task in tasks if task.get("task_type") == task_type]
+    return {**payload, "research": tasks}
+
+
+def get_egg_pool(distance: str | None = None) -> dict[str, Any]:
+    """Pokemon currently hatching from eggs. `distance` is the egg label."""
+    if distance is not None and distance not in EGG_DISTANCES:
+        return {"error": f"Unknown egg distance '{distance}'."}
+    payload = load_feed("eggs")
+    if "error" in payload:
+        return payload
+    eggs = payload["eggs"]
+    if distance is not None:
+        eggs = [egg for egg in eggs if egg.get("distance") == distance]
+    return {**payload, "eggs": eggs}
+
+
+def get_rocket_lineups(group: str | None = None) -> dict[str, Any]:
+    """Team Rocket lineups. Leaders are the four named bosses."""
+    if group is not None and group not in ROCKET_GROUPS:
+        return {"error": f"Unknown Rocket group '{group}'."}
+    payload = load_feed("rockets")
+    if "error" in payload:
+        return payload
+    lineups = payload["rockets"]
+    if group is not None:
+        lineups = [row for row in lineups if row.get("group") == group]
+    return {**payload, "rockets": lineups}
 
 
 def get_raid_bosses(tier: str | None = None) -> dict[str, Any]:
@@ -445,6 +491,9 @@ TOOL_FUNCTIONS = {
     "find_pokemon": find_pokemon,
     "get_current_events": get_current_events,
     "get_raid_bosses": get_raid_bosses,
+    "get_research_rewards": get_research_rewards,
+    "get_egg_pool": get_egg_pool,
+    "get_rocket_lineups": get_rocket_lineups,
     "search_go_guides": search_go_guides,
     "get_go_type_roles": get_go_type_roles,
 }
@@ -510,6 +559,72 @@ GO_TOOLS: list[dict[str, Any]] = [
             "required": [],
         },
     },
+    {
+        "name": "get_research_rewards",
+        "description": (
+            "List current Pokemon GO field research tasks from LeekDuck via "
+            "ScrapedDuck, with reward names, catch CP, and whether the reward "
+            "can be shiny. Omit task_type to include tasks that have no type. "
+            "A filter drops those untyped tasks. The result includes fetched_at "
+            "and stale."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "task_type": {
+                    "type": "string",
+                    "enum": list(RESEARCH_TYPES),
+                    "description": (
+                        "Optional. Limit the list to one task type, such as "
+                        "catch, throw, battle, or rocket."
+                    ),
+                },
+            },
+            "required": [],
+        },
+    },
+    {
+        "name": "get_egg_pool",
+        "description": (
+            "List Pokemon currently hatching from Pokemon GO eggs, from "
+            "LeekDuck via ScrapedDuck. Distances include 1 km, which the "
+            "wiki omits, plus 2 km, 5 km, 7 km, 10 km, and 12 km. Omit "
+            "distance to return every pool. The result includes fetched_at "
+            "and stale."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "distance": {
+                    "type": "string",
+                    "enum": list(EGG_DISTANCES),
+                    "description": "Optional. Limit the pool to one egg distance.",
+                },
+            },
+            "required": [],
+        },
+    },
+    {
+        "name": "get_rocket_lineups",
+        "description": (
+            "List current Team GO Rocket lineups from LeekDuck via ScrapedDuck. "
+            "Leaders are Giovanni, Cliff, Arlo, and Sierra. Everyone else, "
+            "including the decoy, is a grunt. Each slot is a list of possible "
+            "Pokemon, and is_encounter marks the one the player can catch. "
+            "The result includes fetched_at and stale."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "group": {
+                    "type": "string",
+                    "enum": list(ROCKET_GROUPS),
+                    "description": "Optional. leader or grunt.",
+                },
+            },
+            "required": [],
+        },
+    },
     _tool("get_type_matchups"),
     _tool("get_type_effectiveness"),
     _tool("web_search"),
@@ -519,8 +634,9 @@ GO_TOOLS: list[dict[str, Any]] = [
             "Search evergreen Pokemon GO mechanics: catching technique, Candy, "
             "Candy XL, trading, and the Mega Evolution catch-candy bonus. "
             "Results are written summaries with source metadata. Use this for "
-            "how something works. Use the live event and raid tools for what "
-            "is happening now. Do not use this for main-series battle advice."
+            "how something works. Use the live feeds for what is happening now: "
+            "events, raids, research, eggs, and Rocket lineups. Do not use "
+            "this for main-series battle advice."
         ),
         "input_schema": {
             "type": "object",

@@ -71,3 +71,11 @@ def test_news_that_is_not_about_pokemon_is_declined_without_search() -> None:
     assert "Decline it briefly and politely" in SYSTEM_PROMPT
     assert "Do not search for it" in SYSTEM_PROMPT
     assert "never search for news that is not about Pokemon." in SYSTEM_PROMPT
+
+
+def test_go_prompt_routes_research_eggs_and_rockets() -> None:
+    assert "get_research_rewards" in GO_SYSTEM_PROMPT
+    assert "get_egg_pool" in GO_SYSTEM_PROMPT
+    assert "get_rocket_lineups" in GO_SYSTEM_PROMPT
+    assert "including 1 km" in GO_SYSTEM_PROMPT
+    assert "The guides do not hold today's lineup." in GO_SYSTEM_PROMPT

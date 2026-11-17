@@ -5,7 +5,7 @@ from typing import Any
 
 import httpx2
 
-from services.go_feed import LIVE_TTL_SECONDS, FeedCache, clean_text
+from services.go_feed import LIVE_TTL_SECONDS, SLOW_TTL_SECONDS, FeedCache, clean_text
 
 EVENTS = [
     {
@@ -140,6 +140,136 @@ def test_failed_refresh_serves_the_previous_payload() -> None:
     assert stale["raids"][0]["boosted_weather"] == ["windy"]
     assert len(stale["raids"]) == 1
     assert len(calls) == 2
+
+
+RESEARCH = [
+    {
+        "text": "<span>Catch 8 Pokémon</span>",
+        "rewards": [
+            {
+                "name": "Pidgey",
+                "image": "pidgey",
+                "canBeShiny": False,
+                "combatPower": {"min": 10, "max": 10},
+            }
+        ],
+    },
+    {
+        "text": "Make 3 Great Throws",
+        "type": "throw",
+        "rewards": [{"name": "Stardust", "image": "dust"}],
+    },
+]
+
+EGGS = [
+    {
+        "name": "Bulbasaur",
+        "eggType": "1 km",
+        "isAdventureSync": False,
+        "image": "bulb",
+        "canBeShiny": True,
+        "combatPower": {"min": 637, "max": 637},
+        "isRegional": False,
+        "isGiftExchange": False,
+        "rarity": 4,
+    },
+    {
+        "name": "Alolan Meowth",
+        "eggType": "7 km",
+        "image": "meowth",
+        "canBeShiny": False,
+        "combatPower": {"min": 1, "max": 2},
+        "isAdventureSync": False,
+        "isRegional": False,
+        "isGiftExchange": True,
+        "rarity": 2,
+    },
+]
+
+ROCKETS = [
+    {
+        "name": "Giovanni",
+        "title": "Team GO Rocket Boss",
+        "type": "",
+        "firstPokemon": [
+            {
+                "name": "Persian",
+                "image": "persian",
+                "types": ["normal"],
+                "isEncounter": False,
+                "canBeShiny": False,
+            }
+        ],
+        "secondPokemon": [],
+        "thirdPokemon": [
+            {
+                "name": "Shadow Kyogre",
+                "image": "kyogre",
+                "types": ["water"],
+                "isEncounter": True,
+                "canBeShiny": False,
+            }
+        ],
+    },
+    {
+        "name": "Decoy Female Grunt",
+        "title": "Team GO Rocket Grunt",
+        "type": "",
+        "firstPokemon": [{"name": "Snorlax", "types": ["normal"], "image": "snorlax"}],
+        "secondPokemon": [],
+        "thirdPokemon": [],
+    },
+]
+
+
+def test_slow_feeds_keep_a_payload_for_a_day() -> None:
+    cache, calls, now = _cache(
+        {"research": RESEARCH, "eggs": EGGS, "rocketLineups": ROCKETS}
+    )
+    first = cache.load("research")
+    now["t"] = LIVE_TTL_SECONDS
+    cache.load("research")
+    assert len(calls) == 1
+
+    now["t"] = SLOW_TTL_SECONDS
+    cache.load("research")
+    assert len(calls) == 2
+    assert first["stale"] is False
+    assert "research.min.json" in first["source_url"]
+
+
+def test_research_keeps_untyped_rows_and_strips_html() -> None:
+    cache, _, _ = _cache({"research": RESEARCH})
+    result = cache.load("research")
+    untyped, typed = result["research"]
+
+    assert untyped["text"] == "Catch 8 Pokémon"
+    assert "task_type" not in untyped
+    assert untyped["rewards"][0]["name"] == "Pidgey"
+    assert typed["task_type"] == "throw"
+    assert "image" not in json.dumps(result)
+
+
+def test_egg_pool_keeps_the_one_kilometre_distance() -> None:
+    cache, _, _ = _cache({"eggs": EGGS})
+    eggs = cache.load("eggs")["eggs"]
+
+    assert [egg["distance"] for egg in eggs] == ["1 km", "7 km"]
+    assert eggs[1]["is_gift_exchange"] is True
+    assert "image" not in json.dumps(eggs)
+
+
+def test_rocket_leaders_are_the_four_names_not_an_empty_type() -> None:
+    cache, _, _ = _cache({"rocketLineups": ROCKETS})
+    lineups = cache.load("rockets")["rockets"]
+
+    assert lineups[0]["group"] == "leader"
+    assert lineups[0]["third"][0]["is_encounter"] is True
+    assert lineups[0]["third"][0]["types"] == ["water"]
+    assert lineups[1]["group"] == "grunt"
+    assert lineups[1]["name"] == "Decoy Female Grunt"
+    assert "rocketLineups.min.json" in cache.load("rockets")["source_url"]
+    assert "image" not in json.dumps(lineups)
 
 
 def test_failed_refresh_with_nothing_cached_returns_an_error() -> None:

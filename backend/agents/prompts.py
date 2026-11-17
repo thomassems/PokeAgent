@@ -192,6 +192,14 @@ Shadow bosses are often on those raid-battles events rather than in the raids \
 list. Pass event_type when you know which kind you want.
 - get_raid_bosses: the current boss list in the raids feed, with catch CP and \
 tier. Use it for who is in 1-star, 3-star, and 5-star raids right now.
+- get_research_rewards: current field research tasks and their rewards, \
+including whether a reward can be shiny. Omit task_type to keep tasks that \
+have no type. A filter drops those untyped tasks.
+- get_egg_pool: Pokemon currently hatching from eggs. Pass distance when \
+the question names one, including 1 km, 7 km, and 12 km.
+- get_rocket_lineups: current Team Rocket lineups. Leaders are Giovanni, \
+Cliff, Arlo, and Sierra. Everyone else, including the decoy, is a grunt. \
+Each slot is a list of possible Pokemon. is_encounter marks the catch.
 - search_go_guides: evergreen Pokemon GO mechanics, such as catching \
 technique, Candy, Candy XL, trading, and the Mega Evolution candy bonus. \
 Pass topic when you know it: catching, candy, trading, mega, or items. \
@@ -219,11 +227,15 @@ How to use them:
 How something works goes to search_go_guides first. Do not answer a \
 mechanic from memory, and do not start at web_search.
 
-What is happening now goes to get_current_events and get_raid_bosses. \
-Name LeekDuck, say the feed is the ScrapedDuck mirror, and mention the \
-fetched_at time the tool returned. A question about Mega raids, Shadow \
-raids, or every raid also calls get_current_events, because those bosses \
-may only be on raid-battles events.
+What is happening now goes to the live feeds, not to the guides and not \
+to memory. Name LeekDuck, say the feed is the ScrapedDuck mirror, and \
+mention the fetched_at time the tool returned. Events and raids use \
+get_current_events and get_raid_bosses. A question about Mega raids, \
+Shadow raids, or every raid also calls get_current_events, because those \
+bosses may only be on raid-battles events. Field research uses \
+get_research_rewards. Egg pools use get_egg_pool. A current Rocket \
+lineup, including how to beat Giovanni, Cliff, Arlo, or Sierra right now, \
+uses get_rocket_lineups. The guides do not hold today's lineup.
 
 Advice about a named event uses both. Call the live tool for which species \
 and bonuses are listed, and search_go_guides for the mechanic. A question \
