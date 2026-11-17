@@ -1224,6 +1224,10 @@ The browser maps a feed name onto a slug, then onto that id. The
 snapshot stays text. LeekDuck image fields stay dropped. Do not
 hotlink them.
 
+Official PokeAPI sprites are The Pokémon Company's art. They are fine
+for a free, non-commercial app. Whether they stay if the app ever
+charges is open question 2 in `docs/plans/monetization.md`.
+
 The map, in order:
 
 1. Take the display name from the feed.
