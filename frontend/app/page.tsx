@@ -7,6 +7,8 @@ import { PromptPanel } from "@/components/PromptPanel";
 import { AGENT_IDS, type AgentId } from "@/lib/agents";
 import { readAgentStream } from "@/lib/agent-stream";
 import { useSharedGame, type Game } from "@/lib/game";
+import { useSharedAccent } from "@/lib/go-accent";
+import { spriteUrlFor } from "@/lib/pokeapi";
 import { useSharedGeneration } from "@/lib/generation";
 import { applyAgentEvent, newRun, type RunState } from "@/lib/run-state";
 import type { Generation } from "@/lib/types";
@@ -16,6 +18,12 @@ const EXAMPLE_PROMPTS = [
   "What does Body Slam do?",
   "How did Steel resist Ghost in Generation 4?",
 ];
+
+const STARTER_SPRITES = [
+  { id: 1, name: "Bulbasaur" },
+  { id: 4, name: "Charmander" },
+  { id: 7, name: "Squirtle" },
+] as const;
 
 const GO_EXAMPLE_PROMPTS = [
   "What raid bosses are in Pokemon GO right now?",
@@ -35,6 +43,7 @@ type Turn = {
 export default function Home() {
   const [generation, setGeneration] = useSharedGeneration();
   const [game, setGame] = useSharedGame();
+  const [accent, setAccent] = useSharedAccent();
   const examples = game === "go" ? GO_EXAMPLE_PROMPTS : EXAMPLE_PROMPTS;
   const [prompt, setPrompt] = useState("");
   const [turns, setTurns] = useState<Turn[]>([]);
@@ -176,11 +185,30 @@ export default function Home() {
   };
 
   return (
-    <div className="chat-page flex min-h-screen flex-col">
+    <div
+      className={`chat-page theme-${game} flex min-h-screen flex-col`}
+      data-accent={game === "go" ? accent : undefined}
+    >
       <AppHeader activePage="chat" />
       <main className="chat-main mx-auto flex w-full max-w-[1200px] flex-1 flex-col px-4 sm:px-6">
         {turns.length === 0 ? (
           <div className="chat-welcome flex flex-1 flex-col items-center justify-center text-center">
+            {game === "main" && (
+              <div className="chat-sprites">
+                {STARTER_SPRITES.map((species) => (
+                  // Already a small pixel PNG. next/image would re-encode it.
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={species.id}
+                    className="pixel-sprite"
+                    src={spriteUrlFor(species.id)}
+                    alt={species.name}
+                    width={72}
+                    height={72}
+                  />
+                ))}
+              </div>
+            )}
             <div className="chat-mark" aria-hidden="true">P</div>
             <h2>Ask PokeAgent</h2>
             <p>
@@ -220,6 +248,8 @@ export default function Home() {
             generation={generation}
             onGameChange={setGame}
             onGenerationChange={setGeneration}
+            accent={accent}
+            onAccentChange={setAccent}
             onPromptChange={setPrompt}
             onSubmit={handleRun}
           />
