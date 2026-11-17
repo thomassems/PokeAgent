@@ -436,32 +436,56 @@ Proposed 17 November 2026. Not approved to code. Numbered 21 because
 decision 20, above, is the PvPoke license note. The write-up is the
 Pinned GO dashboard section of `docs/plans/pokemon-go-mode.md`.
 
+Thomas answered the open questions on 17 November 2026. The proposal
+is still not approved to code.
+
 The chat page, while Pokemon GO is selected, would show widgets the user
 pins: raids, events over the coming weekend, Community Day, eggs,
-research, and Rocket lineups. Pins live in `pokeagent.goPins` in
-localStorage, the same kind of browser storage as `pokeagent.game`.
-There is no account and no database. The board reads `GET /api/go/snapshot`,
-which returns the feed envelopes the tools already cache. Events and
-raids stay on the 3 hour TTL. Eggs, research, and Rocket lineups stay
-on the 24 hour TTL. The browser clock decides "next weekend". The server
-does not.
+research, Rocket lineups, and featured event spawns. A new browser
+starts with raids, next weekend's events, and Community Day pinned.
+Cards are read-only. They do not fill the composer.
 
-ScrapedDuck's data branch has no wild-spawn file. A general wild pool is
-not a widget. Featured spawns already on event rows can be a card, and
-the card says they are event spawns. A true wild-pool question stays on
-`web_search`.
+Pins live in `pokeagent.goPins` in localStorage for this phase, the
+same kind of browser storage as `pokeagent.game`. Server-side
+persistence of that pin set is wanted later. It is a later step, and
+it needs its own decision: there is no account to attach a pin set to.
+This phase does not add a store.
 
-This proposal absorbs phase 4. Happening now cards would be the default
-pins, not a second empty state. That recommendation is part of what
-Thomas still has to accept.
+The board reads `GET /api/go/snapshot`, which returns the feed
+envelopes the tools already cache. Events and raids stay on the 3 hour
+TTL. Eggs, research, and Rocket lineups stay on the 24 hour TTL. The
+browser clock decides "next weekend". The server does not.
+
+ScrapedDuck's data branch has no wild-spawn file. Featured event
+spawns replace a wild-spawn widget. The card says they are event
+spawns. A true wild-pool question stays on `web_search`.
+
+Phase 6 replaces phase 4. Happening now cards are those default pins,
+not a second empty state.
+
+Where a row names a species, the card shows a PokeAPI sprite. Raids
+and featured spawns must. Eggs, research, and Rocket slots do when the
+name maps. The id comes from the form entry in the PokeAPI name index
+the app already loads (`meowth-alola`, not the base species' national
+dex number). `spriteUrlFor` builds the URL. Shadow has no PokeAPI
+sprite, so the image is the base form and the caption still says
+Shadow. A name that does not map shows no image. LeekDuck images stay
+unlinked.
+
+Still open inside this proposal: whether the full cards collapse after
+the first turn, and the show-more counts. Proposed caps are in the
+plan. They depend on card size and are not decided.
 
 Rejected for this proposal, even if the dashboard is later approved:
-**user accounts or a database for pins.** Team state already lives in
-the URL, and this app does not grow accounts. Rejected: **a second
-fetcher or an ICS parser.** The events JSON is already cached.
-Rejected: **scraping a wild-spawn page.** There is no structured feed
-for it. Rejected: **computing the weekend on the server.** That uses
-the server's timezone, which the plan already calls out as wrong.
+**user accounts in this phase.** Team state already lives in the URL,
+and this app does not grow accounts here. A later persistence step is
+separate. Rejected: **a second fetcher or an ICS parser.** The events
+JSON is already cached. Rejected: **scraping a wild-spawn page.**
+There is no structured feed for it. Rejected: **computing the weekend
+on the server.** That uses the server's timezone. Rejected:
+**hotlinking LeekDuck images, or filling the composer from a card.**
+Rejected: **drawing a form from the base species' national dex id.**
+That shows the wrong Pokemon.
 
 
 ## Open questions
