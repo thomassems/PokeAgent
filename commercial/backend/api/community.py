@@ -9,7 +9,7 @@ from typing import Literal
 from fastapi import APIRouter, Cookie, HTTPException, Response
 from pydantic import BaseModel, Field
 
-from data.go_catalog import EntryFlags, catalog
+from data.go_catalog import EntryFlags, catalog, filter_catalog
 from services.accounts import (
     cookie_name,
     login,
@@ -207,3 +207,31 @@ def trade_search(
 ) -> dict:
     user = require_user(trainermon_session)
     return {"city": city, "matches": search_trades(user["id"], city)}
+
+
+@router.get("/api/explorer")
+def explorer(
+    query: str = "",
+    shiny: bool = False,
+    dynamax: bool = False,
+    gigantamax: bool = False,
+    shadow: bool = False,
+    costume: bool = False,
+    regional: bool = False,
+    mythical: bool = False,
+    legendary: bool = False,
+) -> dict:
+    return {
+        "seed": True,
+        "species": filter_catalog(
+            query=query,
+            shiny=shiny,
+            dynamax=dynamax,
+            gigantamax=gigantamax,
+            shadow=shadow,
+            costume=costume,
+            regional=regional,
+            mythical=mythical,
+            legendary=legendary,
+        ),
+    }
