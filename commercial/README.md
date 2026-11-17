@@ -132,6 +132,16 @@ CREATE TABLE list_entries (
 );
 ```
 
+Demo trainers for the trade page:
+
+```bash
+cd backend && uv run python -m scripts.seed_trade_demo
+```
+
+The four emails end in `@demo.test` and the password is `demo-password`.
+Avery and Jordan in Toronto overlap. Sam is in Montreal. Riley does not
+overlap with Avery.
+
 ## Checks
 
 ```bash

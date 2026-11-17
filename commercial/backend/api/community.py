@@ -19,6 +19,7 @@ from services.accounts import (
     user_from_token,
 )
 from services.lists import add_entry, delete_entry, list_entries, update_entry
+from services.trades import search_trades
 
 router = APIRouter()
 _MAX_AGE = 14 * 24 * 60 * 60
@@ -197,3 +198,12 @@ def remove_list(
     except LookupError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     return {"ok": True}
+
+
+@router.get("/api/trades/search")
+def trade_search(
+    city: str = "Toronto",
+    trainermon_session: str | None = Cookie(default=None),
+) -> dict:
+    user = require_user(trainermon_session)
+    return {"city": city, "matches": search_trades(user["id"], city)}

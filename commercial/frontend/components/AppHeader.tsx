@@ -40,6 +40,13 @@ export function AppHeader({ activePage }: AppHeaderProps) {
             Lists
           </Link>
           <Link
+            href="/trades"
+            aria-current={activePage === "trades" ? "page" : undefined}
+            className={`rounded-sm px-2 py-1 ${activePage === "trades" ? "bg-shell-800 text-ink-100" : "text-ink-500 hover:text-ink-100"}`}
+          >
+            Trades
+          </Link>
+          <Link
             href="/team"
             aria-current={activePage === "team" ? "page" : undefined}
             className={`rounded-sm px-2 py-1 ${activePage === "team" ? "bg-shell-800 text-ink-100" : "text-ink-500 hover:text-ink-100"}`}
