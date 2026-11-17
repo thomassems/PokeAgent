@@ -49,6 +49,23 @@ def test_go_prompt_uses_live_tools_and_keeps_the_news_rule() -> None:
     assert "search_strategy" not in GO_SYSTEM_PROMPT
 
 
+def test_both_prompts_keep_simple_answers_short() -> None:
+    """A how-to stays short in both prompts. Length is not a per-agent choice."""
+    for prompt in (SYSTEM_PROMPT, GO_SYSTEM_PROMPT):
+        assert "Lead with the answer." in prompt
+        assert (
+            "A simple factual question or a how-to is at most four sentences, or one "
+            "short list plus one sentence of caveat."
+            in prompt
+        )
+        assert "Do not add a second section." in prompt
+        assert "Go long only for an analytical question" in prompt
+        assert (
+            "Team building, matchups, counters, and comparisons are analytical."
+            in prompt
+        )
+
+
 def test_news_that_is_not_about_pokemon_is_declined_without_search() -> None:
     assert "News that is not linked to Pokemon is outside what you do." in SYSTEM_PROMPT
     assert "Decline it briefly and politely" in SYSTEM_PROMPT
