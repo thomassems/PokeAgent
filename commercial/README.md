@@ -81,6 +81,42 @@ cd frontend && npm run dev
 Open http://localhost:3000. The frontend proxies `/api/*` to port 8000 in
 development. FastAPI's docs are at http://localhost:8000/docs.
 
+## Accounts
+
+Local accounts use a SQLite file. You do not need a hosted database, and you
+do not create a Supabase project to run or test this copy. `TRAINERMON_DB`
+overrides the path. Unset, the file is `backend/data/local.db`, which is
+gitignored.
+
+Sign-in is a local email and password. The password hash stays in that file.
+There is no call to Pokémon GO, and no account-trading flow.
+
+A friend code is optional. It is returned only on `/api/me` for the signed-in
+trainer. Search results do not include it. `SHARE_FRIEND_CODES` defaults off
+and does not publish codes. The contact method is still undecided.
+
+When you want this off your laptop, a free [Supabase](https://supabase.com/pricing)
+project is the intended host: Postgres, and their free Auth tier if we wire it
+later. This build does not read `SUPABASE_URL` or any Supabase key. The tables
+to create there, when that work happens, match the local schema:
+
+```sql
+CREATE TABLE users (
+  id bigint generated always as identity primary key,
+  email text not null unique,
+  password_hash text not null,
+  trainer_name text not null,
+  city text not null,
+  friend_code text,
+  created_at timestamptz not null
+);
+CREATE TABLE sessions (
+  token_hash text primary key,
+  user_id bigint not null references users(id),
+  expires_at timestamptz not null
+);
+```
+
 ## Checks
 
 ```bash
