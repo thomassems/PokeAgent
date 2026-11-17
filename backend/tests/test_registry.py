@@ -9,8 +9,10 @@ from llm.tools.registry import (
     TOOLS,
     get_current_events,
     get_egg_pool,
+    get_go_pokemon,
     get_move,
     get_pokemon,
+    get_pvp_rankings,
     get_raid_bosses,
     get_research_rewards,
     get_rocket_lineups,
@@ -200,6 +202,8 @@ def test_main_and_go_tool_lists() -> None:
     assert "get_research_rewards" in go_names
     assert "get_egg_pool" in go_names
     assert "get_rocket_lineups" in go_names
+    assert "get_go_pokemon" in go_names
+    assert "get_pvp_rankings" in go_names
     assert "get_pokemon" not in go_names
     assert "get_move" not in go_names
     assert "find_pokemon" not in go_names
@@ -209,6 +213,10 @@ def test_main_and_go_tool_lists() -> None:
     assert get_research_rewards("raid")["error"]
     assert get_egg_pool("3 km")["error"]
     assert get_rocket_lineups("boss")["error"]
+    assert get_go_pokemon([])["error"]
+    assert get_pvp_rankings("../cups")["error"]
+    assert get_pvp_rankings("remix")["error"]
+    assert get_pvp_rankings("great", limit=26)["error"]
 
 
 def test_slow_feed_tools_filter_and_keep_untyped_research(

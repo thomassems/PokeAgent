@@ -5,9 +5,11 @@ and approved the research, egg, and Rocket filters on 16 November 2026.
 Decision 17 records the decisions. Phase 1 is the game selector, the shared
 prompt and tool list, and the events and raids tools. Phase 2 is the GO
 guides namespace, the type helper, and `get_research_rewards`,
-`get_egg_pool`, and `get_rocket_lineups`. Themed UI (phase 5) is implemented
-ahead of phases 3 and 4. Decision 18 records the defaults that were chosen.
-Phase 3 is not started. Later phases are still design.
+`get_egg_pool`, and `get_rocket_lineups`. Themed UI (phase 5) is
+implemented. Decision 18 records the defaults that were chosen.
+Phase 3 is `get_go_pokemon` and `get_pvp_rankings`, approved on 17
+November 2026. Decision 20 records the PvPoke license note. Phase 4 is
+still design.
 
 Checked against the repo and the upstream sources on 15 November 2026.
 
@@ -376,8 +378,8 @@ returned a fresh list.
 
 ### Battle stats: PvPoke and the game master
 
-Phase 3, and only after the license question below is answered. Not part
-of the phase 1 tool list.
+Phase 3. Thomas accepted the license note on 17 November 2026. Decision
+20 records it. Not part of the phase 1 tool list.
 
 GO combat power, moves, and PvP rankings are not in the baked dex.
 `get_pokemon` returns main-series base stats. Those numbers are the wrong
@@ -878,10 +880,14 @@ though the wiki's Endpoints page does not list it.
 
 ### Phase 3
 
-`get_go_pokemon` and `get_pvp_rankings`, after the PvPoke redistribution
-question is answered. Separate because the files are large, the cup list
-moves, and the license is a different document from ScrapedDuck's README.
-Still no simulator.
+Done. `get_go_pokemon` and `get_pvp_rankings` read PvPoke's MIT-licensed
+gamemaster and the `all/overall` files for little, great, ultra, and
+master. The cache uses the 24 hour TTL and the same stale fallback as
+the slow LeekDuck feeds. A league is an allowlist key, so the name
+cannot become a URL path. Cups stay on `web_search`. Ranking results
+are labelled as PvPoke simulations. There is no simulator. Decision 20
+records the license note. The files are large and the cup list moves,
+which is why this stayed separate from the ScrapedDuck feeds.
 
 ### Phase 4
 
@@ -1120,9 +1126,10 @@ Answered 15 November 2026.
 
 ## Still open
 
-1. Phase 3 may fetch PvPoke's MIT-licensed gamemaster and ranking JSON,
-   and will not fetch the PokeMiners game master. Rankings would be
-   quoted as PvPoke simulations. Is that acceptable?
+1. Answered 17 November 2026. Phase 3 fetches PvPoke's MIT-licensed
+   gamemaster and overall ranking JSON, and does not fetch the
+   PokeMiners game master. Rankings are quoted as PvPoke simulations.
+   Decision 20 records it. Licensing stays a note.
 2. Happening now cards wait until phase 4, use the browser clock, and
    do not hotlink LeekDuck images. Confirm that can wait.
 3. Should every GO answer that used a feed include the LeekDuck credit

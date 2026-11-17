@@ -55,8 +55,7 @@ def test_both_prompts_keep_simple_answers_short() -> None:
         assert "Lead with the answer." in prompt
         assert (
             "A simple factual question or a how-to is at most four sentences, or one "
-            "short list plus one sentence of caveat."
-            in prompt
+            "short list plus one sentence of caveat." in prompt
         )
         assert "Do not add a second section." in prompt
         assert "Go long only for an analytical question" in prompt
@@ -79,3 +78,11 @@ def test_go_prompt_routes_research_eggs_and_rockets() -> None:
     assert "get_rocket_lineups" in GO_SYSTEM_PROMPT
     assert "including 1 km" in GO_SYSTEM_PROMPT
     assert "The guides do not hold today's lineup." in GO_SYSTEM_PROMPT
+
+
+def test_go_prompt_routes_pvpoke_and_keeps_the_short_answer() -> None:
+    assert "get_go_pokemon" in GO_SYSTEM_PROMPT
+    assert "get_pvp_rankings" in GO_SYSTEM_PROMPT
+    assert "PvPoke simulations" in GO_SYSTEM_PROMPT
+    assert "A named cup, including Remix" in GO_SYSTEM_PROMPT
+    assert "short list plus one sentence of caveat." in GO_SYSTEM_PROMPT
