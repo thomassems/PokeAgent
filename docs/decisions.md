@@ -430,6 +430,39 @@ Rejected: **vendoring the gamemaster or the ranking JSON.** They move,
 and a checked-in copy goes stale in silence. Rejected: **fetching every
 cup directory.** The path is an allowlist of four leagues.
 
+## 21. A pinned GO dashboard is proposed, not approved
+
+Proposed 17 November 2026. Not approved to code. Numbered 21 because
+decision 20, above, is the PvPoke license note. The write-up is the
+Pinned GO dashboard section of `docs/plans/pokemon-go-mode.md`.
+
+The chat page, while Pokemon GO is selected, would show widgets the user
+pins: raids, events over the coming weekend, Community Day, eggs,
+research, and Rocket lineups. Pins live in `pokeagent.goPins` in
+localStorage, the same kind of browser storage as `pokeagent.game`.
+There is no account and no database. The board reads `GET /api/go/snapshot`,
+which returns the feed envelopes the tools already cache. Events and
+raids stay on the 3 hour TTL. Eggs, research, and Rocket lineups stay
+on the 24 hour TTL. The browser clock decides "next weekend". The server
+does not.
+
+ScrapedDuck's data branch has no wild-spawn file. A general wild pool is
+not a widget. Featured spawns already on event rows can be a card, and
+the card says they are event spawns. A true wild-pool question stays on
+`web_search`.
+
+This proposal absorbs phase 4. Happening now cards would be the default
+pins, not a second empty state. That recommendation is part of what
+Thomas still has to accept.
+
+Rejected for this proposal, even if the dashboard is later approved:
+**user accounts or a database for pins.** Team state already lives in
+the URL, and this app does not grow accounts. Rejected: **a second
+fetcher or an ICS parser.** The events JSON is already cached.
+Rejected: **scraping a wild-spawn page.** There is no structured feed
+for it. Rejected: **computing the weekend on the server.** That uses
+the server's timezone, which the plan already calls out as wrong.
+
 
 ## Open questions
 
