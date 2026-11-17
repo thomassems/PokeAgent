@@ -10,7 +10,8 @@ implemented. Decision 18 records the defaults that were chosen.
 Phase 3 is `get_go_pokemon` and `get_pvp_rankings`, approved on 17
 November 2026. Decision 20 records the PvPoke license note. A pinned
 GO dashboard is proposed as phase 6 and is not approved to code.
-Decision 21 records that proposal. Phase 4 is still design.
+Decision 21 records that proposal. Phase 4's happening-now cards are
+absorbed into that proposal and are not a separate build.
 
 Checked against the repo and the upstream sources on 15 November 2026.
 
@@ -892,13 +893,12 @@ which is why this stayed separate from the ScrapedDuck feeds.
 
 ### Phase 4
 
-Happening now cards, `GET /api/go/snapshot`, browser-side local clock,
-text and LeekDuck links. The empty-state examples from phase 1 stay as
-the fallback when the snapshot endpoint fails.
-
-Phase 6 proposes that this board absorbs phase 4 instead of sitting
-beside it. That proposal is not approved. Until it is, phase 4 stays
-the design below.
+Absorbed into phase 6 on 17 November 2026. Do not build a separate
+Happening now row. The snapshot route, the browser clock, the LeekDuck
+text links, and the rule against hotlinking LeekDuck images move into
+the pinned dashboard. The empty-state example prompts stay as the
+fallback when that snapshot fails. Phase 6 itself is still not
+approved to code.
 
 ### Phase 6
 
@@ -920,10 +920,10 @@ Phase 3 is a second client, trimming megabyte-sized JSON down to one
 species or a short list, and an allowlist so a cup name cannot become a
 path.
 
-Phase 4 is one GET route and the empty state on the chat page. It should
-call the phase 1 cache rather than grow a second fetcher. Phase 6, if
-approved, is that same route plus a pin board on the chat page. It does
-not add a fetcher.
+Phase 4 is not its own build. Its GET route and empty state move into
+phase 6. Phase 6, if approved, is that route plus a pin board on the
+chat page. It does not add a fetcher. The species images are PokeAPI
+sprites the browser already knows how to build. They are not a new host.
 
 Phase 5 is a class and a second set of CSS tokens on the chat page. The
 team page stays on the tokens it already has.
@@ -1146,8 +1146,9 @@ file.
 | Featured event spawns | Species already listed on Community Day and Spotlight rows | `community_day.spawns` and `spotlight.pokemon` on the events feed | 3 hours |
 
 Current wild spawns, meaning the general pool in the world right now,
-are not in the mirror. The alternative is the featured-event-spawns
-card, which says it is event spawns and not the wild pool. A question
+are not in the mirror. Thomas decided that featured event spawns
+replace a wild-spawn widget. There is no wild-pool card. The featured
+card says the species are event spawns, not the wild pool. A question
 about the general wild pool stays on `web_search`. This proposal does
 not add a scraper, and it does not parse the `.ics` calendars. The
 events JSON already has start, end, and the structured extras. A second
@@ -1165,13 +1166,18 @@ under Risks, kept on the client on purpose.
 
 `pokeagent.goPins` in localStorage, a JSON array of widget ids from the
 allowlist in the table. The same pattern as `pokeagent.game` and
-`pokeagent.goAccent`. No account, no database, no URL state. A missing
-or unreadable value falls back to a default set: raids, events next
-weekend, and Community Day. Entries that are not in the allowlist are
-dropped on read. The array cannot grow past the allowlist.
+`pokeagent.goAccent`. No account and no URL state in this phase.
+A missing or unreadable value falls back to the default pins Thomas
+chose: raids, events next weekend, and Community Day. Entries that are
+not in the allowlist are dropped on read. The array cannot grow past
+the allowlist. Clearing storage restores that default.
 
-That default is the happening-now set. A new browser still sees a board.
-Clearing storage restores the default.
+Server-side persistence of the pin set is wanted later. It is not this
+phase. The feed cache is already server-side and process-local. That
+cache is the widget data, not the user's pins. Pins have no user to
+attach to, because this app has no accounts. A later step would need
+its own decision for where a pin set lives once it leaves the browser.
+This phase does not add that store.
 
 ### Layout
 
@@ -1180,17 +1186,96 @@ uses. `/team` does not read the pins and does not gain `theme-go`.
 
 Desktop: a grid of cards, two or three across, in the empty state under
 the welcome text and above the example prompts. Cards use the same
-frame as a GO answer. Text and a LeekDuck link. No hotlinked images.
+frame as a GO answer. Text, a LeekDuck link, and a PokeAPI sprite where
+the row names a species.
 
 Mobile: one column. A wrapping row of pin chips sits above the cards.
-Cards stack. Once a conversation has a turn, the full cards collapse
-to one line each (name, fresh or stale) so the two agent panels stay
-on screen. Expanding a line shows that card.
+Cards stack. What happens to the full cards after the first turn is
+still open. One option is that they stay open above the transcript.
+The other is that they collapse to one line each (name, fresh or
+stale) so the two agent panels stay on screen, and expanding a line
+shows that card. Do not pick one until Thomas does.
 
-Eggs show a count per distance, collapsed. Research and Rocket grunts
-show a short prefix of the list and a show-more. The caps are an open
-question below. A card whose feed returned `error` says the feed is
-unavailable. A card whose feed is `stale` says so and shows `fetched_at`.
+Cards are read-only. They do not fill the composer and they do not
+start a run.
+
+Eggs show a count per distance, collapsed. A card whose feed returned
+`error` says the feed is unavailable. A card whose feed is `stale`
+says so and shows `fetched_at`.
+
+### Species images
+
+Widgets show a Pokemon image wherever a row names a species. Raids and
+featured event spawns must. Eggs, research rewards, Rocket slots, and
+Community Day spawns do too when the name is a species. An item reward
+such as Stardust stays text.
+
+The image source is the PokeAPI sprite the app already uses.
+`spriteUrlFor` in `frontend/lib/pokeapi.ts` builds
+`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
+from a PokeAPI pokemon id. The name index at
+`https://pokeapi.co/api/v2/pokemon?limit=2000` lists forms as their own
+entries (`meowth-alola`, `charizard-mega-x`), each with its own id.
+The sprite for that id is the form. The national dex number of the
+base species is the wrong id: it draws Kantonian Meowth for Alolan
+Meowth.
+
+The browser maps a feed name onto a slug, then onto that id. The
+snapshot stays text. LeekDuck image fields stay dropped. Do not
+hotlink them.
+
+The map, in order:
+
+1. Take the display name from the feed.
+2. If it says Shadow, remember that for the caption and remove the
+   word before the lookup. PokeAPI has no Shadow sprite. The image is
+   the base form, and the caption still says Shadow.
+3. Rewrite GO word order onto PokeAPI's slug. "Alolan X" becomes
+   `x-alola`, "Galarian X" becomes `x-galar`, "Hisuian X" becomes
+   `x-hisui`, "Paldean X" becomes `x-paldea`, "Mega X" becomes
+   `x-mega`, and "Mega X Y" becomes `x-mega-y`. A parenthetical form
+   becomes hyphenated words: "Basculin (White Striped)" becomes
+   `basculin-white-striped`.
+4. Look that slug up in the existing name index. On a hit, use
+   `spriteUrlFor` with that entry's id.
+5. On a miss, try the base species slug, with the regional or Mega
+   words removed.
+6. On a second miss, show the name and no image. Do not invent an id.
+   A sprite that fails to load is the same as a miss.
+
+Form-mapping risks:
+
+- The adjective is on the other side of the name from PokeAPI's slug.
+  A join that only lowercases "Alolan Meowth" looks up `alolan-meowth`
+  and misses `meowth-alola`.
+- Punctuation and accents (`Mr. Mime`, `Farfetch'd`, `Type: Null`,
+  Flabebe) do not match a slug without a small alias list.
+- "Paldean Tauros" is three breed slugs. A feed name that does not
+  name the breed must not guess one. Fall back to the base Tauros
+  sprite, or to no image.
+- Costumes, hats, and other GO-only forms are not in PokeAPI. They
+  get no image.
+- A Mega raid that names the base species, "Charizard", must not be
+  promoted to a Mega sprite.
+- Some forms have no `front_default`. The github sprite path can 404.
+  Hide the image. Do not substitute a LeekDuck URL.
+- Two feed rows can share a name, such as Galarian Corsola in both
+  7 km pools. One sprite is right for both.
+
+### How many rows a card shows
+
+Thomas left the show-more counts open, because they depend on how the
+cards size. These are the proposed caps, not a decision:
+
+| Widget | Proposed first view | Sprite |
+| --- | --- | --- |
+| Raids | Every boss in a tier. If a tier has more than 8, show 8 | On every visible boss |
+| Featured event spawns | Every species, and show-more after 12 | Required |
+| Community Day | The whole event when there is one | On the featured species |
+| Events next weekend | 4 events, then show-more | Only when the event names a species |
+| Eggs | 6 hatches per distance, then show-more | On each visible hatch |
+| Research | 5 tasks, then show-more | Only when the reward name maps to a species |
+| Rocket | The four leaders, with each slot's species. 4 grunts, then show-more | On each visible slot. Shadow uses the base sprite |
 
 ### Refresh
 
@@ -1205,14 +1290,14 @@ faster than the cache.
 
 ### Phase 4
 
-Recommendation: the dashboard absorbs phase 4. Happening now cards are
-the default pins, not a second empty state beside a pin board. One
-route, one board. Phase 4's constraints move with it: the browser
-clock, text and LeekDuck links, no hotlinked images, and the phase 1
-example prompts as the fallback when the snapshot fails.
-
-If this proposal is rejected, phase 4 stays as written and is not
-replaced.
+Decided: phase 6 replaces phase 4. Happening now cards are the default
+pins (raids, events next weekend, and Community Day), not a second
+empty state beside a pin board. One route, one board. The browser
+clock, text, and LeekDuck links move with it. LeekDuck images stay
+unlinked. Species images are the PokeAPI sprites above. The phase 1
+example prompts stay as the fallback when the snapshot fails. Do not
+build phase 4 as its own UI. The dashboard is still not approved to
+code.
 
 ### API
 
@@ -1234,9 +1319,11 @@ an API key.
 ### Effort
 
 One GET handler that calls `load_feed` for the five feeds, and a board
-component on the chat page. No new package. No prompt edit. No tool
-signature change. No trace event. The care is the weekend filter in
-the browser, the stale label, and keeping the board off `/team`.
+component on the chat page. The name-to-sprite map lives in the
+browser, next to the PokeAPI index the team builder already loads.
+No new package. No prompt edit. No tool signature change. No trace
+event. The care is the weekend filter, the form slug map, the stale
+label, and keeping the board off `/team`.
 
 ### Risks
 
@@ -1249,26 +1336,38 @@ the browser, the stale label, and keeping the board off `/team`.
   phone. The card caps itself.
 - Featured event spawns read as the general wild pool unless the card
   says they are event spawns.
+- A slug map that uses the base species id draws the wrong form.
+  Alolan, Galarian, Hisuian, Paldean, and Mega sprites have to come
+  from the form's own PokeAPI id.
+- A Shadow, costume, or unmatched name that falls through to a
+  LeekDuck image URL breaks the rule this plan already has. The miss
+  path is no image.
+- Persisting pins on the server later has nothing to key them by
+  until there is an identity. That step is not localStorage with a
+  different name. It needs its own decision.
 - A theme class on the board must stay on the chat page. `/team` has
   no game chip.
 - The snapshot must not call the model. A feed envelope is not a run.
 
 ### Open questions
 
-1. Does the dashboard absorb phase 4, as recommended, or should
-   happening-now cards stay a separate row?
-2. Are the default pins raids, next weekend, and Community Day, or
-   should a new browser start with nothing pinned?
-3. Is the featured-event-spawns card an acceptable substitute for a
-   wild-spawn widget, or does that widget wait until a source exists?
-4. After the first turn, do the cards collapse to one line, or stay
-   open above the transcript?
-5. Is a card read-only, or does it offer an action that fills the
-   composer with a question about that widget?
-6. How many raids, research tasks, or Rocket grunts are visible before
-   show-more?
-7. Confirm pins stay in localStorage only, with no account and no
-   database.
+Answered 17 November 2026:
+
+1. Phase 6 replaces phase 4. Do not build a separate Happening now row.
+2. A new browser starts with raids, events next weekend, and Community
+   Day pinned.
+3. Featured event spawns replace a wild-spawn widget. There is no
+   wild-pool card.
+4. Cards are read-only. They do not fill the composer.
+5. Pins are in localStorage for this phase. Server-side persistence
+   of the pin set is a later step, not part of this proposal.
+
+Still open:
+
+1. After the first turn, do the full cards stay open above the
+   transcript, or collapse to one line?
+2. The show-more counts above are a proposal. They stay open because
+   they depend on how the cards size.
 
 ## Decisions from Thomas
 
@@ -1295,16 +1394,19 @@ Answered 15 November 2026.
    gamemaster and overall ranking JSON, and does not fetch the
    PokeMiners game master. Rankings are quoted as PvPoke simulations.
    Decision 20 records it. Licensing stays a note.
-2. Happening now cards wait until phase 4, use the browser clock, and
-   do not hotlink LeekDuck images. Phase 6 asks whether that board
-   absorbs phase 4. Neither is approved to code.
+2. Answered 17 November 2026. Phase 6 replaces phase 4's Happening now
+   cards. The browser clock and the ban on hotlinking LeekDuck images
+   still apply. Species images are PokeAPI sprites. The dashboard is
+   not approved to code.
 3. Should every GO answer that used a feed include the LeekDuck credit
    in the text, or is the empty-state credit plus the source fields in
    the tool result enough for the model to mention when it matters?
 4. Themed UI is phase 5 and is implemented ahead of phases 3 and 4.
    The defaults are in that section and in decision 18.
-5. A pinned GO dashboard is proposed as phase 6. The open questions are
-   in that section. It is not approved to code.
+5. A pinned GO dashboard is proposed as phase 6 and is not approved to
+   code. Default pins, featured spawns, read-only cards, and
+   localStorage are decided. Collapse after the first turn, and the
+   show-more counts, are still open. Decision 21 records it.
 
 ## Approved to code
 
