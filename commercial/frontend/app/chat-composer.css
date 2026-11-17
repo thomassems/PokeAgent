@@ -1,0 +1,102 @@
+.chat-composer-wrap {
+  /* Full width of the transcript. The input stays narrow below, but a narrow
+     sticky bar lets the two answer columns show through on either side. */
+  z-index: 10;
+  width: 100%;
+  padding: 1rem 0 0.6rem;
+  background: #f8f7f4;
+}
+
+.chat-composer {
+  width: min(100%, 48rem);
+  margin-inline: auto;
+  border-radius: 24px;
+  background: #fffdfa;
+  box-shadow: 0 3px 18px rgba(48, 43, 35, 0.11);
+  transition: box-shadow 180ms ease;
+}
+
+.chat-composer:focus-within {
+  box-shadow: 0 4px 20px rgba(48, 43, 35, 0.16);
+}
+
+.chat-input {
+  display: block;
+  width: 100%;
+  min-height: 4rem;
+  max-height: 12rem;
+  padding: 1rem 1.2rem 0.35rem;
+  resize: vertical;
+  border: 0;
+  border-radius: 24px 24px 0 0;
+  background: transparent;
+  color: #242620;
+  caret-color: #a05228;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.chat-input::placeholder {
+  color: #646b64;
+}
+
+.chat-input:focus-visible {
+  outline: none;
+}
+
+.chat-composer-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.chat-composer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.2rem 0.65rem 0.65rem 0.7rem;
+  color: #686f69;
+  font-size: 0.75rem;
+}
+
+.chat-composer-submit {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.chat-composer-actions button[type="submit"] {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: #b96530;
+  color: white;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.chat-composer-actions button[type="submit"]:hover:not(:disabled) {
+  background: #995126;
+  transform: translateY(-1px);
+}
+
+.chat-composer-actions button[type="submit"]:disabled {
+  background: #dbd6ce;
+  color: #777e76;
+  cursor: not-allowed;
+}
+
+.chat-composer-actions svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+@media (max-width: 40rem) {
+  .chat-composer-submit span {
+    display: none;
+  }
+}
