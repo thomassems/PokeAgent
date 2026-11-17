@@ -75,7 +75,7 @@ class LeaveEventStreamUntransformed:
 
 def _app_name() -> str:
     configured = os.environ.get("APP_NAME", "").strip()
-    return configured or "Field Notes"
+    return configured or "Trainermon"
 
 
 app = FastAPI(title=f"{_app_name()} API")

@@ -5,9 +5,9 @@ own repository. The personal app at the repo root is the free edition and is
 unchanged. This copy is the one that could charge money. Nothing here is a
 decision to charge yet.
 
-The working name is the `APP_NAME` environment variable. If it is unset, the
-UI says **Field Notes**. Do not hard-code a product name. The name is still
-an open question.
+The product name is **Trainermon**. `APP_NAME` overrides the label. If it is
+unset, the UI says Trainermon. The name does not use a "Poke" prefix. The
+PokéAPI credit in the footer is their license notice, not this product's name.
 
 Until this tree is split out, a fix to code that exists in both places has to
 be applied twice. There is no shared package.

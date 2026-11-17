@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from "react";
 import { GENERATIONS, type Generation } from "./types";
 
-const STORAGE_KEY = "pokeagent.generation";
+const STORAGE_KEY = "trainermon.generation";
 const listeners = new Set<() => void>();
 let current: Generation | null = null;
 let loaded = false;

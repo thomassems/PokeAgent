@@ -23,7 +23,7 @@ export function AppHeader({ activePage }: AppHeaderProps) {
             aria-current={activePage === "chat" ? "page" : undefined}
             className={`rounded-sm px-2 py-1 ${activePage === "chat" ? "bg-shell-800 text-ink-100" : "text-ink-500 hover:text-ink-100"}`}
           >
-            Chat
+            Assistant
           </Link>
           <Link
             href="/team"

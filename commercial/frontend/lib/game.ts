@@ -6,14 +6,14 @@ export const GAMES = ["main", "go"] as const;
 
 export type Game = (typeof GAMES)[number];
 
-const STORAGE_KEY = "pokeagent.game";
+const STORAGE_KEY = "trainermon.game";
 const listeners = new Set<() => void>();
-let current: Game = "main";
+let current: Game = "go";
 let loaded = false;
 
-/** Missing or unknown storage stays on the main series. */
+/** Missing or unknown storage stays on Pokémon GO. This app is for GO players. */
 export function parseStoredGame(stored: string | null): Game {
-  return stored === "go" ? "go" : "main";
+  return stored === "main" ? "main" : "go";
 }
 
 function readStoredGame(): Game {

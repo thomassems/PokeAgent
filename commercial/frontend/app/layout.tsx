@@ -6,7 +6,7 @@ import "./globals.css";
 
 function appName(): string {
   const configured = process.env.APP_NAME?.trim();
-  return configured ? configured : "Field Notes";
+  return configured ? configured : "Trainermon";
 }
 
 // Plex was drawn for technical interfaces, which suits the device read. The mono
