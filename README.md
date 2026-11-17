@@ -226,6 +226,8 @@ first.
 - [docs/decisions.md](docs/decisions.md) - what was decided, what was rejected,
   and why
 - [docs/planned.md](docs/planned.md) - the pieces that are designed but not built
+- [docs/plans/monetization.md](docs/plans/monetization.md) - research on
+  charging money later. Not approved
 - [docs/strategy-retrieval-roadmap.md](docs/strategy-retrieval-roadmap.md) - how
   the strategy corpus is meant to grow
 - [CLAUDE.md](CLAUDE.md) - the working agreement and architecture rules

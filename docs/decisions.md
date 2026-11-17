@@ -431,6 +431,15 @@ and a checked-in copy goes stale in silence. Rejected: **fetching every
 cup directory.** The path is an allowlist of four leagues.
 
 
+## 22. Monetization research is not approved
+
+Research only, recorded 17 November 2026. Not a decision to charge, to
+run ads, or to change a data source. Numbered 22 because decision 21 is
+the pinned GO dashboard on the open dashboard pull request, so the two
+notes do not share a number. The write-up is
+`docs/plans/monetization.md`.
+
+
 ## Open questions
 
 Not decided. Each needs its own proposal before code depends on it.
