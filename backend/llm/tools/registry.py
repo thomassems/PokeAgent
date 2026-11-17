@@ -12,6 +12,12 @@ from services.go_feed import (
     load_feed,
 )
 from services.go_guide_search import search_go_guides
+from services.go_stats import (
+    LEAGUES,
+    RANKING_LIMIT_MAX,
+    get_go_pokemon,
+    get_pvp_rankings,
+)
 from services.search import web_search
 from services.strategy_search import search_strategy
 from tools.dex_query import find_pokemon
@@ -494,6 +500,8 @@ TOOL_FUNCTIONS = {
     "get_research_rewards": get_research_rewards,
     "get_egg_pool": get_egg_pool,
     "get_rocket_lineups": get_rocket_lineups,
+    "get_go_pokemon": get_go_pokemon,
+    "get_pvp_rankings": get_pvp_rankings,
     "search_go_guides": search_go_guides,
     "get_go_type_roles": get_go_type_roles,
 }
@@ -623,6 +631,65 @@ GO_TOOLS: list[dict[str, Any]] = [
                 },
             },
             "required": [],
+        },
+    },
+    {
+        "name": "get_go_pokemon",
+        "description": (
+            "Look up Pokemon GO base stats, types, fast moves, charged moves, "
+            "elite moves, level-25 CP, and default IVs from the PvPoke "
+            "gamemaster. These are GO stats, not main-series base stats. A "
+            "name that is missing is reported as a miss. Pass every species "
+            "in one call."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "pokemon": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": (
+                        "Pokemon names, for example ['Medicham', 'Garchomp']."
+                    ),
+                },
+            },
+            "required": ["pokemon"],
+        },
+    },
+    {
+        "name": "get_pvp_rankings",
+        "description": (
+            "PvPoke overall rankings for an open league: little, great, ultra, "
+            "or master. The numbers are PvPoke simulations, not an official "
+            "ladder. The result says so, and includes fetched_at and stale. "
+            "Pass pokemon for one species (rating, moveset, and a few "
+            "matchups). Omit pokemon and set limit for a top list. List rows "
+            "omit matchups. Cups such as Remix are not here. Use web_search "
+            "for a cup."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "league": {
+                    "type": "string",
+                    "enum": list(LEAGUES),
+                    "description": "little, great, ultra, or master.",
+                },
+                "pokemon": {
+                    "type": "string",
+                    "description": (
+                        "Optional. One species, such as Medicham or Garchomp. "
+                        "Omit for a top list."
+                    ),
+                },
+                "limit": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": RANKING_LIMIT_MAX,
+                    "description": "Optional. Top-list length. Default 10, maximum 25.",
+                },
+            },
+            "required": ["league"],
         },
     },
     _tool("get_type_matchups"),

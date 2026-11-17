@@ -54,6 +54,9 @@ def test_phase_2_eval_rows_name_the_guide_tool() -> None:
         "go-egg-pool-uses-eggs",
         "go-research-shiny-uses-research",
         "go-giovanni-uses-rockets",
+        "go-medicham-great-league",
+        "go-garchomp-master-moveset",
+        "go-ultra-top-5",
     }
     assert cases["go-quick-catch-uses-guides"].expect_tools == ["search_go_guides"]
     assert "web_search" in cases["go-quick-catch-uses-guides"].forbid_tools
@@ -66,3 +69,7 @@ def test_phase_2_eval_rows_name_the_guide_tool() -> None:
         "get_research_rewards"
     ]
     assert cases["go-giovanni-uses-rockets"].expect_tools == ["get_rocket_lineups"]
+    assert cases["go-medicham-great-league"].expect_tools == ["get_pvp_rankings"]
+    assert cases["go-garchomp-master-moveset"].expect_tools == ["get_pvp_rankings"]
+    assert cases["go-ultra-top-5"].expect_tools == ["get_pvp_rankings"]
+    assert "web_search" in cases["go-ultra-top-5"].forbid_tools
