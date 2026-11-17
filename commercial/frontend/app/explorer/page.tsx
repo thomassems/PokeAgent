@@ -36,7 +36,7 @@ const TAGS = [
 type Tag = (typeof TAGS)[number];
 
 function chips(species: Species): string[] {
-  const on = TAGS.filter((tag) => species[tag]);
+  const on: string[] = TAGS.filter((tag) => species[tag]);
   if (!species.tradable) on.push("untradable");
   return [...species.forms, ...on];
 }

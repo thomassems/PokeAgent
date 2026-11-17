@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { SpeciesBadge } from "@/components/SpeciesBadge";
+import { useAppName } from "@/lib/app-name";
 import { communityFetch, type Profile } from "@/lib/community";
 import type { TypeName } from "@/lib/types";
 
@@ -61,6 +62,7 @@ function tags(entry: ListEntry): string {
 }
 
 export default function ListsPage() {
+  const appName = useAppName();
   const [profile, setProfile] = useState<Profile | null | undefined>(undefined);
   const [catalog, setCatalog] = useState<Species[]>([]);
   const [entries, setEntries] = useState<ListEntry[]>([]);
@@ -123,7 +125,7 @@ export default function ListsPage() {
         <div>
           <h2 className="text-lg font-semibold">My lists</h2>
           <p className="mt-1 text-sm text-ink-400">
-            Type what you want and what you have. Trainermon does not read a
+            Type what you want and what you have. {appName} does not read a
             Pokémon GO account, and it does not arrange account trades.
           </p>
         </div>

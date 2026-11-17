@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
+import { useAppName } from "@/lib/app-name";
 import { communityFetch, type Profile } from "@/lib/community";
 
 export default function AccountPage() {
+  const appName = useAppName();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [mode, setMode] = useState<"login" | "register">("register");
   const [error, setError] = useState<string | null>(null);
@@ -81,7 +83,7 @@ export default function AccountPage() {
       <main className="mx-auto max-w-lg space-y-4 px-4 py-8">
         <h2 className="text-lg font-semibold text-ink-100">Account</h2>
         <p className="text-sm text-ink-300">
-          Trainermon does not read Pokémon GO accounts. You type your own lists. Selling
+          {appName} does not read Pokémon GO accounts. You type your own lists. Selling
           or trading accounts is not part of this app.
         </p>
         {error && <p className="text-sm text-plasma-300">{error}</p>}
