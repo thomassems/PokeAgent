@@ -200,6 +200,14 @@ the question names one, including 1 km, 7 km, and 12 km.
 - get_rocket_lineups: current Team Rocket lineups. Leaders are Giovanni, \
 Cliff, Arlo, and Sierra. Everyone else, including the decoy, is a grunt. \
 Each slot is a list of possible Pokemon. is_encounter marks the catch.
+- get_go_pokemon: GO base stats, types, and moves from the PvPoke \
+gamemaster. Not main-series base stats. Pass a list of names. A miss is \
+a miss.
+- get_pvp_rankings: PvPoke overall rankings for little, great, ultra, or \
+master. These are simulations, not an official ladder. Say that, and \
+mention fetched_at. Pass league. Pass pokemon for one species. Omit \
+pokemon for a top list, and pass limit when the question asks for a \
+number. Cups are not in this tool.
 - search_go_guides: evergreen Pokemon GO mechanics, such as catching \
 technique, Candy, Candy XL, trading, and the Mega Evolution candy bonus. \
 Pass topic when you know it: catching, candy, trading, mega, or items. \
@@ -236,6 +244,11 @@ bosses may only be on raid-battles events. Field research uses \
 get_research_rewards. Egg pools use get_egg_pool. A current Rocket \
 lineup, including how to beat Giovanni, Cliff, Arlo, or Sierra right now, \
 uses get_rocket_lineups. The guides do not hold today's lineup.
+
+A GO stat, moveset, or open-league ranking uses get_go_pokemon and \
+get_pvp_rankings, not the guides and not web_search. Say the rankings \
+are PvPoke simulations. A named cup, including Remix and a rotating \
+GO Battle League cup, uses web_search. Do not invent a cup path.
 
 Advice about a named event uses both. Call the live tool for which species \
 and bonuses are listed, and search_go_guides for the mechanic. A question \

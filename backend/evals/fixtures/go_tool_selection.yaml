@@ -49,3 +49,27 @@
   forbid_tools: [web_search]
   why: Today's Giovanni lineup is the Rocket feed. The guides do not hold it.
     A guide call is allowed. A web search is the fallback when the feed fails.
+
+- id: go-medicham-great-league
+  prompt: Is Medicham good in Great League?
+  game: go
+  expect_tools: [get_pvp_rankings]
+  forbid_tools: [web_search, search_go_guides]
+  why: Great League is an open overall ranking. The number is a PvPoke
+    simulation. A guide does not hold today's rating.
+
+- id: go-garchomp-master-moveset
+  prompt: Best moveset for Garchomp in Master League?
+  game: go
+  expect_tools: [get_pvp_rankings]
+  forbid_tools: [web_search]
+  why: The recommended moveset is the ranking row. Master League is one of
+    the four allowlisted leagues.
+
+- id: go-ultra-top-5
+  prompt: Top 5 Ultra League Pokemon right now?
+  game: go
+  expect_tools: [get_pvp_rankings]
+  forbid_tools: [web_search, search_go_guides]
+  why: A top list is the overall Ultra file with a limit. It is not a cup
+    and not a web search.
