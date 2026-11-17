@@ -9,7 +9,9 @@ guides namespace, the type helper, and `get_research_rewards`,
 implemented. Decision 18 records the defaults that were chosen.
 Phase 3 is `get_go_pokemon` and `get_pvp_rankings`, approved on 17
 November 2026. Decision 20 records the PvPoke license note. Phase 4 is
-still design.
+still design. Monetization research, not approved, is in
+`docs/plans/monetization.md`. Decision 22 records that it is research
+only.
 
 Checked against the repo and the upstream sources on 15 November 2026.
 
