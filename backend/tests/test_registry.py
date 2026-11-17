@@ -1,14 +1,19 @@
 """The model-facing tool layer: normalisation, misses, and payload shaping."""
 
+import pytest
+
 from data.dex import POKEMON
 from llm.tools.registry import (
     GO_TOOLS,
     TOOL_FUNCTIONS,
     TOOLS,
     get_current_events,
+    get_egg_pool,
     get_move,
     get_pokemon,
     get_raid_bosses,
+    get_research_rewards,
+    get_rocket_lineups,
     get_type_effectiveness,
     get_type_matchups,
     tools_for,
@@ -192,12 +197,54 @@ def test_main_and_go_tool_lists() -> None:
     assert "get_raid_bosses" in go_names
     assert "search_go_guides" in go_names
     assert "get_go_type_roles" in go_names
+    assert "get_research_rewards" in go_names
+    assert "get_egg_pool" in go_names
+    assert "get_rocket_lineups" in go_names
     assert "get_pokemon" not in go_names
     assert "get_move" not in go_names
     assert "find_pokemon" not in go_names
     assert "search_strategy" not in go_names
     assert get_current_events("not-a-type")["error"]
     assert get_raid_bosses("Tier 3")["error"]
+    assert get_research_rewards("raid")["error"]
+    assert get_egg_pool("3 km")["error"]
+    assert get_rocket_lineups("boss")["error"]
+
+
+def test_slow_feed_tools_filter_and_keep_untyped_research(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    payload = {
+        "source": "LeekDuck via ScrapedDuck",
+        "stale": False,
+        "research": [
+            {"text": "Catch 8 Pokemon", "rewards": []},
+            {"text": "Make 3 Great Throws", "task_type": "throw", "rewards": []},
+        ],
+        "eggs": [
+            {"name": "Bulbasaur", "distance": "1 km"},
+            {"name": "Alolan Meowth", "distance": "7 km"},
+        ],
+        "rockets": [
+            {"name": "Giovanni", "group": "leader"},
+            {"name": "Decoy Female Grunt", "group": "grunt"},
+        ],
+    }
+    monkeypatch.setattr(
+        "llm.tools.registry.load_feed", lambda name: {**payload, name: payload[name]}
+    )
+
+    unfiltered = get_research_rewards()
+    assert [task["text"] for task in unfiltered["research"]] == [
+        "Catch 8 Pokemon",
+        "Make 3 Great Throws",
+    ]
+    filtered = get_research_rewards("throw")
+    assert [task["text"] for task in filtered["research"]] == ["Make 3 Great Throws"]
+    assert [egg["name"] for egg in get_egg_pool("7 km")["eggs"]] == ["Alolan Meowth"]
+    assert [row["name"] for row in get_rocket_lineups("leader")["rockets"]] == [
+        "Giovanni"
+    ]
 
 
 def test_required_schema_fields_are_real_parameters() -> None:

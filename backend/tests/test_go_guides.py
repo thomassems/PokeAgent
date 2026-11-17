@@ -51,6 +51,9 @@ def test_phase_2_eval_rows_name_the_guide_tool() -> None:
         "go-quick-catch-uses-guides",
         "go-candy-xl-uses-guides",
         "go-community-day-mega-candy",
+        "go-egg-pool-uses-eggs",
+        "go-research-shiny-uses-research",
+        "go-giovanni-uses-rockets",
     }
     assert cases["go-quick-catch-uses-guides"].expect_tools == ["search_go_guides"]
     assert "web_search" in cases["go-quick-catch-uses-guides"].forbid_tools
@@ -58,3 +61,8 @@ def test_phase_2_eval_rows_name_the_guide_tool() -> None:
     assert pawniard.expect_tools == ["get_current_events", "search_go_guides"]
     assert "web_search" in pawniard.forbid_tools
     assert "today" not in pawniard.prompt.lower()
+    assert cases["go-egg-pool-uses-eggs"].expect_tools == ["get_egg_pool"]
+    assert cases["go-research-shiny-uses-research"].expect_tools == [
+        "get_research_rewards"
+    ]
+    assert cases["go-giovanni-uses-rockets"].expect_tools == ["get_rocket_lineups"]
