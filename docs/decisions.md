@@ -470,7 +470,9 @@ the app already loads (`meowth-alola`, not the base species' national
 dex number). `spriteUrlFor` builds the URL. Shadow has no PokeAPI
 sprite, so the image is the base form and the caption still says
 Shadow. A name that does not map shows no image. LeekDuck images stay
-unlinked.
+unlinked. Official PokeAPI sprites are The Pokémon Company's art. They
+are fine for a free, non-commercial app. Whether they stay if the app
+ever charges is open question 2 in `docs/plans/monetization.md`.
 
 Still open inside this proposal: whether the full cards collapse after
 the first turn, and the show-more counts. Proposed caps are in the
