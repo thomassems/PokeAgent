@@ -115,6 +115,21 @@ CREATE TABLE sessions (
   user_id bigint not null references users(id),
   expires_at timestamptz not null
 );
+CREATE TABLE list_entries (
+  id bigint generated always as identity primary key,
+  user_id bigint not null references users(id),
+  kind text not null,
+  species_id text not null,
+  form text not null,
+  shiny boolean not null,
+  dynamax boolean not null,
+  gigantamax boolean not null,
+  shadow boolean not null,
+  purified boolean not null,
+  lucky boolean not null,
+  costume boolean not null,
+  notes text not null
+);
 ```
 
 ## Checks

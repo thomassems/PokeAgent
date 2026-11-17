@@ -4,9 +4,12 @@ No route reads a Pokémon GO account. Friend codes are not returned to anyone
 except the owner, and SHARE_FRIEND_CODES does not change that.
 """
 
+from typing import Literal
+
 from fastapi import APIRouter, Cookie, HTTPException, Response
 from pydantic import BaseModel, Field
 
+from data.go_catalog import EntryFlags, catalog
 from services.accounts import (
     cookie_name,
     login,
@@ -15,6 +18,7 @@ from services.accounts import (
     update_profile,
     user_from_token,
 )
+from services.lists import add_entry, delete_entry, list_entries, update_entry
 
 router = APIRouter()
 _MAX_AGE = 14 * 24 * 60 * 60
@@ -37,6 +41,46 @@ class ProfileIn(BaseModel):
     trainer_name: str
     city: str = Field(default="Toronto")
     friend_code: str = ""
+
+
+class EntryIn(BaseModel):
+    kind: Literal["want", "have"]
+    species_id: str
+    form: str = ""
+    shiny: bool = False
+    dynamax: bool = False
+    gigantamax: bool = False
+    shadow: bool = False
+    purified: bool = False
+    lucky: bool = False
+    costume: bool = False
+    notes: str = ""
+
+
+class EntryPatch(BaseModel):
+    form: str = ""
+    shiny: bool = False
+    dynamax: bool = False
+    gigantamax: bool = False
+    shadow: bool = False
+    purified: bool = False
+    lucky: bool = False
+    costume: bool = False
+    notes: str = ""
+
+
+def _flags(body: EntryIn | EntryPatch) -> EntryFlags:
+    return EntryFlags(
+        form=body.form,
+        shiny=body.shiny,
+        dynamax=body.dynamax,
+        gigantamax=body.gigantamax,
+        shadow=body.shadow,
+        purified=body.purified,
+        lucky=body.lucky,
+        costume=body.costume,
+        notes=body.notes,
+    )
 
 
 def _set_session(response: Response, token: str) -> None:
@@ -104,3 +148,52 @@ def patch_me(
         )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.get("/api/catalog")
+def get_catalog() -> list[dict]:
+    return [item.model_dump() for item in catalog()]
+
+
+@router.get("/api/lists")
+def get_lists(trainermon_session: str | None = Cookie(default=None)) -> dict:
+    user = require_user(trainermon_session)
+    return {"entries": list_entries(user["id"])}
+
+
+@router.post("/api/lists")
+def post_list(
+    body: EntryIn, trainermon_session: str | None = Cookie(default=None)
+) -> dict:
+    user = require_user(trainermon_session)
+    try:
+        return add_entry(user["id"], body.kind, _flags(body), body.species_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.patch("/api/lists/{entry_id}")
+def patch_list(
+    entry_id: int,
+    body: EntryPatch,
+    trainermon_session: str | None = Cookie(default=None),
+) -> dict:
+    user = require_user(trainermon_session)
+    try:
+        return update_entry(user["id"], entry_id, _flags(body))
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.delete("/api/lists/{entry_id}")
+def remove_list(
+    entry_id: int, trainermon_session: str | None = Cookie(default=None)
+) -> dict:
+    user = require_user(trainermon_session)
+    try:
+        delete_entry(user["id"], entry_id)
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    return {"ok": True}
