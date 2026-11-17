@@ -405,6 +405,32 @@ different length rule in each agent.** Decision 15 already showed that a
 wording difference is what the benchmark then measures.
 
 
+## 20. PvPoke GO stats are fetched, and the license is a note
+
+Decided 17 November 2026, when phase 3 was approved. The write-up is the
+battle-stats section of `docs/plans/pokemon-go-mode.md`.
+
+`get_go_pokemon` and `get_pvp_rankings` read PvPoke's MIT-licensed
+gamemaster (`src/data/gamemaster/pokemon.json`) and the open overall
+ranking files for Little, Great, Ultra, and Master League. PvPoke's
+LICENSE grants use of that repository. The underlying numbers are still
+Niantic's game data, which PvPoke republishes, and the rankings are
+simulations the maintainer regenerates. That is a note. It does not
+block the work while the app is not monetized. The same posture as the
+ScrapedDuck note in decision 17. An answer that quotes a ranking says
+the numbers are PvPoke simulations as of `fetched_at`, not an official
+ladder.
+
+The PokeMiners game master is not fetched. Its README does not grant an
+application the right to serve that file. Cups stay on `web_search`,
+because a model-supplied cup name must not be concatenated into a URL.
+There is no battle simulator in this app.
+
+Rejected: **vendoring the gamemaster or the ranking JSON.** They move,
+and a checked-in copy goes stale in silence. Rejected: **fetching every
+cup directory.** The path is an allowlist of four leagues.
+
+
 ## Open questions
 
 Not decided. Each needs its own proposal before code depends on it.

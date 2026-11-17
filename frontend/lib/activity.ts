@@ -17,6 +17,8 @@ const TOOL_LABELS: Record<string, string> = {
   get_research_rewards: "Checking research rewards",
   get_egg_pool: "Checking egg pools",
   get_rocket_lineups: "Checking Rocket lineups",
+  get_go_pokemon: "Checking GO stats",
+  get_pvp_rankings: "Checking PvP rankings",
   search_go_guides: "Reading GO guides",
   get_go_type_roles: "Checking candy types",
 };
