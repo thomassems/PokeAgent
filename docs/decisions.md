@@ -344,29 +344,39 @@ benchmark then measures. Rejected: **scraping LeekDuck directly, or vendoring
 ScrapedDuck.** Rejected: **putting GO guides in `strategy-v1`.** That index
 is main-series advice filtered by generation and format.
 
-## 18. Chat theme follows the selected game (proposed)
+## 18. Chat theme follows the selected game
 
-Proposed 15 November 2026. Not decided. The write-up is the Themed UI
-section of `docs/plans/pokemon-go-mode.md`.
+Decided 16 November 2026, when the theme was implemented ahead of phases
+3 and 4. The write-up is the Themed UI section of
+`docs/plans/pokemon-go-mode.md`.
 
-Thomas wants the chat to feel less plain, and he wants the selected game
-to change how the page looks. Pokemon GO would use bright map-like greens
-and blues, rounded cards, a CSS ball button, team-colour accents, and an
-event-card frame. Main series would use a dialogue-box frame, a pixel face
-for headings only, the PokeAPI sprites the app already loads, a Pokedex-red
-accent, and menu-like chips. The game chip from decision 17 picks the
-token set. The team builder stays on the main-series theme because it does
-not have a game chip.
+The game chip from decision 17 picks the token set on the chat page.
+Pokemon GO uses bright map-like greens and blues, rounded cards, a CSS
+ball button, and a team-colour accent. Main series uses a light dialogue
+frame, Press Start 2P for headings only, the PokeAPI sprites the app
+already loads, and a Pokedex-red accent. The team builder is not themed.
+It keeps the dark workspace it already has, because it has no game chip
+and must not inherit `theme-go`.
 
-This is CSS. It does not change the prompt, the tool list, or the trace
-event schema. It is phase 5 in the plan so it is not bundled into the
-guides work. No official logos, fonts, or ripped art.
+This is CSS plus one stored accent (`pokeagent.goAccent`). It does not
+change the prompt, the tool list, or the trace event schema. No official
+logos, fonts, or ripped art. Press Start 2P is SIL Open Font License,
+loaded with `next/font`. Body text stays IBM Plex Sans, and so do the
+chip labels, because the pixel face is hard to read at chip size on a
+phone.
 
-The open questions are still open: how much of the chrome changes, whether
-the main-series frame sits on the dark shell or a light page, which pixel
-face is legal to ship, whether team colours appear before the app knows a
-team, and whether an event card is only a frame around the streamed
-answer. Nothing here is approved to code.
+Defaults for the questions that were still open:
+
+- The theme covers the chat page, header, and composer. It does not
+  cover `/team`.
+- The main-series frame is a light panel on a light page.
+- The accent starts at Neutral. The picker offers Neutral, Blue, Red,
+  and Yellow, each as a swatch beside the word. There is no player-team
+  field.
+- Event and raid answers use the same card frame as any other GO answer.
+  The text is still the streamed markdown.
+- The main-series empty state shows three PokeAPI starter sprites. The
+  GO empty state does not.
 
 ## 19. Simple answers stay short
 

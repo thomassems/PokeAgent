@@ -3,8 +3,9 @@
 Status: **phase 1 approved**. Thomas accepted this plan on 15 November 2026.
 Decision 17 records the decisions. Phase 1 is the game selector, the shared
 prompt and tool list, and the events and raids tools. The GO guides namespace
-and the type helper are phase 2. A themed UI is proposed as phase 5 and is
-not approved. Decision 18 records that proposal. Later phases are still design.
+and the type helper are phase 2. Themed UI (phase 5) is implemented ahead of
+phases 3 and 4. Decision 18 records the defaults that were chosen. Phases 3
+and 4 are still design.
 
 Checked against the repo and the upstream sources on 15 November 2026.
 
@@ -937,28 +938,29 @@ team page stays on the tokens it already has.
 - A GO prompt that is only wired into the custom loop makes the benchmark
   meaningless. The tests that compare the two user texts are the guard.
 - A theme that reads `pokeagent.game` on every page would restyle the team
-  builder, which does not have a game chip. The team page has to force the
-  main-series theme.
+  builder, which does not have a game chip. The theme class is only on the
+  chat page, so the team builder keeps the dark workspace it already has.
 
 ### Phase 5
 
-Themed UI. Its own phase, after the guides work, so a visual pass is not
-bundled into the tool and prompt change. It does not depend on the PvPoke
-tools or the Happening now cards, and those stay phases 3 and 4 so the
-numbers already used in this plan do not move. The design is the Themed UI
-section below. It is not approved. The open questions there are unanswered.
+Themed UI, pulled ahead of phases 3 and 4. It does not depend on the
+PvPoke tools or the Happening now cards, and those stay phases 3 and 4 so
+the numbers already used in this plan do not move. The design and the
+chosen defaults are the Themed UI section below. Decision 18 records them.
 
-Phase 5 is CSS and a class on the chat page. No new tool, no prompt edit,
-no trace event, no new package, and no asset download beyond the PokeAPI
-sprites the app already uses.
+Phase 5 is CSS and a class on the chat page, plus a stored accent that
+only the chat reads. No new tool, no prompt edit, no trace event, and no
+new package. The heading face is Press Start 2P, loaded by `next/font`
+from Google Fonts (SIL Open Font License). Sprites are the PokeAPI URLs
+the app already builds.
 
 ## Themed UI
 
-Proposed. Thomas wants the page to feel less plain, and he wants each game
-to look like itself: Pokemon GO while that chip is selected, and the main
-games while Main series is selected. This is presentation. It does not
-change what either agent is asked, which tools it can call, or what a run
-records.
+Implemented, ahead of phases 3 and 4. Thomas wants the page to feel less
+plain, and he wants each game to look like itself: Pokemon GO while that
+chip is selected, and the main games while Main series is selected. This
+is presentation. It does not change what either agent is asked, which
+tools it can call, or what a run records.
 
 The switch is the game chip that phase 1 already stores in
 `pokeagent.game`. The chat page sets a theme token from that value. Main
@@ -1042,24 +1044,30 @@ none at all. PokeAPI sprites that the app already requests are the only
 outside images in scope. Hotlinking LeekDuck images stays out, as phase 4
 already says.
 
-### Open questions
+### Chosen defaults
 
-1. How far does the theme reach? Chat page and composer only, or the
-   header as well? The team builder stays main-series either way.
-2. Is the main-series dialogue frame a light panel on the current dark
-   shell, or does that theme lighten the whole chat page? GO wants a
-   light map. Two light pages are easier to keep accessible than a light
-   card on a near-black shell.
-3. Which pixel face, if any? Body text should stay the current sans. A
-   heading face still needs a license that allows shipping the file.
-4. Do the three team colours appear as a static decoration, or stay
-   unused until the app actually knows the player's team? There is no
-   team field today.
-5. Does an event or raid card change the markup of an answer, or only
-   the frame around the markdown the agent already streams? A structured
-   card wants a trace change, which this phase does not include.
-6. Should the empty state show a PokeAPI sprite? That is content, and it
-   overlaps the later Pokedex-card idea. The theme can ship without it.
+These were open questions. The implementation picks the following so the
+theme can ship without waiting on phases 3 and 4.
+
+1. The theme covers the chat page, including the header and the composer.
+   The team builder is not themed. It keeps the dark workspace it already
+   has, and it does not read `pokeagent.game` or the accent.
+2. Main-series chat is a light page with a light dialogue frame. A light
+   card on the near-black shell was the harder contrast problem.
+3. Headings use Press Start 2P (CodeMan38, SIL Open Font License 1.1),
+   loaded with `next/font`. Body text stays IBM Plex Sans. Chip labels
+   stay the sans face too: the pixel face at chip size is hard to read
+   on a phone.
+4. The accent starts at Neutral, a muted green-gray that is not a team
+   colour. A picker labelled Neutral, Blue, Red, and Yellow is stored in
+   `pokeagent.goAccent`. The colour is a swatch and the centre of the
+   send button, always beside the word. There is still no player-team
+   field.
+5. An event or raid answer uses the same rounded card as any other GO
+   answer. The frame is CSS around the streamed markdown. There is no
+   new trace event.
+6. The main-series empty state shows three PokeAPI sprites (Bulbasaur,
+   Charmander, Squirtle) as decoration. The GO empty state does not.
 
 ## 6. Future ideas
 
@@ -1115,11 +1123,8 @@ Answered 15 November 2026.
 3. Should every GO answer that used a feed include the LeekDuck credit
    in the text, or is the empty-state credit plus the source fields in
    the tool result enough for the model to mention when it matters?
-4. Themed UI, proposed as phase 5. The open questions are in that
-   section: how far the theme reaches, light versus dark for the
-   main-series frame, which pixel face, whether team colours appear
-   before a team exists, whether an event card is only a frame, and
-   whether the empty state shows a sprite.
+4. Themed UI is phase 5 and is implemented ahead of phases 3 and 4.
+   The defaults are in that section and in decision 18.
 
 ## Approved to code
 
