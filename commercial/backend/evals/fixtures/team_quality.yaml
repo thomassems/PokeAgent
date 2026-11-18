@@ -1,0 +1,50 @@
+# Layer 3: team quality, judged by a separate model against a rubric.
+#
+# The least trustworthy layer, which is why it is last. There is no single right
+# answer, so CLAUDE.md's rule applies hardest here: report distributions over N
+# runs, never a single head to head.
+#
+# `constraints` are objective and a judge should treat a breach as a hard fail.
+# `rubric` items are graded.
+
+- id: balanced-gen4
+  prompt: Build me a balanced team for generation 4.
+  generation: 4
+  constraints:
+    - Every Pokemon debuted in generation 4 or earlier.
+    - Exactly six Pokemon, no duplicates.
+  rubric:
+    - No type leaves the whole team without a resist. Name any defensive gaps.
+    - No two members share a 4x weakness to the same type.
+    - The team is not all one speed tier.
+
+- id: counter-cynthia
+  prompt: Help me draft a team to beat Cynthia.
+  generation: null
+  constraints:
+    - The agent establishes which generation of Cynthia it means before proposing.
+    - Every Pokemon is legal in that generation.
+  rubric:
+    - The team answers Garchomp specifically, which is the hardest member.
+    - Reasoning names what each slot gives up, not just what it adds.
+
+- id: fix-an-ice-weakness
+  prompt: My team is Garchomp, Dragapult, Landorus, Salamence, Flygon and Haxorus.
+    It loses to Ice. Fix it.
+  generation: null
+  constraints:
+    - At least one proposed change resists Ice or is immune to it.
+    - The agent does not propose a Pokemon already on the team.
+  rubric:
+    - It identifies that the shared Dragon and Ground typing is the cause, rather
+      than treating each member's Ice weakness separately.
+    - The swap does not open a worse shared weakness than the one it closes.
+
+- id: legendaries-only
+  prompt: Build me a team of six legendaries.
+  generation: null
+  constraints:
+    - All six are flagged is_legendary in the dex.
+  rubric:
+    - It filtered rather than recalling names, and the six actually exist.
+    - It did not silently substitute high base stat total Pokemon for the category.

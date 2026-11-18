@@ -1,0 +1,450 @@
+@import "./chat-table.css";
+
+/* The chat route uses a reading surface; the team builder keeps its existing
+   darker workspace palette. */
+.chat-page {
+  background: #f8f7f4;
+  color: #242620;
+  min-height: 100dvh;
+}
+
+/* The composer is sticky at the viewport bottom. scrollIntoView(block: end)
+   would otherwise park the newest line underneath it. */
+html:has(.chat-page) {
+  scroll-padding-bottom: 12rem;
+}
+
+.chat-page ::selection {
+  background: #f7d6aa;
+  color: #242620;
+}
+
+.chat-header {
+  background: #fffdfa;
+  border-bottom: 1px solid #e8e5df;
+}
+
+.chat-header .text-ink-100 {
+  color: #242620;
+}
+
+.chat-header .text-ink-500,
+.chat-header .text-ink-300 {
+  color: #5b625d;
+}
+
+.chat-header .bg-shell-800 {
+  background: #f1eee8;
+}
+
+.chat-header .border-shell-700 {
+  border-color: #ddd8cf;
+}
+
+.chat-header .bg-plasma-500 {
+  background: #bd672f;
+}
+
+.chat-header a:hover {
+  color: #242620;
+}
+
+.chat-main {
+  min-height: calc(100dvh - 57px);
+}
+
+.chat-welcome {
+  padding: 3rem 0 4.5rem;
+}
+
+.chat-mark,
+.chat-assistant-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  border-radius: 12px;
+  background: #bb6b37;
+  color: #fffdf8;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(82, 54, 32, 0.12);
+}
+
+.chat-mark {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.chat-welcome h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.chat-welcome p {
+  margin-top: 0.75rem;
+  color: #5b625d;
+  line-height: 1.5;
+}
+
+.chat-examples {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  max-width: 42rem;
+  margin-top: 2rem;
+}
+
+.chat-examples button {
+  padding: 0.7rem 1rem;
+  border: 1px solid #dedbd3;
+  border-radius: 999px;
+  background: #fffdfa;
+  color: #343a34;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  transition: background 180ms ease, border-color 180ms ease;
+}
+
+.chat-examples button:hover {
+  background: #f2eee7;
+  border-color: #c9c3b8;
+}
+
+.chat-transcript {
+  width: 100%;
+  /* Wide enough for two answer panels side by side above the panels
+     breakpoint. A single column of prose would read better at 48rem, but the
+     comparison is the point of the page. */
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: 2.5rem 0 3rem;
+}
+
+.chat-turn {
+  scroll-margin-top: 1.5rem;
+}
+
+.chat-turn + .chat-turn {
+  margin-top: 2.5rem;
+}
+
+.chat-user-message {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.chat-user-game {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  color: #6d6458;
+}
+
+.chat-user-message p {
+  max-width: min(36rem, 88%);
+  padding: 0.85rem 1.15rem;
+  border-radius: 20px 20px 5px 20px;
+  background: #eae7e0;
+  color: #292b26;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.chat-assistant-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-top: 1.6rem;
+}
+
+.chat-assistant-mark {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9px;
+  font-size: 0.85rem;
+}
+
+.chat-assistant-content {
+  min-width: 0;
+  padding-top: 0.05rem;
+  flex: 1;
+}
+
+.chat-answer,
+.chat-error {
+  max-width: 72ch;
+  overflow-wrap: anywhere;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+}
+
+.chat-answer > * + * {
+  margin-top: 1rem;
+}
+.chat-answer h1,
+.chat-answer h2,
+.chat-answer h3 {
+  color: #242620;
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+.chat-answer h1 { font-size: 1.4rem; }
+.chat-answer h2 { font-size: 1.2rem; }
+.chat-answer h3 { font-size: 1.05rem; }
+.chat-answer h1:not(:first-child),
+.chat-answer h2:not(:first-child),
+.chat-answer h3:not(:first-child) {
+  margin-top: 1.75rem;
+}
+.chat-answer strong { font-weight: 650; }
+.chat-answer ul,
+.chat-answer ol {
+  padding-left: 1.4rem;
+}
+.chat-answer ul { list-style: disc; }
+.chat-answer ol { list-style: decimal; }
+.chat-answer li + li { margin-top: 0.35rem; }
+.chat-answer li > p + p { margin-top: 0.5rem; }
+.chat-answer a {
+  color: #8b471f;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.chat-answer code {
+  border-radius: 4px;
+  background: #eeeae3;
+  padding: 0.1em 0.3em;
+  font-size: 0.9em;
+}
+.chat-answer pre {
+  overflow-x: auto;
+  border-radius: 10px;
+  background: #eeeae3;
+  padding: 0.9rem 1rem;
+}
+.chat-answer pre code { padding: 0; }
+.chat-answer blockquote {
+  border-left: 1px solid #c9c3b8;
+  padding-left: 1rem;
+  color: #505851;
+}
+
+.chat-error {
+  white-space: pre-wrap;
+  color: #a73832;
+}
+
+.chat-activity {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  gap: 0.55rem;
+  color: #505851;
+  font-size: 0.8125rem;
+}
+
+.chat-answer + .chat-activity {
+  margin-top: 0.75rem;
+}
+
+.chat-activity-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  flex: none;
+  border-radius: 50%;
+  background: #bb6b37;
+  animation: chat-pulse 1.25s infinite ease-in-out;
+}
+
+@keyframes chat-pulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+.chat-activity-label {
+  overflow-wrap: anywhere;
+}
+
+.chat-activity-step {
+  color: #686f69;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.chat-elapsed,
+.chat-finished {
+  color: #686f69;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.chat-finished {
+  display: block;
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .chat-welcome {
+    padding: 2rem 0 3rem;
+  }
+  .chat-welcome h2 {
+    font-size: 1.5rem;
+  }
+  .chat-examples {
+    flex-direction: column;
+    width: 100%;
+    max-width: 22rem;
+  }
+  .chat-examples button {
+    border-radius: 14px;
+    text-align: left;
+  }
+  .chat-transcript {
+    padding-top: 1.5rem;
+  }
+  .chat-assistant-message {
+    gap: 0.65rem;
+  }
+}
+
+/* Side-by-side agent panels -------------------------------------------------
+   One panel per implementation: one column below the panels breakpoint, two
+   above it. Colours are the chat route's light reading surface, not the shell
+   tokens the team builder uses. */
+
+.chat-agent-grid {
+  display: grid;
+  align-items: start;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+/* Below the breakpoint only the selected panel is in the document at all, so
+   it leaves the accessibility tree too rather than just going invisible. */
+.chat-agent-slot {
+  display: none;
+  min-width: 0;
+}
+
+.chat-agent-slot.is-visible {
+  display: block;
+}
+
+.chat-agent-tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 1.25rem;
+}
+
+@media (width >= 56.25rem) {
+  .chat-agent-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .chat-agent-slot {
+    display: block;
+  }
+
+  /* Both panels are visible up here, so a tab control would be a lie. */
+  .chat-agent-tabs {
+    display: none;
+  }
+}
+
+.chat-agent-tabs button {
+  flex: 1;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #ddd8cf;
+  border-radius: 7px;
+  background: #fffdfa;
+  color: #5b625d;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: color 120ms ease, border-color 120ms ease, background-color 120ms ease;
+}
+
+.chat-agent-tabs button[aria-pressed="true"] {
+  border-color: #d8a271;
+  background: #f7ece1;
+  color: #242620;
+}
+
+.chat-agent-panel {
+  min-width: 0;
+  border: 1px solid #e8e5df;
+  border-radius: 14px;
+  background: #fffdfa;
+}
+
+.chat-agent-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid #efece6;
+}
+
+.chat-agent-header h3 {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #242620;
+}
+
+.chat-agent-dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: #bd672f;
+}
+
+/* The assistant mark and its gap belong to the single-column layout. Inside a
+   panel the header already says who is speaking. */
+.chat-agent-panel .chat-assistant-message {
+  margin-top: 0;
+  padding: 0.9rem;
+  gap: 0;
+}
+
+.chat-agent-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.1rem;
+  padding: 0.6rem 0.9rem;
+  border-top: 1px solid #efece6;
+}
+
+.chat-metric {
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+}
+
+.chat-metric-label {
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #8d938b;
+}
+
+.chat-metric-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  color: #3f453f;
+}
+
+.chat-disclaimer {
+  max-width: 72ch;
+  margin: 0.55rem auto 0;
+  text-align: center;
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: #8d938b;
+}

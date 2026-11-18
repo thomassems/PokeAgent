@@ -1,0 +1,33 @@
+.chat-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid #dedbd3;
+  border-radius: 10px;
+  background: #fffdfa;
+  scrollbar-color: #c9c3b8 #f1eee8;
+  scrollbar-width: thin;
+}
+
+.chat-answer table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+}
+
+.chat-answer th,
+.chat-answer td {
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.chat-answer th {
+  background: #f1eee8;
+  font-weight: 650;
+}
+
+.chat-answer tbody tr + tr td {
+  border-top: 1px solid #eeeae3;
+}

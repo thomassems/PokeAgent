@@ -431,6 +431,34 @@ and a checked-in copy goes stale in silence. Rejected: **fetching every
 cup directory.** The path is an allowlist of four leagues.
 
 
+## 23. A commercial edition lives beside the personal app
+
+Decided 17 November 2026. Thomas approved a second copy of the app under
+`commercial/`, built so it can later move to its own repository with
+`git subtree split --prefix=commercial`. The personal app is unchanged
+in behaviour. Numbered 23 because decisions 21 and 22 are on open pull
+requests (the dashboard proposal and the monetization research) and are
+not on main yet.
+
+The commercial copy drops LeekDuck and ScrapedDuck. That README forbids
+hiding the data behind a paywall or monetizing it with ads. It also
+drops official PokeAPI sprites and draws a type-coloured badge instead.
+PvPoke stays, with the MIT notice. PokeAPI species data stays, under its
+BSD-style license. The GO guides stay: they are original summaries, not
+a ScrapedDuck feed. `commercial/README.md` records the license check.
+
+The product name is the `APP_NAME` environment variable, defaulting to
+Field Notes, because the name is still an open question.
+
+A fix to code that exists in both trees has to be applied in both places
+until the split. There is no shared package.
+
+Rejected: **stripping the feeds from the personal app.** That copy is
+the free edition and may keep them. Rejected: **a build flag inside one
+tree.** The forbidden client would still ship in the monetized
+repository, and the later split would be a filter rather than a copy.
+
+
 ## Open questions
 
 Not decided. Each needs its own proposal before code depends on it.
