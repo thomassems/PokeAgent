@@ -21,6 +21,7 @@ def _register(client: TestClient, email: str, name: str, city: str) -> None:
             "password": "correct horse",
             "trainer_name": name,
             "city": city,
+            "age_confirmed": True,
         },
     )
     assert response.status_code == 200

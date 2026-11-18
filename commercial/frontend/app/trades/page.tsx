@@ -3,16 +3,22 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
-import { SpeciesBadge } from "@/components/SpeciesBadge";
+import { SpeciesRow } from "@/components/SpeciesRow";
 import { communityFetch, type Profile } from "@/lib/community";
 import type { TypeName } from "@/lib/types";
 
 type Matched = {
   id: number;
+  dex: number;
   name: string;
   types: TypeName[];
   form: string;
   shiny: boolean;
+  dynamax: boolean;
+  gigantamax: boolean;
+  shadow: boolean;
+  costume: boolean;
+  lucky: boolean;
 };
 
 type Match = {
@@ -22,9 +28,16 @@ type Match = {
   i_have: Matched[];
 };
 
-function label(row: Matched): string {
-  const extras = [row.form, row.shiny ? "shiny" : ""].filter(Boolean);
-  return extras.length ? `${row.name} (${extras.join(", ")})` : row.name;
+function chips(row: Matched): string[] {
+  return [
+    row.form,
+    row.shiny ? "Shiny" : "",
+    row.dynamax ? "Dynamax" : "",
+    row.gigantamax ? "Gigantamax" : "",
+    row.shadow ? "Shadow" : "",
+    row.costume ? "Costume" : "",
+    row.lucky ? "Lucky" : "",
+  ].filter(Boolean);
 }
 
 export default function TradesPage() {
@@ -128,9 +141,13 @@ export default function TradesPage() {
                   <p className="text-xs text-ink-400">They have what you want</p>
                   <ul className="mt-2 flex flex-col gap-2">
                     {match.they_have.map((row) => (
-                      <li key={row.id} className="flex items-center gap-2 text-sm">
-                        <SpeciesBadge name={row.name} types={row.types} />
-                        {label(row)}
+                      <li key={row.id}>
+                        <SpeciesRow
+                          dex={row.dex}
+                          name={row.name}
+                          types={row.types}
+                          chips={chips(row)}
+                        />
                       </li>
                     ))}
                   </ul>
@@ -141,9 +158,13 @@ export default function TradesPage() {
                   <p className="text-xs text-ink-400">You have what they want</p>
                   <ul className="mt-2 flex flex-col gap-2">
                     {match.i_have.map((row) => (
-                      <li key={row.id} className="flex items-center gap-2 text-sm">
-                        <SpeciesBadge name={row.name} types={row.types} />
-                        {label(row)}
+                      <li key={row.id}>
+                        <SpeciesRow
+                          dex={row.dex}
+                          name={row.name}
+                          types={row.types}
+                          chips={chips(row)}
+                        />
                       </li>
                     ))}
                   </ul>

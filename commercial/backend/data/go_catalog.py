@@ -1,8 +1,7 @@
-"""Hand-curated Pokémon GO catalog. See docs/go-data-sources.md.
+"""Base GO catalog from PvPoke and PokéAPI, plus pure fact overlay.
 
-TODO: replace this seed when a commercial-ok source covers shiny, Dynamax,
-Gigantamax, costume, and tradability. Do not fill those gaps from PokeMiners
-or Bulbapedia.
+Shiny, Dynamax, Gigantamax, costumes, and trade blocks come from curated
+facts (see services/curation.py). This module does not read the database.
 """
 
 import json
@@ -12,13 +11,15 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
-_PATH = Path(__file__).parent / "go_catalog.json"
+_PATH = Path(__file__).parent / "go_base.json"
+_FACT_KINDS = {"shiny", "dynamax", "gigantamax", "costume", "trade_rule"}
 
 
 class Species(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    id: str = Field(pattern=r"^[a-z0-9-]+$")
+    id: str = Field(pattern=r"^[a-z0-9_-]+$")
+    dex: int = Field(ge=0)
     name: str
     types: list[str] = Field(min_length=1, max_length=2)
     forms: list[str] = Field(default_factory=list)
@@ -31,6 +32,7 @@ class Species(BaseModel):
     mythical: bool
     legendary: bool
     tradable: bool
+    untradeable_hint: bool = False
 
 
 class EntryFlags(BaseModel):
@@ -46,7 +48,7 @@ class EntryFlags(BaseModel):
 
 
 def _load() -> tuple[Species, ...]:
-    raw = json.loads(_PATH.read_text())
+    raw = json.loads(_PATH.read_text())["species"]
     species = tuple(Species.model_validate(row) for row in raw)
     ids = [item.id for item in species]
     if len(ids) != len(set(ids)):
@@ -55,8 +57,55 @@ def _load() -> tuple[Species, ...]:
 
 
 @lru_cache(maxsize=1)
-def catalog() -> tuple[Species, ...]:
+def base_catalog() -> tuple[Species, ...]:
+    """Species identity only. Curated flags are applied by the caller."""
     return _load()
+
+
+def catalog() -> tuple[Species, ...]:
+    """Base rows. Callers that show GO flags should use services.catalog."""
+    return base_catalog()
+
+
+def apply_facts(species: Species, facts: list[dict[str, Any]]) -> Species:
+    """Copy a base row and turn on the approved facts for that species."""
+    shiny = species.shiny
+    dynamax = species.dynamax
+    gigantamax = species.gigantamax
+    costume = species.costume
+    tradable = species.tradable
+    forms = list(species.forms)
+    for fact in facts:
+        if fact.get("status") not in (None, "approved"):
+            continue
+        if fact.get("species_id") != species.id:
+            continue
+        kind = fact.get("kind")
+        if kind not in _FACT_KINDS:
+            continue
+        value = str(fact.get("value") or "")
+        if kind == "shiny" and value == "true":
+            shiny = True
+        elif kind == "dynamax" and value == "true":
+            dynamax = True
+        elif kind == "gigantamax" and value == "true":
+            gigantamax = True
+        elif kind == "costume" and value:
+            costume = True
+            if value not in forms:
+                forms.append(value)
+        elif kind == "trade_rule" and value == "untradable":
+            tradable = False
+    return species.model_copy(
+        update={
+            "shiny": shiny,
+            "dynamax": dynamax,
+            "gigantamax": gigantamax,
+            "costume": costume,
+            "tradable": tradable,
+            "forms": forms,
+        }
+    )
 
 
 def species_by_id(species_id: str) -> Species | None:
@@ -92,6 +141,7 @@ def check_entry(species: Species, flags: EntryFlags) -> None:
 
 
 def filter_catalog(
+    species: tuple[Species, ...] | list[Species] | None = None,
     *,
     query: str = "",
     shiny: bool = False,
@@ -106,7 +156,7 @@ def filter_catalog(
     """AND the selected tags. An unselected tag does not filter."""
     needle = query.strip().lower()
     rows: list[dict[str, Any]] = []
-    for item in catalog():
+    for item in base_catalog() if species is None else species:
         if needle and needle not in item.name.lower() and needle not in item.id:
             continue
         if shiny and not item.shiny:

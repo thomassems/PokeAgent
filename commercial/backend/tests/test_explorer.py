@@ -12,7 +12,7 @@ def test_regional_and_name() -> None:
     names = [row["name"] for row in regional.json()["species"]]
     assert "Heracross" in names
     assert "Magikarp" not in names
-    assert regional.json()["seed"] is True
+    assert regional.json()["seed"] is False
 
     narrowed = client.get("/api/explorer", params={"regional": "true", "query": "tau"})
     assert [row["id"] for row in narrowed.json()["species"]] == ["tauros"]
@@ -21,8 +21,8 @@ def test_regional_and_name() -> None:
 def test_gigantamax_does_not_include_dynamax_only() -> None:
     rows = client.get("/api/explorer", params={"gigantamax": "true"}).json()["species"]
     ids = {row["id"] for row in rows}
-    assert "melmetal" in ids
-    assert "charizard" in ids
+    assert "machamp" in ids
+    assert "bulbasaur" not in ids
     assert "articuno" not in ids
 
 

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { useAppName } from "@/lib/app-name";
@@ -15,6 +16,7 @@ export default function AccountPage() {
   const [trainerName, setTrainerName] = useState("");
   const [city, setCity] = useState("Toronto");
   const [friendCode, setFriendCode] = useState("");
+  const [ageConfirmed, setAgeConfirmed] = useState(false);
 
   useEffect(() => {
     communityFetch<Profile>("/api/me")
@@ -39,6 +41,7 @@ export default function AccountPage() {
               trainer_name: trainerName,
               city,
               friend_code: friendCode,
+              age_confirmed: ageConfirmed,
             }
           : { email, password };
       const me = await communityFetch<Profile>(path, {
@@ -189,6 +192,28 @@ export default function AccountPage() {
                 </label>
               </>
             )}
+            {mode === "register" ? (
+              <label className="flex items-start gap-2 text-sm text-ink-300">
+                <input
+                  type="checkbox"
+                  className="mt-1"
+                  checked={ageConfirmed}
+                  onChange={(event) => setAgeConfirmed(event.target.checked)}
+                />
+                <span>
+                  I am 13 or older. {appName} does not offer accounts to anyone
+                  younger. Read the{" "}
+                  <Link href="/privacy" className="underline">
+                    privacy draft
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="/terms" className="underline">
+                    terms draft
+                  </Link>
+                  .
+                </span>
+              </label>
+            ) : null}
             <button type="submit" className="rounded-sm bg-plasma-600 px-3 py-1 text-sm text-ink-100">
               {mode === "register" ? "Create account" : "Sign in"}
             </button>

@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
-import { SpeciesBadge } from "@/components/SpeciesBadge";
+import { SpeciesRow } from "@/components/SpeciesRow";
 import { useAppName } from "@/lib/app-name";
 import { communityFetch, type Profile } from "@/lib/community";
 import type { TypeName } from "@/lib/types";
 
 type Species = {
   id: string;
+  dex: number;
   name: string;
   types: TypeName[];
   forms: string[];
@@ -19,6 +20,7 @@ type ListEntry = {
   id: number;
   kind: "want" | "have";
   species_id: string;
+  dex: number;
   name: string;
   types: TypeName[];
   form: string;
@@ -68,6 +70,7 @@ export default function ListsPage() {
   const [entries, setEntries] = useState<ListEntry[]>([]);
   const [kind, setKind] = useState<"want" | "have">("want");
   const [speciesId, setSpeciesId] = useState("magikarp");
+  const [speciesQuery, setSpeciesQuery] = useState("");
   const [form, setForm] = useState("");
   const [notes, setNotes] = useState("");
   const [flags, setFlags] = useState(EMPTY_FLAGS);
@@ -85,7 +88,8 @@ export default function ListsPage() {
       .catch(() => setProfile(null));
     communityFetch<Species[]>("/api/catalog").then((rows) => {
       setCatalog(rows);
-      if (rows[0]) setSpeciesId(rows[0].id);
+      const preferred = rows.find((row) => row.id === "magikarp") ?? rows[0];
+      if (preferred) setSpeciesId(preferred.id);
     });
     load();
   }, []);
@@ -157,18 +161,39 @@ export default function ListsPage() {
                   <option value="have">Have</option>
                 </select>
               </label>
-              <label className="text-xs text-ink-400">
+              <label className="min-w-40 flex-1 text-xs text-ink-400">
                 Pokémon
+                <input
+                  className="mt-1 block w-full rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-sm"
+                  value={speciesQuery}
+                  placeholder="Filter by name"
+                  onChange={(event) => setSpeciesQuery(event.target.value)}
+                />
                 <select
-                  className="mt-1 block rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-sm"
+                  className="mt-1 block w-full rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-sm"
                   value={speciesId}
                   onChange={(event) => setSpeciesId(event.target.value)}
                 >
-                  {catalog.map((species) => (
-                    <option key={species.id} value={species.id}>
-                      {species.name}
-                    </option>
-                  ))}
+                  {(() => {
+                    const needle = speciesQuery.trim().toLowerCase();
+                    const matched = catalog.filter(
+                      (species) =>
+                        !needle ||
+                        species.name.toLowerCase().includes(needle) ||
+                        species.id.includes(needle),
+                    );
+                    const limited = matched.slice(0, 40);
+                    const selected = catalog.find((species) => species.id === speciesId);
+                    const options =
+                      selected && !limited.some((species) => species.id === selected.id)
+                        ? [selected, ...limited]
+                        : limited;
+                    return options.map((species) => (
+                      <option key={species.id} value={species.id}>
+                        {species.name}
+                      </option>
+                    ));
+                  })()}
                 </select>
               </label>
               <label className="text-xs text-ink-400">
@@ -218,12 +243,18 @@ export default function ListsPage() {
               key={entry.id}
               className="flex gap-3 rounded-md border border-shell-800 bg-shell-900 p-3"
             >
-              <SpeciesBadge name={entry.name} types={entry.types} />
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium">
-                  {entry.kind === "want" ? "Want" : "Have"} {entry.name}
-                  {tags(entry) ? ` (${tags(entry)})` : ""}
+                <p className="text-[11px] tracking-wide text-ink-500 uppercase">
+                  {entry.kind}
                 </p>
+                <SpeciesRow
+                  dex={entry.dex}
+                  name={entry.name}
+                  types={entry.types}
+                  chips={tags(entry)
+                    .split(", ")
+                    .filter(Boolean)}
+                />
                 {entry.notes ? (
                   <p className="text-xs text-ink-400">{entry.notes}</p>
                 ) : null}

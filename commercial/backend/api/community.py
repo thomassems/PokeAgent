@@ -9,15 +9,17 @@ from typing import Literal
 from fastapi import APIRouter, Cookie, HTTPException, Response
 from pydantic import BaseModel, Field
 
-from data.go_catalog import EntryFlags, catalog, filter_catalog
+from data.go_catalog import EntryFlags
 from services.accounts import (
     cookie_name,
     login,
     logout,
+    official_sprites_enabled,
     register,
     update_profile,
     user_from_token,
 )
+from services.catalog import public_catalog
 from services.lists import add_entry, delete_entry, list_entries, update_entry
 from services.trades import search_trades
 
@@ -31,6 +33,7 @@ class RegisterIn(BaseModel):
     trainer_name: str
     city: str = "Toronto"
     friend_code: str = ""
+    age_confirmed: bool = False
 
 
 class LoginIn(BaseModel):
@@ -106,7 +109,12 @@ def require_user(token: str | None) -> dict:
 def register_account(body: RegisterIn, response: Response) -> dict:
     try:
         user, token = register(
-            body.email, body.password, body.trainer_name, body.city, body.friend_code
+            body.email,
+            body.password,
+            body.trainer_name,
+            body.city,
+            body.friend_code,
+            body.age_confirmed,
         )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
@@ -151,9 +159,14 @@ def patch_me(
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
+@router.get("/api/config")
+def config() -> dict:
+    return {"official_sprites": official_sprites_enabled()}
+
+
 @router.get("/api/catalog")
 def get_catalog() -> list[dict]:
-    return [item.model_dump() for item in catalog()]
+    return public_catalog()
 
 
 @router.get("/api/lists")
@@ -222,8 +235,8 @@ def explorer(
     legendary: bool = False,
 ) -> dict:
     return {
-        "seed": True,
-        "species": filter_catalog(
+        "seed": False,
+        "species": public_catalog(
             query=query,
             shiny=shiny,
             dynamax=dynamax,

@@ -39,7 +39,7 @@ _PEOPLE = (
         "trainer_name": "Riley",
         "city": "Toronto",
         "rows": (
-            ("want", "pikachu", EntryFlags(form="costume", costume=True)),
+            ("want", "beldum", EntryFlags(dynamax=True)),
             ("have", "kangaskhan", EntryFlags()),
         ),
     },
@@ -73,6 +73,7 @@ def main() -> None:
             person["trainer_name"],
             person["city"],
             None,
+            True,
         )
         for kind, species_id, flags in person["rows"]:
             add_entry(user["id"], kind, flags, species_id)

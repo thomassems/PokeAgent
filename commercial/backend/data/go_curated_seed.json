@@ -1,0 +1,501 @@
+{
+  "verified_on": "2026-11-18",
+  "method": "Each row was restated from an official page opened on 18 November 2026. The pages were not scraped by the app. This is not a complete shiny or Dynamax dex. Meltan and Melmetal are not in the untradable list because the Help Center page does not state that exception.",
+  "rows": [
+    {
+      "species_id": "barboach",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Marked as a possible shiny encounter during the July 2025 Water Festival."
+    },
+    {
+      "species_id": "beldum",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/gigantamax-machamp-max-battle-day",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Timed Research for that weekend offers a Dynamax Beldum encounter."
+    },
+    {
+      "species_id": "beldum",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/gigantamax-machamp-max-battle-day",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The same line marks Dynamax Beldum as a possible shiny encounter."
+    },
+    {
+      "species_id": "blastoise",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The debut post says evolutions of Max Battle catches can Dynamax. This is an evolution of squirtle."
+    },
+    {
+      "species_id": "buizel",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Marked as a possible shiny encounter during the July 2025 Water Festival."
+    },
+    {
+      "species_id": "bulbasaur",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Named as a Dynamax debut in one-star Max Battles for 10 September 2024."
+    },
+    {
+      "species_id": "bulbasaur",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The same debut post marks this species as a possible shiny encounter."
+    },
+    {
+      "species_id": "celebi",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "charizard",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The debut post says evolutions of Max Battle catches can Dynamax. This is an evolution of charmander."
+    },
+    {
+      "species_id": "charmander",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Named as a Dynamax debut in one-star Max Battles for 10 September 2024."
+    },
+    {
+      "species_id": "charmander",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The same debut post marks this species as a possible shiny encounter."
+    },
+    {
+      "species_id": "charmeleon",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The debut post says evolutions of Max Battle catches can Dynamax. This is an evolution of charmander."
+    },
+    {
+      "species_id": "clamperl",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Marked as a possible shiny encounter during the July 2025 Water Festival."
+    },
+    {
+      "species_id": "darkrai",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "deoxys",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "diancie",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "dubwool",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The debut post says evolutions of Max Battle catches can Dynamax. This is an evolution of wooloo."
+    },
+    {
+      "species_id": "ducklett",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Marked as a possible shiny encounter during the July 2025 Water Festival."
+    },
+    {
+      "species_id": "feebas",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Marked as a possible shiny encounter during the July 2025 Water Festival."
+    },
+    {
+      "species_id": "finneon",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Marked as a possible shiny encounter during the July 2025 Water Festival."
+    },
+    {
+      "species_id": "genesect",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "greedent",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The debut post says evolutions of Max Battle catches can Dynamax. This is an evolution of skwovet."
+    },
+    {
+      "species_id": "gyarados",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Marked as a possible shiny encounter during the July 2025 Water Festival."
+    },
+    {
+      "species_id": "hoopa",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "ivysaur",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The debut post says evolutions of Max Battle catches can Dynamax. This is an evolution of bulbasaur."
+    },
+    {
+      "species_id": "jirachi",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "keldeo_ordinary",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "krabby",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Marked as a possible shiny encounter during the July 2025 Water Festival."
+    },
+    {
+      "species_id": "lapras",
+      "kind": "costume",
+      "value": "scarf",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Lapras wearing a scarf was in three-star raids during that festival."
+    },
+    {
+      "species_id": "lapras",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Lapras wearing a scarf was marked as a possible shiny raid encounter."
+    },
+    {
+      "species_id": "machamp",
+      "kind": "gigantamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/gigantamax-machamp-max-battle-day",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Gigantamax Machamp debuted in six-star Max Battles on 25 May 2025."
+    },
+    {
+      "species_id": "machamp",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/gigantamax-machamp-max-battle-day",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "That Max Battle Day post marks Gigantamax Machamp as a possible shiny."
+    },
+    {
+      "species_id": "magikarp",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Marked as a possible shiny encounter during the July 2025 Water Festival."
+    },
+    {
+      "species_id": "marill",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Marked as a possible shiny encounter during the July 2025 Water Festival."
+    },
+    {
+      "species_id": "marshadow",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "meloetta_aria",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "mew",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "shaymin_land",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "shellder",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Marked as a possible shiny encounter during the July 2025 Water Festival."
+    },
+    {
+      "species_id": "skwovet",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Named as a Dynamax debut in one-star Max Battles for 10 September 2024."
+    },
+    {
+      "species_id": "skwovet",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The same debut post marks this species as a possible shiny encounter."
+    },
+    {
+      "species_id": "slowpoke",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Marked as a possible shiny encounter during the July 2025 Water Festival."
+    },
+    {
+      "species_id": "squirtle",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Named as a Dynamax debut in one-star Max Battles for 10 September 2024."
+    },
+    {
+      "species_id": "squirtle",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Marked as a possible shiny encounter during the July 2025 Water Festival."
+    },
+    {
+      "species_id": "staryu",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The post also names an increased chance of shiny Staryu."
+    },
+    {
+      "species_id": "tirtouga",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The post also names an increased chance of shiny Tirtouga."
+    },
+    {
+      "species_id": "venusaur",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The debut post says evolutions of Max Battle catches can Dynamax. This is an evolution of bulbasaur."
+    },
+    {
+      "species_id": "victini",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "volcanion",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "wartortle",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The debut post says evolutions of Max Battle catches can Dynamax. This is an evolution of squirtle."
+    },
+    {
+      "species_id": "wimpod",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/post/water-festival-2025/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Marked as a possible shiny encounter during the July 2025 Water Festival."
+    },
+    {
+      "species_id": "wooloo",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "Named as a Dynamax debut in one-star Max Battles for 10 September 2024."
+    },
+    {
+      "species_id": "wooloo",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/go-big-dynamax/",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The same debut post marks this species as a possible shiny encounter."
+    },
+    {
+      "species_id": "zarude",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "zeraora",
+      "kind": "trade_rule",
+      "value": "untradable",
+      "source_url": "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/96-trading-pokemon/?l=en&p=web",
+      "verified_at": "2026-11-18",
+      "verified_by": "hand-seed",
+      "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    }
+  ]
+}

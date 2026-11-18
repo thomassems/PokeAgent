@@ -2,13 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
-import { SpeciesBadge } from "@/components/SpeciesBadge";
+import { SpeciesRow } from "@/components/SpeciesRow";
 import { communityFetch } from "@/lib/community";
 import type { TypeName } from "@/lib/types";
 
 type Species = {
   id: string;
+  dex: number;
   name: string;
+  checked_on?: string | null;
   types: TypeName[];
   forms: string[];
   shiny: boolean;
@@ -38,7 +40,9 @@ type Tag = (typeof TAGS)[number];
 function chips(species: Species): string[] {
   const on: string[] = TAGS.filter((tag) => species[tag]);
   if (!species.tradable) on.push("untradable");
-  return [...species.forms, ...on];
+  return [...species.forms, ...on].map(
+    (chip) => chip.charAt(0).toUpperCase() + chip.slice(1),
+  );
 }
 
 export default function ExplorerPage() {
@@ -73,9 +77,9 @@ export default function ExplorerPage() {
         <div>
           <h2 className="text-lg font-semibold">Explorer</h2>
           <p className="mt-1 text-sm text-ink-400">
-            This is a hand-kept seed, not a live dex. It is incomplete on
-            purpose until a catalog with a written commercial licence covers
-            shiny, Dynamax, Gigantamax, costume, and tradability.
+            Species names, dex numbers, and types come from PvPoke (MIT) and
+            PokéAPI (BSD). Shiny, Dynamax, Gigantamax, and costume marks are a
+            hand-checked layer and do not cover the whole dex.
           </p>
         </div>
         <div className="flex flex-col gap-3">
@@ -106,10 +110,18 @@ export default function ExplorerPage() {
               key={row.id}
               className="flex items-center gap-3 rounded-md border border-shell-800 bg-shell-900 p-3"
             >
-              <SpeciesBadge name={row.name} types={row.types} />
-              <div>
-                <p className="text-sm font-medium">{row.name}</p>
-                <p className="text-xs text-ink-400">{chips(row).join(", ")}</p>
+              <div className="min-w-0 flex-1">
+                <SpeciesRow
+                  dex={row.dex}
+                  name={row.name}
+                  types={row.types}
+                  chips={chips(row)}
+                />
+                {row.checked_on ? (
+                  <p className="mt-1 pl-[4.25rem] text-[11px] text-ink-500">
+                    Checked {row.checked_on}
+                  </p>
+                ) : null}
               </div>
             </li>
           ))}

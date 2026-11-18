@@ -63,6 +63,28 @@ def init_db() -> None:
             )
             """
         )
+        columns = {row[1] for row in conn.execute("PRAGMA table_info(users)")}
+        if "age_ok" not in columns:
+            conn.execute("ALTER TABLE users ADD COLUMN age_ok INTEGER")
+
+
+def is_admin(email: str) -> bool:
+    """TRAINERMON_ADMINS is a comma-separated list of account emails."""
+    allowed = {
+        item.strip().lower()
+        for item in os.environ.get("TRAINERMON_ADMINS", "").split(",")
+        if item.strip()
+    }
+    return email.strip().lower() in allowed
+
+
+def official_sprites_enabled() -> bool:
+    """Reserved. Default off. This build has no sprite files either way."""
+    return os.environ.get("SHOW_OFFICIAL_SPRITES", "").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+    }
 
 
 def share_friend_codes() -> bool:
@@ -146,7 +168,10 @@ def register(
     trainer_name: str,
     city: str | None,
     friend_code: str | None,
+    age_confirmed: bool,
 ) -> tuple[dict[str, Any], str]:
+    if not age_confirmed:
+        raise ValueError("Trainermon is for trainers aged 13 and over.")
     cleaned_email = _validate_email(email)
     _validate_password(password)
     name = _validate_name(trainer_name)
@@ -162,9 +187,10 @@ def register(
         cursor = conn.execute(
             """
             INSERT INTO users (
-                email, password_hash, trainer_name, city, friend_code, created_at
+                email, password_hash, trainer_name, city, friend_code,
+                created_at, age_ok
             )
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 cleaned_email,
@@ -173,6 +199,7 @@ def register(
                 place,
                 code,
                 _iso(_now()),
+                1,
             ),
         )
         user_id = int(cursor.lastrowid)

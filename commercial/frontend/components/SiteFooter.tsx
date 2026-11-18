@@ -11,6 +11,17 @@ export function SiteFooter({ appName }: SiteFooterProps) {
           Scopely/Niantic.
         </p>
         <p>AI-generated answers may be wrong.</p>
+        <p className="flex flex-wrap gap-x-3">
+          <a className="underline" href="/credits">
+            Open-source data
+          </a>
+          <a className="underline" href="/privacy">
+            Privacy draft
+          </a>
+          <a className="underline" href="/terms">
+            Terms draft
+          </a>
+        </p>
         <p>
           Data: species, moves, and type charts from{" "}
           <a className="underline" href="https://pokeapi.co/">

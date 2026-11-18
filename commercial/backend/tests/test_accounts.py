@@ -22,6 +22,7 @@ def test_register_login_and_profile(client: TestClient) -> None:
             "trainer_name": "Avery",
             "city": "",
             "friend_code": "1234 5678 9012",
+            "age_confirmed": True,
         },
     )
     assert created.status_code == 200
@@ -59,6 +60,7 @@ def test_bad_password_and_duplicate_email(client: TestClient) -> None:
         "password": "long-enough",
         "trainer_name": "Sam",
         "city": "Toronto",
+        "age_confirmed": True,
     }
     assert client.post("/api/auth/register", json=payload).status_code == 200
     client.post("/api/auth/logout")
@@ -80,7 +82,22 @@ def test_friend_code_must_be_twelve_digits(client: TestClient) -> None:
             "password": "long-enough",
             "trainer_name": "Jo",
             "friend_code": "123",
+            "age_confirmed": True,
         },
     )
     assert response.status_code == 400
     assert "12 digits" in response.json()["detail"]
+
+
+def test_under_13_cannot_register(client: TestClient) -> None:
+    response = client.post(
+        "/api/auth/register",
+        json={
+            "email": "kid@example.com",
+            "password": "long-enough",
+            "trainer_name": "Kid",
+            "age_confirmed": False,
+        },
+    )
+    assert response.status_code == 400
+    assert "13" in response.json()["detail"]

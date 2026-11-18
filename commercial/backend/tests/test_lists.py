@@ -4,7 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from api.main import app
-from data.go_catalog import EntryFlags, check_entry, species_by_id
+from data.go_catalog import EntryFlags, apply_facts, base_catalog, check_entry
 from tools.trade_rules import trade_notes
 
 
@@ -22,6 +22,7 @@ def _register(client: TestClient, email: str) -> None:
             "password": "correct horse",
             "trainer_name": "Avery",
             "city": "Toronto",
+            "age_confirmed": True,
         },
     )
     assert response.status_code == 200
@@ -38,28 +39,42 @@ def test_mythical_is_blocked_and_meltan_is_not(client: TestClient) -> None:
 
     allowed = client.post(
         "/api/lists",
-        json={"kind": "have", "species_id": "meltan", "shiny": True},
+        json={"kind": "have", "species_id": "meltan"},
     )
     assert allowed.status_code == 200
-    body = allowed.json()
-    assert body["name"] == "Meltan"
-    assert any("Special Trade" in note for note in body["trade_notes"])
-    assert any("Forever Friends" in note for note in body["trade_notes"])
+    assert allowed.json()["name"] == "Meltan"
+
+    shiny = client.post(
+        "/api/lists",
+        json={"kind": "want", "species_id": "magikarp", "shiny": True},
+    )
+    assert shiny.status_code == 200
+    assert any("Special Trade" in note for note in shiny.json()["trade_notes"])
+    assert any("Forever Friends" in note for note in shiny.json()["trade_notes"])
 
 
 def test_shiny_legendary_and_shadow_notes() -> None:
-    mewtwo = species_by_id("mewtwo")
-    assert mewtwo is not None
+    mewtwo = next(item for item in base_catalog() if item.id == "mewtwo")
     notes = trade_notes(mewtwo, shiny=True, shadow=True)
     assert any("Good Friends" in note for note in notes)
     assert any("Forever Friends" in note for note in notes)
     assert any("cannot be traded remotely" in note for note in notes)
 
-    magikarp = species_by_id("magikarp")
-    assert magikarp is not None
+    magikarp = next(item for item in base_catalog() if item.id == "magikarp")
     plain = trade_notes(magikarp, shiny=False, shadow=False)
     assert plain == ["A remote trade needs Forever Friends."]
-    check_entry(magikarp, EntryFlags(shiny=True))
+    shiny = apply_facts(
+        magikarp,
+        [
+            {
+                "species_id": "magikarp",
+                "kind": "shiny",
+                "value": "true",
+                "status": "approved",
+            }
+        ],
+    )
+    check_entry(shiny, EntryFlags(shiny=True))
     with pytest.raises(ValueError, match="not marked Dynamax"):
         check_entry(magikarp, EntryFlags(dynamax=True))
 
@@ -73,10 +88,10 @@ def test_crud_and_unknown_species(client: TestClient) -> None:
         "/api/lists",
         json={
             "kind": "want",
-            "species_id": "pikachu",
-            "form": "costume",
+            "species_id": "lapras",
+            "form": "scarf",
             "costume": True,
-            "notes": "party hat",
+            "notes": "scarf",
         },
     )
     assert created.status_code == 200
@@ -90,7 +105,7 @@ def test_crud_and_unknown_species(client: TestClient) -> None:
 
     updated = client.patch(
         f"/api/lists/{entry_id}",
-        json={"form": "costume", "costume": True, "lucky": True},
+        json={"form": "scarf", "costume": True, "lucky": True},
     )
     assert updated.status_code == 200
     assert updated.json()["lucky"] is True

@@ -151,3 +151,22 @@ Trainermon charges money. Sprites stay off until that consult.
 Rejected: **blocking the free catalog and row work on the consult.** Those
 do not charge anyone. Rejected: **charging first and asking the lawyer
 after.** Decision 8 keeps Stripe in test mode until this is done.
+
+## 11. Build A, B, C, and G. Leave the paid phases unbuilt
+
+Decided 18 November 2026, when Thomas approved those four phases from
+`plan-next.md`.
+
+Compact text rows replace the letter cards on lists, trade results, and
+Explorer. The base catalog is generated from PvPoke and PokéAPI by
+`scripts/refresh_base_catalog.py`. Curated facts live in their own table.
+An admin pastes announcement text, a model may draft rows from that paste,
+and a human approves them. Drafts are not public. Sign-up requires a 13+
+confirmation. Privacy and terms pages are drafts.
+
+No approver was named, so `TRAINERMON_ADMINS` is the allow-list. Empty means
+nobody can curate. The old hand seed `backend/data/go_catalog.json` is gone.
+Identity comes from `go_base.json`. GO flags come from approved curated rows.
+
+Rejected for this build: **user reports, Stripe, raid matchmaking, and the
+lawyer consult.** Those stay in the plan as D, F, E, and H.
