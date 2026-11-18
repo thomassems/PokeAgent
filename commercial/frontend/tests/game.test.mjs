@@ -15,14 +15,14 @@ async function loadGame(directory) {
   return import(pathToFileURL(modulePath).href);
 }
 
-test("a missing or unknown game stays on the main series", async (t) => {
+test("a missing or unknown game stays on Pokemon GO", async (t) => {
   const directory = await mkdtemp(join(process.cwd(), "node_modules", ".game-test-"));
   t.after(() => rm(directory, { recursive: true, force: true }));
   const { parseStoredGame } = await loadGame(directory);
 
-  assert.equal(parseStoredGame(null), "main");
-  assert.equal(parseStoredGame(""), "main");
+  assert.equal(parseStoredGame(null), "go");
+  assert.equal(parseStoredGame(""), "go");
   assert.equal(parseStoredGame("main"), "main");
-  assert.equal(parseStoredGame("tcg"), "main");
+  assert.equal(parseStoredGame("tcg"), "go");
   assert.equal(parseStoredGame("go"), "go");
 });

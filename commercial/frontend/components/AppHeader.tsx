@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useAppName } from "@/lib/app-name";
 
 type AppHeaderProps = {
-  activePage: "chat" | "team";
+  activePage: "chat" | "team" | "account" | "lists" | "trades" | "explorer";
 };
 
 export function AppHeader({ activePage }: AppHeaderProps) {
@@ -23,7 +23,35 @@ export function AppHeader({ activePage }: AppHeaderProps) {
             aria-current={activePage === "chat" ? "page" : undefined}
             className={`rounded-sm px-2 py-1 ${activePage === "chat" ? "bg-shell-800 text-ink-100" : "text-ink-500 hover:text-ink-100"}`}
           >
-            Chat
+            Assistant
+          </Link>
+          <Link
+            href="/account"
+            aria-current={activePage === "account" ? "page" : undefined}
+            className={`rounded-sm px-2 py-1 ${activePage === "account" ? "bg-shell-800 text-ink-100" : "text-ink-500 hover:text-ink-100"}`}
+          >
+            Account
+          </Link>
+          <Link
+            href="/lists"
+            aria-current={activePage === "lists" ? "page" : undefined}
+            className={`rounded-sm px-2 py-1 ${activePage === "lists" ? "bg-shell-800 text-ink-100" : "text-ink-500 hover:text-ink-100"}`}
+          >
+            Lists
+          </Link>
+          <Link
+            href="/trades"
+            aria-current={activePage === "trades" ? "page" : undefined}
+            className={`rounded-sm px-2 py-1 ${activePage === "trades" ? "bg-shell-800 text-ink-100" : "text-ink-500 hover:text-ink-100"}`}
+          >
+            Trades
+          </Link>
+          <Link
+            href="/explorer"
+            aria-current={activePage === "explorer" ? "page" : undefined}
+            className={`rounded-sm px-2 py-1 ${activePage === "explorer" ? "bg-shell-800 text-ink-100" : "text-ink-500 hover:text-ink-100"}`}
+          >
+            Explorer
           </Link>
           <Link
             href="/team"

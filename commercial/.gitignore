@@ -171,6 +171,9 @@ out/
 # generated JSON is what actually gets committed.
 backend/data/.cache/
 
+# Local account database. Created at runtime. Never commit it.
+backend/data/local.db
+
 # Vercel
 .vercel
 

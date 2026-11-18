@@ -1,7 +1,7 @@
 import { TYPE_NAMES, type TypeName } from "./types";
 
 const INDEX_URL = "https://pokeapi.co/api/v2/pokemon?limit=2000";
-const INDEX_STORAGE_KEY = "pokeagent.pokemon-index.v1";
+const INDEX_STORAGE_KEY = "trainermon.pokemon-index.v1";
 
 export type PokemonName = {
   id: number;

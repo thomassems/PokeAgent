@@ -6,7 +6,7 @@ export const GO_ACCENTS = ["neutral", "blue", "red", "yellow"] as const;
 
 export type GoAccent = (typeof GO_ACCENTS)[number];
 
-const STORAGE_KEY = "pokeagent.goAccent";
+const STORAGE_KEY = "trainermon.goAccent";
 const listeners = new Set<() => void>();
 let current: GoAccent = "neutral";
 let loaded = false;

@@ -13,6 +13,7 @@ from agents.conversation import ConversationTurn, Game
 from agents.custom import OutputLimitReached
 from agents.events import TraceEvent
 from agents.protocol import Agent
+from api.community import router as community_router
 
 
 def _is_event_stream(headers: list[tuple[bytes, bytes]]) -> bool:
@@ -75,10 +76,11 @@ class LeaveEventStreamUntransformed:
 
 def _app_name() -> str:
     configured = os.environ.get("APP_NAME", "").strip()
-    return configured or "Field Notes"
+    return configured or "Trainermon"
 
 
 app = FastAPI(title=f"{_app_name()} API")
+app.include_router(community_router)
 app.add_middleware(LeaveEventStreamUntransformed)
 logger = logging.getLogger(__name__)
 

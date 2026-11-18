@@ -2,7 +2,7 @@
 
 import { createContext, useContext, type ReactNode } from "react";
 
-const DEFAULT_APP_NAME = "Field Notes";
+const DEFAULT_APP_NAME = "Trainermon";
 
 const AppNameContext = createContext(DEFAULT_APP_NAME);
 
