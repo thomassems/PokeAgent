@@ -13,7 +13,16 @@ from data.go_catalog import base_catalog
 from services.accounts import connect, init_db, is_admin
 
 _SEED = Path(__file__).resolve().parents[1] / "data" / "go_curated_seed.json"
-_KINDS = {"shiny", "dynamax", "gigantamax", "costume", "trade_rule"}
+_KINDS = {
+    "shiny",
+    "dynamax",
+    "gigantamax",
+    "costume",
+    "trade_rule",
+    "background",
+    "dynamax_costume",
+    "gigantamax_costume",
+}
 
 
 def init_curation() -> None:
@@ -138,10 +147,20 @@ def parse_drafts(text: str) -> list[dict[str, str]]:
         if kind not in _KINDS:
             continue
         value = str(item.get("value") or "").strip()
-        if kind in {"shiny", "dynamax", "gigantamax"}:
+        if kind in {
+            "shiny",
+            "dynamax",
+            "gigantamax",
+            "dynamax_costume",
+            "gigantamax_costume",
+        }:
             value = "true"
         if kind == "trade_rule":
             value = "untradable"
+        if kind == "background":
+            value = value.lower().replace(" ", "-")
+            if not value.replace("-", "").isalnum():
+                continue
         if not value:
             continue
         raw_name = item.get("species_name") or item.get("species_id") or ""
@@ -157,9 +176,14 @@ def draft_prompt(pasted: str) -> str:
         "You draft Pokémon GO catalog rows from the pasted announcement only. "
         "Do not add species the paste does not name. Reply with a JSON array "
         "and nothing else. Each item has species_name, kind, and value. "
-        "kind is one of shiny, dynamax, gigantamax, costume, trade_rule. "
-        "For shiny, dynamax, and gigantamax, value is true. "
+        "kind is one of shiny, dynamax, gigantamax, costume, trade_rule, "
+        "background, dynamax_costume, gigantamax_costume. "
+        "For shiny, dynamax, gigantamax, dynamax_costume, and "
+        "gigantamax_costume, value is true. "
+        "dynamax_costume means the paste released that costume on the "
+        "Dynamax form. A Dynamax mention alone is dynamax, not a costume. "
         "For costume, value is a short form name such as scarf. "
+        "For background, value is a short slug such as dynamax-trails. "
         "For trade_rule, value is untradable.\n\n"
         f"{pasted.strip()}"
     )

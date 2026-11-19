@@ -33,25 +33,35 @@ def test_untradable_mythicals_stay_in_the_catalog() -> None:
     assert by_id["meltan"] is True
 
 
-def test_exact_species_rejects_a_variant_it_does_not_have() -> None:
-    missing = client.get(
-        "/api/explorer", params={"query": "Magikarp", "dynamax": "true"}
-    )
-    assert missing.status_code == 400
-    assert "Dynamax" in missing.json()["detail"]
+def test_exact_species_keeps_unknown_axes_and_rejects_bad_combos() -> None:
+    named = client.get("/api/explorer", params={"query": "Magikarp", "dynamax": "true"})
+    assert named.status_code == 200
+    assert [row["id"] for row in named.json()["species"]] == ["magikarp"]
+    assert named.json()["unverified"] == []
 
     by_id = client.get(
         "/api/explorer", params={"species_id": "magikarp", "gigantamax": "true"}
     )
-    assert by_id.status_code == 400
+    assert by_id.status_code == 200
+    assert by_id.json()["unverified"] == ["Gigantamax"]
+
+    costume = client.get(
+        "/api/explorer",
+        params={"species_id": "magikarp", "dynamax": "true", "costume": "true"},
+    )
+    assert costume.status_code == 400
+    assert "costume" in costume.json()["detail"]
 
     shiny = client.get(
         "/api/explorer", params={"species_id": "magikarp", "shiny": "true"}
     )
     assert shiny.status_code == 200
     assert [row["id"] for row in shiny.json()["species"]] == ["magikarp"]
-    assert shiny.json()["species"][0]["variants"]["dynamax"] is False
-    assert shiny.json()["species"][0]["variants"]["shiny"] is True
+    variants = shiny.json()["species"][0]["variants"]
+    assert variants["dynamax"] == "verified"
+    assert variants["shiny"] == "verified"
+    assert variants["gigantamax"] == "unknown"
+    assert {item["id"] for item in variants["backgrounds"]} == {"dynamax-trails"}
 
     unknown_form = client.get("/api/explorer", params={"form": "not-a-form"})
     assert unknown_form.status_code == 400

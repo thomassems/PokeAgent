@@ -1,6 +1,6 @@
 {
-  "verified_on": "2026-11-18",
-  "method": "Each row was restated from an official page opened on 18 November 2026. The pages were not scraped by the app. This is not a complete shiny or Dynamax dex. Meltan and Melmetal are not in the untradable list because the Help Center page does not state that exception.",
+  "verified_on": "2026-11-19",
+  "method": "Rows dated 2026-11-18 were restated from pages opened on 18 November 2026. Rows dated 2026-11-19 were restated from pages opened on 19 November 2026. The app does not download these pages. This is not a complete shiny, Dynamax, Gigantamax, costume, or background dex. A missing row is unknown, not a denial. Meltan and Melmetal are not in the untradable list because the Help Center page does not state that exception.",
   "rows": [
     {
       "species_id": "barboach",
@@ -496,6 +496,339 @@
       "verified_at": "2026-11-18",
       "verified_by": "hand-seed",
       "notes": "The Help Center says Mythical Pokemon, with Mew as the example, cannot be traded."
+    },
+    {
+      "species_id": "magikarp",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/seasons/forever-forward",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Forever Forward (2 June to 8 September 2026) names Dynamax Magikarp as a Max Battle debut. This is a Dynamax form, not a costume."
+    },
+    {
+      "species_id": "electabuzz",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/seasons/forever-forward",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Forever Forward names Dynamax Electabuzz as a Max Battle debut in that season."
+    },
+    {
+      "species_id": "feebas",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/seasons/forever-forward",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Forever Forward names Dynamax Feebas as a Max Battle debut in that season."
+    },
+    {
+      "species_id": "hatenna",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/seasons/delightful-days",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Delightful Days (3 June to 2 September 2025) names Dynamax Hatenna in Max Battles."
+    },
+    {
+      "species_id": "machop",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/gigantamax-snorlax-max-battle-day/",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Timed Research leading into Gigantamax Snorlax Max Battle Day offers a Dynamax Machop encounter."
+    },
+    {
+      "species_id": "machop",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/gigantamax-snorlax-max-battle-day/",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "The same line marks Dynamax Machop as a possible shiny encounter."
+    },
+    {
+      "species_id": "snorlax",
+      "kind": "gigantamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/gigantamax-snorlax-max-battle-day/",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Gigantamax Snorlax debuts in six-star Max Battles on 19 April 2025."
+    },
+    {
+      "species_id": "snorlax",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/gigantamax-snorlax-max-battle-day/",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "The debut line marks Gigantamax Snorlax as a possible shiny encounter."
+    },
+    {
+      "species_id": "cinderace",
+      "kind": "gigantamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/seasons/delightful-days",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Delightful Days says Gigantamax Cinderace debuts. The page does not mark it shiny."
+    },
+    {
+      "species_id": "inteleon",
+      "kind": "gigantamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/en/seasons/delightful-days",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Delightful Days says Gigantamax Inteleon debuts. The page does not mark it shiny."
+    },
+    {
+      "species_id": "articuno",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/pokemongo-kanto-celebration-2025/",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Paid Special Research for Kanto Celebration (2 to 7 September 2025) includes Dynamax Articuno."
+    },
+    {
+      "species_id": "articuno",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/pokemongo-kanto-celebration-2025/",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "The same reward line marks Dynamax Articuno as a possible shiny encounter."
+    },
+    {
+      "species_id": "zapdos",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/pokemongo-kanto-celebration-2025/",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Paid Special Research for Kanto Celebration (2 to 7 September 2025) includes Dynamax Zapdos."
+    },
+    {
+      "species_id": "zapdos",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/pokemongo-kanto-celebration-2025/",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "The same reward line marks Dynamax Zapdos as a possible shiny encounter."
+    },
+    {
+      "species_id": "moltres",
+      "kind": "dynamax",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/pokemongo-kanto-celebration-2025/",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Paid Special Research for Kanto Celebration (2 to 7 September 2025) includes Dynamax Moltres."
+    },
+    {
+      "species_id": "moltres",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/pokemongo-kanto-celebration-2025/",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "The same reward line marks Dynamax Moltres as a possible shiny encounter."
+    },
+    {
+      "species_id": "chansey",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/pokemongo-kanto-celebration-2025/",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Kanto Celebration marks Chansey as a possible shiny wild encounter."
+    },
+    {
+      "species_id": "abra",
+      "kind": "shiny",
+      "value": "true",
+      "source_url": "https://pokemongolive.com/post/pokemongo-kanto-celebration-2025/",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Kanto Celebration marks Abra as a possible shiny wild encounter."
+    },
+    {
+      "species_id": "beldum",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "blastoise",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "bulbasaur",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "charizard",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "charmander",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "charmeleon",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "dubwool",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "electabuzz",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "feebas",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "greedent",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "hatenna",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "ivysaur",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "machop",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "magikarp",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "skwovet",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "squirtle",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "venusaur",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "wartortle",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
+    },
+    {
+      "species_id": "wooloo",
+      "kind": "background",
+      "value": "dynamax-trails",
+      "source_url": "https://pokemongolive.com/en/news/dynamax-trails-eternamax-eternatus-2026",
+      "verified_at": "2026-11-19",
+      "verified_by": "hand-seed",
+      "notes": "Dynamax Trails (16 to 23 November 2026) says a Max Battle catch can have a Special Background, and that every Dynamax Pokémon that has appeared may be in those battles, excluding Legendary and Mythical. This species is named as Dynamax on another official page. The post says Eternamax Eternatus darkens the sky and that form cannot be caught. The background name in the post is Special Background."
     }
   ]
 }

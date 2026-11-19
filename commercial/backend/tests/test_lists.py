@@ -4,7 +4,13 @@ import pytest
 from fastapi.testclient import TestClient
 
 from api.main import app
-from data.go_catalog import EntryFlags, apply_facts, base_catalog, check_entry
+from data.go_catalog import (
+    EntryFlags,
+    apply_facts,
+    base_catalog,
+    check_entry,
+    unverified_labels,
+)
 from tools.trade_rules import trade_notes
 
 
@@ -78,8 +84,11 @@ def test_shiny_legendary_and_shadow_notes() -> None:
         ],
     )
     check_entry(shiny, EntryFlags(shiny=True))
-    with pytest.raises(ValueError, match="no Dynamax variant"):
-        check_entry(magikarp, EntryFlags(dynamax=True))
+    # The base row has no Dynamax source, so the axis is unknown and allowed.
+    check_entry(magikarp, EntryFlags(dynamax=True))
+    assert unverified_labels(magikarp, EntryFlags(dynamax=True)) == ["Dynamax"]
+    with pytest.raises(ValueError, match="Dynamax costume"):
+        check_entry(magikarp, EntryFlags(dynamax=True, costume=True))
 
 
 def test_crud_and_unknown_species(client: TestClient) -> None:
@@ -132,15 +141,68 @@ def test_invalid_variant_is_rejected(client: TestClient) -> None:
         "/api/lists",
         json={"kind": "want", "species_id": "magikarp", "dynamax": True},
     )
-    assert dynamax.status_code == 400
-    assert "Dynamax" in dynamax.json()["detail"]
+    assert dynamax.status_code == 200
+    assert dynamax.json()["dynamax"] is True
+    assert dynamax.json()["unverified"] == []
+
+    background = client.post(
+        "/api/lists",
+        json={
+            "kind": "have",
+            "species_id": "magikarp",
+            "dynamax": True,
+            "background": "dynamax-trails",
+        },
+    )
+    assert background.status_code == 200
+    assert background.json()["background"] == "dynamax-trails"
+
+    costume = client.post(
+        "/api/lists",
+        json={
+            "kind": "want",
+            "species_id": "magikarp",
+            "dynamax": True,
+            "costume": True,
+        },
+    )
+    assert costume.status_code == 400
+    assert "costume" in costume.json()["detail"]
+
+    invented = client.post(
+        "/api/lists",
+        json={
+            "kind": "want",
+            "species_id": "magikarp",
+            "background": "dark-skies",
+        },
+    )
+    assert invented.status_code == 400
+    assert "background" in invented.json()["detail"]
+
+    unknown = client.post(
+        "/api/lists",
+        json={"kind": "have", "species_id": "heracross", "dynamax": True},
+    )
+    assert unknown.status_code == 200
+    assert unknown.json()["unverified"] == ["Dynamax"]
+
+    no_background = client.post(
+        "/api/lists",
+        json={
+            "kind": "have",
+            "species_id": "heracross",
+            "background": "dynamax-trails",
+        },
+    )
+    assert no_background.status_code == 400
 
     purified = client.post(
         "/api/lists",
         json={"kind": "have", "species_id": "heracross", "purified": True},
     )
-    assert purified.status_code == 400
-    assert "purified" in purified.json()["detail"]
+    assert purified.status_code == 200
+    assert purified.json()["unverified"] == ["Purified"]
 
     shiny = client.post(
         "/api/lists",

@@ -90,12 +90,23 @@ def test_city_filter_hides_email_and_friend_code(client: TestClient) -> None:
     assert shiny.status_code == 200
     assert [row["trainer_name"] for row in shiny.json()["matches"]] == ["Jordan"]
 
-    impossible = client.get(
+    dynamax = client.get(
         "/api/trades/search",
         params={"city": "Toronto", "species_id": "magikarp", "dynamax": "true"},
     )
-    assert impossible.status_code == 400
-    assert "Dynamax" in impossible.json()["detail"]
+    assert dynamax.status_code == 200
+
+    costume = client.get(
+        "/api/trades/search",
+        params={
+            "city": "Toronto",
+            "species_id": "magikarp",
+            "dynamax": "true",
+            "costume": "true",
+        },
+    )
+    assert costume.status_code == 400
+    assert "costume" in costume.json()["detail"]
 
     needs_species = client.get(
         "/api/trades/search", params={"city": "Toronto", "shiny": "true"}

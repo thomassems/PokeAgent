@@ -7,9 +7,9 @@ except the owner, and SHARE_FRIEND_CODES does not change that.
 from typing import Literal
 
 from fastapi import APIRouter, Cookie, HTTPException, Response
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
-from data.go_catalog import EntryFlags, check_variant_filter
+from data.go_catalog import EntryFlags, check_variant_filter, unverified_labels
 from services.accounts import (
     TrainerDetails,
     cookie_name,
@@ -39,11 +39,11 @@ class RegisterIn(BaseModel):
     email: str
     password: str
     trainer_name: str
-    city: str = "Toronto"
+    city: str = ""
     friend_code: str = ""
     trainer_level: int
     team: str
-    timezone: str
+    timezone: str = ""
     age_confirmed: bool = False
 
 
@@ -54,11 +54,10 @@ class LoginIn(BaseModel):
 
 class ProfileIn(BaseModel):
     trainer_name: str
-    city: str = Field(default="Toronto")
+    city: str = ""
     friend_code: str = ""
     trainer_level: int
     team: str
-    timezone: str
 
 
 class EntryIn(BaseModel):
@@ -72,6 +71,7 @@ class EntryIn(BaseModel):
     purified: bool = False
     lucky: bool = False
     costume: bool = False
+    background: str = ""
     notes: str = ""
 
 
@@ -84,17 +84,19 @@ class EntryPatch(BaseModel):
     purified: bool = False
     lucky: bool = False
     costume: bool = False
+    background: str = ""
     notes: str = ""
 
 
 def _details(body: RegisterIn | ProfileIn) -> TrainerDetails:
+    timezone = body.timezone if isinstance(body, RegisterIn) else ""
     return TrainerDetails(
         trainer_name=body.trainer_name,
         city=body.city,
         friend_code=body.friend_code,
         trainer_level=body.trainer_level,
         team=body.team,
-        timezone=body.timezone,
+        timezone=timezone,
     )
 
 
@@ -108,6 +110,7 @@ def _flags(body: EntryIn | EntryPatch) -> EntryFlags:
         purified=body.purified,
         lucky=body.lucky,
         costume=body.costume,
+        background=body.background,
         notes=body.notes,
     )
 
@@ -252,6 +255,7 @@ def _requested(flags: EntryFlags) -> bool:
             flags.purified,
             flags.lucky,
             flags.costume,
+            flags.background.strip(),
         )
     )
 
@@ -281,6 +285,7 @@ def trade_search(
     purified: bool = False,
     lucky: bool = False,
     costume: bool = False,
+    background: str = "",
     trainermon_session: str | None = Cookie(default=None),
 ) -> dict:
     user = require_user(trainermon_session)
@@ -293,6 +298,7 @@ def trade_search(
         purified=purified,
         lucky=lucky,
         costume=costume,
+        background=background,
     )
     try:
         if _requested(flags) and not species_id:
@@ -312,6 +318,7 @@ def trade_search(
                 "lucky": lucky,
                 "costume": costume,
             },
+            background=background,
         )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
@@ -333,6 +340,7 @@ def explorer(
     regional: bool = False,
     mythical: bool = False,
     legendary: bool = False,
+    background: str = "",
 ) -> dict:
     flags = EntryFlags(
         form=form,
@@ -343,9 +351,26 @@ def explorer(
         purified=purified,
         lucky=lucky,
         costume=costume,
+        background=background,
     )
     try:
-        _guard_species_filter(species_id, query, flags)
+        target = species_by_id(species_id) if species_id else None
+        if species_id and target is None:
+            raise ValueError(f"Unknown species '{species_id}'.")
+        if target is None and _requested(flags):
+            target = species_for_query(query)
+        # A named species stays in the result when an axis is only unknown.
+        # The verified-only catalog filter is for browsing, not for that case.
+        if target is not None and _requested(flags):
+            check_variant_filter(target, flags)
+            rows = [row for row in public_catalog() if row["id"] == target.id]
+            return {
+                "seed": False,
+                "species": rows,
+                "unverified": unverified_labels(target, flags),
+            }
+        if flags.form.strip() and not form_exists(flags.form):
+            raise ValueError("No Pokémon in this catalog has that form.")
         species = public_catalog(
             query=query,
             shiny=shiny,
@@ -364,4 +389,4 @@ def explorer(
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     if species_id:
         species = [row for row in species if row["id"] == species_id]
-    return {"seed": False, "species": species}
+    return {"seed": False, "species": species, "unverified": []}

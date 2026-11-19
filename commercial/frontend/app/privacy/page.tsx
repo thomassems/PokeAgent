@@ -23,11 +23,12 @@ export default function PrivacyDraftPage() {
         </p>
         <h3 className="mt-6 font-medium text-ink-100">What we store</h3>
         <p className="mt-2">
-          Email, a password hash, trainer name, trainer level, team, city,
-          timezone, an optional friend code, and the want and have rows you
-          type. We do not read a Pokémon GO account, and we do not collect
-          GPS. City is whatever you type. Timezone is the zone you pick from
-          the list, for later raid hours.
+          Email, a password hash, trainer name, trainer level, team, an
+          optional city, an optional friend code, and the want and have rows
+          you type. We also store the timezone your browser already reports,
+          so a later raid hour can use it. We do not ask you to pick a
+          timezone, we do not read a Pokémon GO account, and we do not collect
+          GPS. City is whatever you type later, and it can stay blank.
         </p>
         <h3 className="mt-6 font-medium text-ink-100">Who else sees it</h3>
         <p className="mt-2">

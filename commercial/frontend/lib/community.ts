@@ -16,7 +16,6 @@ export type AccountConfig = {
   trainer_level_min: number;
   trainer_level_max: number;
   teams: { id: string; name: string }[];
-  timezones: { id: string; region: string; label: string }[];
 };
 
 export async function communityFetch<T>(path: string, init?: RequestInit): Promise<T> {

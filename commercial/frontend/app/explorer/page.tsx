@@ -69,7 +69,9 @@ export default function ExplorerPage() {
   const [query, setQuery] = useState("");
   const [speciesId, setSpeciesId] = useState("");
   const [form, setForm] = useState("");
+  const [background, setBackground] = useState("");
   const [flags, setFlags] = useState<VariantFlags>(EMPTY_VARIANT_FLAGS);
+  const [unverified, setUnverified] = useState<string[]>([]);
   const [tags, setTags] = useState<Record<Tag, boolean>>({
     shiny: false,
     dynamax: false,
@@ -96,6 +98,7 @@ export default function ExplorerPage() {
     if (speciesId) {
       params.set("species_id", speciesId);
       if (form) params.set("form", form);
+      if (background) params.set("background", background);
       for (const [name, on] of Object.entries(flags)) {
         if (on) params.set(name, "true");
       }
@@ -105,16 +108,19 @@ export default function ExplorerPage() {
         if (tags[tag]) params.set(tag, "true");
       }
     }
-    communityFetch<{ species: Species[] }>(`/api/explorer?${params.toString()}`)
+    communityFetch<{ species: Species[]; unverified?: string[] }>(
+      `/api/explorer?${params.toString()}`,
+    )
       .then((body) => {
         setSpecies(body.species);
+        setUnverified(body.unverified ?? []);
         setError(null);
       })
       .catch((err: unknown) => {
         setSpecies([]);
         setError(err instanceof Error ? err.message : "Request failed.");
       });
-  }, [query, tags, speciesId, form, flags]);
+  }, [query, tags, speciesId, form, flags, background]);
 
   return (
     <div className="flex min-h-screen flex-col bg-shell-950 text-ink-100">
@@ -144,6 +150,7 @@ export default function ExplorerPage() {
                 setSpeciesId(event.target.value);
                 setFlags(EMPTY_VARIANT_FLAGS);
                 setForm("");
+                setBackground("");
               }}
             >
               <option value="">Any Pokémon</option>
@@ -169,8 +176,10 @@ export default function ExplorerPage() {
               variants={catalog.find((row) => row.id === speciesId)!.variants!}
               flags={flags}
               form={form}
+              background={background}
               onFlags={setFlags}
               onForm={setForm}
+              onBackground={setBackground}
             />
           ) : (
             <div className="flex flex-wrap gap-3 text-xs">
@@ -188,6 +197,12 @@ export default function ExplorerPage() {
               ))}
             </div>
           )}
+          {unverified.length > 0 ? (
+            <p className="text-xs text-ink-500">
+              Not yet verified: {unverified.join(", ")}. You can still filter
+              by it.
+            </p>
+          ) : null}
           {error ? <p className="text-sm text-red-300">{error}</p> : null}
         </div>
         <ul className="flex flex-col gap-2">

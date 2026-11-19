@@ -17,11 +17,17 @@ def _rows(user_id: int) -> list[dict[str, Any]]:
 
 
 def _keeps(
-    row: dict[str, Any], species_id: str, form: str, flags: dict[str, bool]
+    row: dict[str, Any],
+    species_id: str,
+    form: str,
+    flags: dict[str, bool],
+    background: str = "",
 ) -> bool:
     if species_id and row["species_id"] != species_id:
         return False
     if form and row["form"] != form:
+        return False
+    if background and row.get("background") != background:
         return False
     for name, selected in flags.items():
         if selected and not row.get(name):
@@ -35,12 +41,14 @@ def search_trades(
     species_id: str = "",
     form: str = "",
     flags: dict[str, bool] | None = None,
+    background: str = "",
 ) -> list[dict[str, Any]]:
     init_lists()
     needle = city.strip().lower()
     everyone = needle in {"", "all"}
     selected = flags or {}
     wanted_form = form.strip().lower()
+    wanted_background = background.strip().lower()
     mine = _rows(user_id)
     with connect() as conn:
         users = conn.execute(
@@ -55,12 +63,12 @@ def search_trades(
         they_have = [
             row
             for row in overlap["they_have"]
-            if _keeps(row, species_id, wanted_form, selected)
+            if _keeps(row, species_id, wanted_form, selected, wanted_background)
         ]
         i_have = [
             row
             for row in overlap["i_have"]
-            if _keeps(row, species_id, wanted_form, selected)
+            if _keeps(row, species_id, wanted_form, selected, wanted_background)
         ]
         if not they_have and not i_have:
             continue

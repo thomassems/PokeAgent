@@ -187,3 +187,36 @@ returns 400 for any other combination.
 
 Rejected: **letting the trainer type a free-form timezone or a variant the
 catalog does not have.**
+
+## 13. Silent timezone, and unknown is not unavailable
+
+Decided 19 November 2026, from Thomas's review of sign-up and of Magikarp.
+
+Sign-up is three short steps: email and password with the 13+ confirmation,
+then trainer name, team, and level, then an optional friend code that can
+be skipped. City is not asked there. It stays on the profile and can be
+blank. Trade search uses it when the trainer fills it in. The page reads
+`Intl.DateTimeFormat().resolvedOptions().timeZone` and stores that IANA
+zone. There is no timezone picker, and saving the profile does not change
+the stored zone.
+
+Variant axes are independent. Dynamax and Gigantamax are not costumes.
+A costume combined with either is rejected unless a curated row says that
+costume was released on that form. Background is its own axis and is
+offered only when a curated row names one for that species. Magikarp is
+Dynamax, from the Forever Forward season page, and can carry the Dynamax
+Trails special background. It has no Dynamax costume.
+
+A variant with no allowed source is `unknown`, not unavailable. The
+checkbox stays, labelled not yet verified, and the API accepts the row.
+Lucky on an untradable species stays rejected, because the Help Center
+trade rule is a source. A background string that was never sourced stays
+rejected. Explorer's broad tag filters still mean verified only, so
+"show Gigantamax" does not return the whole dex.
+
+Rejected: **asking for a timezone.** Raid apps collect trainer name, level,
+and a friend code, and they do not ask for a zone. Rejected: **hiding an
+unsourced Dynamax box.** That is what marked Magikarp as unable to Dynamax.
+Rejected: **calling the Trails background "dark skies" in the data.** The
+post names a Special Background. "Darkens the sky" is the Eternamax
+Eternatus battle, and that form cannot be caught.

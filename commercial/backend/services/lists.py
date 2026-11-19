@@ -3,7 +3,7 @@
 import sqlite3
 from typing import Any
 
-from data.go_catalog import EntryFlags, check_entry
+from data.go_catalog import EntryFlags, check_entry, unverified_labels
 from services.accounts import connect, init_db
 from services.catalog import species_by_id
 from tools.trade_rules import trade_notes
@@ -31,6 +31,14 @@ def init_lists() -> None:
             )
             """
         )
+        columns = {row[1] for row in conn.execute("PRAGMA table_info(list_entries)")}
+        if "background" not in columns:
+            conn.execute(
+                """
+                ALTER TABLE list_entries
+                ADD COLUMN background TEXT NOT NULL DEFAULT ''
+                """
+            )
 
 
 def _flags(row: sqlite3.Row | dict[str, Any]) -> EntryFlags:
@@ -43,6 +51,7 @@ def _flags(row: sqlite3.Row | dict[str, Any]) -> EntryFlags:
         purified=bool(row["purified"]),
         lucky=bool(row["lucky"]),
         costume=bool(row["costume"]),
+        background=row["background"] if "background" in row.keys() else "",
         notes=row["notes"],
     )
 
@@ -67,7 +76,9 @@ def _public(row: sqlite3.Row) -> dict[str, Any]:
         "purified": flags.purified,
         "lucky": flags.lucky,
         "costume": flags.costume,
+        "background": flags.background.strip().lower(),
         "notes": flags.notes,
+        "unverified": unverified_labels(species, flags),
         "trade_notes": trade_notes(species, flags.shiny, flags.shadow),
     }
 
@@ -97,8 +108,8 @@ def add_entry(
             """
             INSERT INTO list_entries (
                 user_id, kind, species_id, form, shiny, dynamax, gigantamax,
-                shadow, purified, lucky, costume, notes
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                shadow, purified, lucky, costume, notes, background
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 user_id,
@@ -113,6 +124,7 @@ def add_entry(
                 int(flags.lucky),
                 int(flags.costume),
                 flags.notes.strip(),
+                flags.background.strip().lower(),
             ),
         )
         row = conn.execute(
@@ -138,7 +150,7 @@ def update_entry(user_id: int, entry_id: int, flags: EntryFlags) -> dict[str, An
             """
             UPDATE list_entries SET
                 form = ?, shiny = ?, dynamax = ?, gigantamax = ?, shadow = ?,
-                purified = ?, lucky = ?, costume = ?, notes = ?
+                purified = ?, lucky = ?, costume = ?, notes = ?, background = ?
             WHERE id = ? AND user_id = ?
             """,
             (
@@ -151,6 +163,7 @@ def update_entry(user_id: int, entry_id: int, flags: EntryFlags) -> dict[str, An
                 int(flags.lucky),
                 int(flags.costume),
                 flags.notes.strip(),
+                flags.background.strip().lower(),
                 entry_id,
                 user_id,
             ),

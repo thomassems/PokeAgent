@@ -91,10 +91,11 @@ gitignored.
 Sign-in is a local email and password. The password hash stays in that file.
 There is no call to Pokémon GO, and no account-trading flow. Sign-up asks
 the trainer to confirm they are 13 or older and rejects the account
-otherwise. It also asks for a trainer level from 1 to 80, a team
-(Mystic, Valor, or Instinct), and a timezone from a fixed list. The
-region stored with that timezone is for later raid hours. A friend code
-stays optional and is still not shown to other trainers.
+otherwise. The short sign-up then asks for a trainer name, a team
+(Mystic, Valor, or Instinct), and a trainer level from 1 to 80. A friend
+code is a skippable last step and is still not shown to other trainers.
+City is edited later on the profile. The browser timezone is stored with
+the account and is not shown as a picker.
 `SHARE_FRIEND_CODES` defaults off and does not publish a code.
 
 `TRAINERMON_ADMINS` is a comma-separated list of emails that may open
@@ -146,7 +147,8 @@ CREATE TABLE list_entries (
   purified boolean not null,
   lucky boolean not null,
   costume boolean not null,
-  notes text not null
+  notes text not null,
+  background text not null
 );
 CREATE TABLE curated_facts (
   id bigint generated always as identity primary key,
