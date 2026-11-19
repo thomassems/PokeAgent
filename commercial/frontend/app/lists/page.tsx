@@ -6,6 +6,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { SpeciesRow } from "@/components/SpeciesRow";
 import {
   EMPTY_VARIANT_FLAGS,
+  EMPTY_VARIANTS,
   VariantFields,
   type VariantFlags,
   type VariantOptions,
@@ -38,7 +39,9 @@ type ListEntry = {
   purified: boolean;
   lucky: boolean;
   costume: boolean;
+  background: string;
   notes: string;
+  unverified: string[];
   trade_notes: string[];
 };
 
@@ -55,7 +58,8 @@ const FLAGS = [
 function tags(entry: ListEntry): string {
   const on = FLAGS.filter((flag) => entry[flag]);
   const form = entry.form ? [entry.form] : [];
-  return [...form, ...on].join(", ");
+  const background = entry.background ? [entry.background] : [];
+  return [...form, ...on, ...background].join(", ");
 }
 
 function matchesFilter(
@@ -63,9 +67,11 @@ function matchesFilter(
   speciesId: string,
   form: string,
   flags: VariantFlags,
+  background: string,
 ): boolean {
   if (speciesId && entry.species_id !== speciesId) return false;
   if (form && entry.form !== form) return false;
+  if (background && entry.background !== background) return false;
   return FLAGS.every((flag) => !flags[flag] || entry[flag]);
 }
 
@@ -78,10 +84,12 @@ export default function ListsPage() {
   const [speciesId, setSpeciesId] = useState("magikarp");
   const [speciesQuery, setSpeciesQuery] = useState("");
   const [form, setForm] = useState("");
+  const [background, setBackground] = useState("");
   const [notes, setNotes] = useState("");
   const [flags, setFlags] = useState(EMPTY_VARIANT_FLAGS);
   const [filterSpeciesId, setFilterSpeciesId] = useState("");
   const [filterForm, setFilterForm] = useState("");
+  const [filterBackground, setFilterBackground] = useState("");
   const [filterFlags, setFilterFlags] = useState(EMPTY_VARIANT_FLAGS);
   const [error, setError] = useState<string | null>(null);
 
@@ -112,6 +120,7 @@ export default function ListsPage() {
           kind,
           species_id: speciesId,
           form,
+          background,
           notes,
           ...flags,
         }),
@@ -119,6 +128,7 @@ export default function ListsPage() {
       setNotes("");
       setFlags(EMPTY_VARIANT_FLAGS);
       setForm("");
+      setBackground("");
       load();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Request failed.");
@@ -185,6 +195,7 @@ export default function ListsPage() {
                     setSpeciesId(event.target.value);
                     setFlags(EMPTY_VARIANT_FLAGS);
                     setForm("");
+                    setBackground("");
                   }}
                 >
                   {(() => {
@@ -218,8 +229,10 @@ export default function ListsPage() {
                   variants={selected.variants}
                   flags={flags}
                   form={form}
+                  background={background}
                   onFlags={setFlags}
                   onForm={setForm}
+                  onBackground={setBackground}
                 />
               );
             })()}
@@ -251,6 +264,7 @@ export default function ListsPage() {
                 setFilterSpeciesId(event.target.value);
                 setFilterFlags(EMPTY_VARIANT_FLAGS);
                 setFilterForm("");
+                setFilterBackground("");
               }}
             >
               <option value="">Any Pokémon</option>
@@ -264,33 +278,32 @@ export default function ListsPage() {
           {filterSpeciesId ? (
             <VariantFields
               variants={
-                catalog.find((species) => species.id === filterSpeciesId)?.variants ?? {
-                  shiny: false,
-                  dynamax: false,
-                  gigantamax: false,
-                  shadow: false,
-                  purified: false,
-                  lucky: false,
-                  costume: false,
-                  forms: [],
-                  costume_forms: [],
-                }
+                catalog.find((species) => species.id === filterSpeciesId)?.variants ??
+                EMPTY_VARIANTS
               }
               flags={filterFlags}
               form={filterForm}
+              background={filterBackground}
               onFlags={setFilterFlags}
               onForm={setFilterForm}
+              onBackground={setFilterBackground}
             />
           ) : (
             <p className="text-xs text-ink-500">
-              Pick a Pokémon to filter by a variant it actually has.
+              Pick a Pokémon. A box marked not yet verified can still be used.
             </p>
           )}
         </section>
         <ul className="flex flex-col gap-3">
           {entries
             .filter((entry) =>
-              matchesFilter(entry, filterSpeciesId, filterForm, filterFlags),
+              matchesFilter(
+                entry,
+                filterSpeciesId,
+                filterForm,
+                filterFlags,
+                filterBackground,
+              ),
             )
             .map((entry) => (
             <li
@@ -309,6 +322,11 @@ export default function ListsPage() {
                     .split(", ")
                     .filter(Boolean)}
                 />
+                {entry.unverified?.length ? (
+                  <p className="text-xs text-ink-500">
+                    Not yet verified: {entry.unverified.join(", ")}
+                  </p>
+                ) : null}
                 {entry.notes ? (
                   <p className="text-xs text-ink-400">{entry.notes}</p>
                 ) : null}

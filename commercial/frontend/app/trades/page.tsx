@@ -6,6 +6,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { SpeciesRow } from "@/components/SpeciesRow";
 import {
   EMPTY_VARIANT_FLAGS,
+  EMPTY_VARIANTS,
   VariantFields,
   type VariantFlags,
   type VariantOptions,
@@ -58,6 +59,7 @@ export default function TradesPage() {
   const [catalog, setCatalog] = useState<Species[]>([]);
   const [speciesId, setSpeciesId] = useState("");
   const [form, setForm] = useState("");
+  const [background, setBackground] = useState("");
   const [flags, setFlags] = useState<VariantFlags>(EMPTY_VARIANT_FLAGS);
   const [matches, setMatches] = useState<Match[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -67,6 +69,7 @@ export default function TradesPage() {
     const params = new URLSearchParams({ city: nextCity });
     if (speciesId) params.set("species_id", speciesId);
     if (form) params.set("form", form);
+    if (background) params.set("background", background);
     for (const [name, on] of Object.entries(flags)) {
       if (on) params.set(name, "true");
     }
@@ -85,8 +88,9 @@ export default function TradesPage() {
     communityFetch<Profile>("/api/me")
       .then(async (me) => {
         setProfile(me);
-        const next = me.city || "Toronto";
+        const next = me.city;
         setCity(next);
+        if (!next.trim()) return;
         const body = await communityFetch<{ matches: Match[] }>(
           `/api/trades/search?city=${encodeURIComponent(next)}`,
         );
@@ -144,6 +148,7 @@ export default function TradesPage() {
                   setSpeciesId(event.target.value);
                   setFlags(EMPTY_VARIANT_FLAGS);
                   setForm("");
+                  setBackground("");
                 }}
               >
                 <option value="">Any Pokémon</option>
@@ -158,22 +163,15 @@ export default function TradesPage() {
             {speciesId ? (
               <VariantFields
                 variants={
-                  catalog.find((species) => species.id === speciesId)?.variants ?? {
-                    shiny: false,
-                    dynamax: false,
-                    gigantamax: false,
-                    shadow: false,
-                    purified: false,
-                    lucky: false,
-                    costume: false,
-                    forms: [],
-                    costume_forms: [],
-                  }
+                  catalog.find((species) => species.id === speciesId)?.variants ??
+                  EMPTY_VARIANTS
                 }
                 flags={flags}
                 form={form}
+                background={background}
                 onFlags={setFlags}
                 onForm={setForm}
+                onBackground={setBackground}
               />
             ) : (
               <p className="text-xs text-ink-500">

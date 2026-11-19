@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 _COOKIE = "trainermon_session"
 _SESSION_DAYS = 14
@@ -21,44 +22,25 @@ _HASH_ROUNDS = 120_000
 _LEVEL_MIN = 1
 _LEVEL_MAX = 80
 
-# One list, not a setting. Region is stored with the zone so a later raid
-# lobby can group trainers without asking the question twice.
+# One list, not a setting. The browser sends an IANA zone. The trainer never
+# picks it. Region is a coarse label stored beside that zone.
 TEAMS: dict[str, str] = {
     "mystic": "Mystic",
     "valor": "Valor",
     "instinct": "Instinct",
 }
-TIMEZONES: tuple[tuple[str, str, str], ...] = (
-    ("America/St_Johns", "Americas", "Newfoundland"),
-    ("America/Halifax", "Americas", "Atlantic"),
-    ("America/Toronto", "Americas", "Toronto"),
-    ("America/New_York", "Americas", "US Eastern"),
-    ("America/Winnipeg", "Americas", "Central"),
-    ("America/Chicago", "Americas", "US Central"),
-    ("America/Edmonton", "Americas", "Mountain"),
-    ("America/Denver", "Americas", "US Mountain"),
-    ("America/Vancouver", "Americas", "Pacific"),
-    ("America/Los_Angeles", "Americas", "US Pacific"),
-    ("America/Mexico_City", "Americas", "Mexico City"),
-    ("America/Sao_Paulo", "Americas", "Brasilia"),
-    ("Europe/London", "Europe", "UK"),
-    ("Europe/Dublin", "Europe", "Ireland"),
-    ("Europe/Paris", "Europe", "Central Europe"),
-    ("Europe/Helsinki", "Europe", "Eastern Europe"),
-    ("Africa/Lagos", "Africa", "West Africa"),
-    ("Africa/Cairo", "Africa", "Egypt"),
-    ("Africa/Johannesburg", "Africa", "South Africa"),
-    ("Asia/Dubai", "Middle East", "Gulf"),
-    ("Asia/Kolkata", "Asia", "India"),
-    ("Asia/Bangkok", "Asia", "Indochina"),
-    ("Asia/Singapore", "Asia", "Singapore"),
-    ("Asia/Tokyo", "Asia", "Japan"),
-    ("Asia/Seoul", "Asia", "Korea"),
-    ("Australia/Perth", "Oceania", "Perth"),
-    ("Australia/Sydney", "Oceania", "Sydney"),
-    ("Pacific/Auckland", "Oceania", "New Zealand"),
+_REGION_PREFIXES: tuple[tuple[str, str], ...] = (
+    ("America/", "Americas"),
+    ("Europe/", "Europe"),
+    ("Africa/", "Africa"),
+    ("Asia/", "Asia"),
+    ("Australia/", "Oceania"),
+    ("Pacific/", "Oceania"),
+    ("Atlantic/", "Atlantic"),
+    ("Indian/", "Indian Ocean"),
+    ("Antarctica/", "Antarctica"),
+    ("UTC", "UTC"),
 )
-_ZONE_BY_ID = {zone_id: (region, label) for zone_id, region, label in TIMEZONES}
 
 
 @dataclass(frozen=True)
@@ -183,15 +165,11 @@ def _iso(value: datetime) -> str:
 
 
 def profile_choices() -> dict[str, Any]:
-    """Teams and timezones the account form is allowed to submit."""
+    """Teams and level bounds the account form is allowed to submit."""
     return {
         "trainer_level_min": _LEVEL_MIN,
         "trainer_level_max": _LEVEL_MAX,
         "teams": [{"id": team_id, "name": name} for team_id, name in TEAMS.items()],
-        "timezones": [
-            {"id": zone_id, "region": region, "label": label}
-            for zone_id, region, label in TIMEZONES
-        ],
     }
 
 
@@ -232,7 +210,7 @@ def _validate_name(name: str) -> str:
 
 
 def _validate_city(city: str | None) -> str:
-    cleaned = (city or "").strip() or "Toronto"
+    cleaned = (city or "").strip()
     if len(cleaned) > 64:
         raise ValueError("City names are limited to 64 characters.")
     return cleaned
@@ -263,11 +241,16 @@ def _validate_team(team: str) -> str:
 
 
 def _validate_timezone(timezone: str) -> tuple[str, str]:
-    cleaned = timezone.strip()
-    found = _ZONE_BY_ID.get(cleaned)
-    if found is None:
-        raise ValueError("Pick a timezone from the list.")
-    region, _label = found
+    cleaned = timezone.strip() or "UTC"
+    try:
+        ZoneInfo(cleaned)
+    except ZoneInfoNotFoundError as exc:
+        raise ValueError("That timezone could not be read.") from exc
+    region = "UTC"
+    for prefix, name in _REGION_PREFIXES:
+        if cleaned == prefix or cleaned.startswith(prefix):
+            region = name
+            break
     return cleaned, region
 
 
@@ -380,17 +363,22 @@ def user_from_token(token: str | None) -> dict[str, Any] | None:
 
 
 def update_profile(user_id: int, details: TrainerDetails) -> dict[str, Any]:
-    name, place, code, level, team, timezone, region = _checked_details(details)
+    """Edit the fields the trainer can see. Timezone stays as stored."""
+    name = _validate_name(details.trainer_name)
+    place = _validate_city(details.city)
+    code = _validate_friend_code(details.friend_code)
+    level = _validate_level(details.trainer_level)
+    team = _validate_team(details.team)
     init_db()
     with connect() as conn:
         conn.execute(
             """
             UPDATE users SET
                 trainer_name = ?, city = ?, friend_code = ?,
-                trainer_level = ?, team = ?, timezone = ?, region = ?
+                trainer_level = ?, team = ?
             WHERE id = ?
             """,
-            (name, place, code, level, team, timezone, region, user_id),
+            (name, place, code, level, team, user_id),
         )
         row = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
     return public_user(row)

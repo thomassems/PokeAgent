@@ -23,6 +23,9 @@ def satisfies(want: Mapping[str, Any], have: Mapping[str, Any]) -> bool:
         return False
     if (want.get("form") or "") != (have.get("form") or ""):
         return False
+    wanted_background = (want.get("background") or "").strip()
+    if wanted_background and wanted_background != (have.get("background") or ""):
+        return False
     return all(not want.get(flag) or have.get(flag) for flag in _FLAGS)
 
 

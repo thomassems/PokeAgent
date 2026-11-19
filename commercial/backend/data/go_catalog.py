@@ -12,7 +12,38 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, Field
 
 _PATH = Path(__file__).parent / "go_base.json"
-_FACT_KINDS = {"shiny", "dynamax", "gigantamax", "costume", "trade_rule"}
+_FACT_KINDS = {
+    "shiny",
+    "dynamax",
+    "gigantamax",
+    "costume",
+    "trade_rule",
+    "background",
+    "dynamax_costume",
+    "gigantamax_costume",
+}
+# Labels for background values that an official page actually named.
+_BACKGROUND_LABELS = {
+    "dynamax-trails": "Dynamax Trails special background",
+}
+_AXES = (
+    "shiny",
+    "dynamax",
+    "gigantamax",
+    "shadow",
+    "purified",
+    "lucky",
+    "costume",
+)
+_AXIS_LABELS = {
+    "shiny": "Shiny",
+    "dynamax": "Dynamax",
+    "gigantamax": "Gigantamax",
+    "shadow": "Shadow",
+    "purified": "Purified",
+    "lucky": "Lucky",
+    "costume": "Costume",
+}
 
 
 class Species(BaseModel):
@@ -24,6 +55,9 @@ class Species(BaseModel):
     types: list[str] = Field(min_length=1, max_length=2)
     forms: list[str] = Field(default_factory=list)
     costume_forms: list[str] = Field(default_factory=list)
+    backgrounds: list[str] = Field(default_factory=list)
+    dynamax_costume: bool = False
+    gigantamax_costume: bool = False
     shiny: bool
     dynamax: bool
     gigantamax: bool
@@ -45,6 +79,7 @@ class EntryFlags(BaseModel):
     purified: bool = False
     lucky: bool = False
     costume: bool = False
+    background: str = ""
     notes: str = ""
 
 
@@ -77,6 +112,9 @@ def apply_facts(species: Species, facts: list[dict[str, Any]]) -> Species:
     tradable = species.tradable
     forms = list(species.forms)
     costume_forms = list(species.costume_forms)
+    backgrounds = list(species.backgrounds)
+    dynamax_costume = species.dynamax_costume
+    gigantamax_costume = species.gigantamax_costume
     for fact in facts:
         if fact.get("status") not in (None, "approved"):
             continue
@@ -100,6 +138,13 @@ def apply_facts(species: Species, facts: list[dict[str, Any]]) -> Species:
                 costume_forms.append(value)
         elif kind == "trade_rule" and value == "untradable":
             tradable = False
+        elif kind == "background" and value:
+            if value not in backgrounds:
+                backgrounds.append(value)
+        elif kind == "dynamax_costume" and value == "true":
+            dynamax_costume = True
+        elif kind == "gigantamax_costume" and value == "true":
+            gigantamax_costume = True
     return species.model_copy(
         update={
             "shiny": shiny,
@@ -109,6 +154,9 @@ def apply_facts(species: Species, facts: list[dict[str, Any]]) -> Species:
             "tradable": tradable,
             "forms": forms,
             "costume_forms": costume_forms,
+            "backgrounds": backgrounds,
+            "dynamax_costume": dynamax_costume,
+            "gigantamax_costume": gigantamax_costume,
         }
     )
 
@@ -121,54 +169,82 @@ def species_by_id(species_id: str) -> Species | None:
 
 
 def available_variants(species: Species) -> dict[str, Any]:
-    """Which list and filter options this species actually has.
+    """Status of each axis: verified, unknown, or unavailable.
 
-    Purified is offered only when a shadow form exists, because that is the
-    Pokémon you purify. Lucky is offered only when the species can be traded,
-    because lucky is a trade outcome. Neither is a separate curated fact.
+    A sourced fact, or a released shadow form from PvPoke, is verified.
+    Lucky is verified when the species can be traded, and unavailable when a
+    trade rule blocks it, because lucky is a trade outcome. Everything else
+    with no allowed source is unknown: the UI may offer it, and the API does
+    not treat that gap as proof the variant does not exist.
+
+    A background is not an unknown free-text field. It is offered only when a
+    curated row names it. Purified follows shadow, because that is the
+    Pokémon you purify. Neither purified nor lucky is its own curated fact.
     """
+    sourced = "verified"
+    missing = "unknown"
     return {
-        "shiny": species.shiny,
-        "dynamax": species.dynamax,
-        "gigantamax": species.gigantamax,
-        "shadow": species.shadow,
-        "purified": species.shadow,
-        "lucky": species.tradable,
-        "costume": bool(species.costume_forms),
+        "shiny": sourced if species.shiny else missing,
+        "dynamax": sourced if species.dynamax else missing,
+        "gigantamax": sourced if species.gigantamax else missing,
+        "shadow": sourced if species.shadow else missing,
+        "purified": sourced if species.shadow else missing,
+        "lucky": "verified" if species.tradable else "unavailable",
+        "costume": sourced if species.costume_forms else missing,
         "forms": list(species.forms),
         "costume_forms": list(species.costume_forms),
+        "backgrounds": [
+            {"id": item, "label": _BACKGROUND_LABELS.get(item, item)}
+            for item in species.backgrounds
+        ],
+        "dynamax_costume": species.dynamax_costume,
+        "gigantamax_costume": species.gigantamax_costume,
     }
 
 
+def unverified_labels(species: Species, flags: EntryFlags) -> list[str]:
+    """Axes the trainer asked for that no allowed source has confirmed."""
+    options = available_variants(species)
+    labels: list[str] = []
+    for axis in _AXES:
+        if getattr(flags, axis) and options[axis] == "unknown":
+            labels.append(_AXIS_LABELS[axis])
+    return labels
+
+
 def check_variant_filter(species: Species, flags: EntryFlags) -> None:
-    """Reject a variant combination this species does not have."""
+    """Reject a combination a source rules out. Unknown axes are allowed."""
     options = available_variants(species)
     form = flags.form.strip().lower()
+    background = flags.background.strip().lower()
     known_forms = set(options["forms"]) | set(options["costume_forms"])
+    sourced_backgrounds = {item["id"] for item in options["backgrounds"]}
     if form and form not in known_forms:
         raise ValueError(f"{species.name} has no {form} form in this catalog.")
-    if flags.shiny and not options["shiny"]:
-        raise ValueError(f"{species.name} has no shiny variant in this catalog.")
-    if flags.dynamax and not options["dynamax"]:
-        raise ValueError(f"{species.name} has no Dynamax variant in this catalog.")
-    if flags.gigantamax and not options["gigantamax"]:
-        raise ValueError(f"{species.name} has no Gigantamax variant in this catalog.")
     if flags.dynamax and flags.gigantamax:
         raise ValueError("Pick Dynamax or Gigantamax, not both.")
-    if flags.shadow and not options["shadow"]:
-        raise ValueError(f"{species.name} has no shadow variant in this catalog.")
-    if flags.purified and not options["purified"]:
-        raise ValueError(
-            f"{species.name} has no shadow form, so it cannot be purified."
-        )
     if flags.shadow and flags.purified:
         raise ValueError("A Pokémon is shadow or purified, not both.")
-    if flags.lucky and not options["lucky"]:
+    if flags.lucky and options["lucky"] == "unavailable":
         raise ValueError(f"{species.name} cannot be lucky because it cannot be traded.")
-    if flags.costume and form not in options["costume_forms"]:
+    if flags.dynamax and flags.costume and not species.dynamax_costume:
+        raise ValueError(
+            f"{species.name} has no released Dynamax costume. "
+            "Dynamax is separate from costume."
+        )
+    if flags.gigantamax and flags.costume and not species.gigantamax_costume:
+        raise ValueError(
+            f"{species.name} has no released Gigantamax costume. "
+            "Gigantamax is separate from costume."
+        )
+    if flags.costume and form and form not in options["costume_forms"]:
+        raise ValueError(f"That form is not a costume for {species.name}.")
+    if flags.costume and not form and options["costume"] == "verified":
         raise ValueError(f"Pick a costume {species.name} actually has.")
     if form in options["costume_forms"] and not flags.costume:
         raise ValueError(f"{form} is a costume. Mark it as a costume.")
+    if background and background not in sourced_backgrounds:
+        raise ValueError(f"{species.name} has no sourced {background} background.")
     if len(flags.notes) > 280:
         raise ValueError("Notes are limited to 280 characters.")
 

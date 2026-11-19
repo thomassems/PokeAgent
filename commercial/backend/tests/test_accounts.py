@@ -31,7 +31,7 @@ def test_register_login_and_profile(client: TestClient) -> None:
     assert created.status_code == 200
     body = created.json()
     assert body["email"] == "avery@example.com"
-    assert body["city"] == "Toronto"
+    assert body["city"] == ""
     assert body["friend_code"] == "123456789012"
     assert body["trainer_level"] == 42
     assert body["team"] == "mystic"
@@ -47,17 +47,18 @@ def test_register_login_and_profile(client: TestClient) -> None:
         "/api/me",
         json={
             "trainer_name": "Ave",
-            "city": "Toronto",
+            "city": "Vancouver",
             "friend_code": "",
             "trainer_level": 43,
             "team": "valor",
-            "timezone": "America/Vancouver",
         },
     )
     assert updated.status_code == 200
     assert updated.json()["friend_code"] == ""
+    assert updated.json()["city"] == "Vancouver"
     assert updated.json()["trainer_level"] == 43
     assert updated.json()["team"] == "valor"
+    assert updated.json()["timezone"] == "America/Toronto"
     assert updated.json()["region"] == "Americas"
 
     client.post("/api/auth/logout")
