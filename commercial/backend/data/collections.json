@@ -1,0 +1,11 @@
+{
+  "collections": [
+    {
+      "id": "pikachu-costumes",
+      "title": "Pikachu costumes",
+      "summary": "Verified Pikachu costumes and Pikachu backgrounds.",
+      "species_id": "pikachu",
+      "kinds": ["costume", "background"]
+    }
+  ]
+}

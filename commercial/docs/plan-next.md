@@ -1,7 +1,8 @@
 # Trainermon: next plan
 
-Status: **A, B, C, and G are built. D, E, F, and H are not.** I and J
-below are proposed, not built. Decisions 4 to 10 in `decisions.md`
+Status: **A, B, C, and G are built.** A Pikachu slice of I and J is in
+progress (decision 14, 19 November 2026). The rest of those phases, and
+D, E, F, and H, are not built. Decisions 4 to 10 in `decisions.md`
 (17 November 2026) are the constraints. This file is the order to approve
 before any of it is implemented. The licensing review is
 `licensing-data-review.md`. The personal app is out of this plan.
@@ -28,11 +29,13 @@ These are build size, not a calendar.
 4. **G. Age gate and policy drafts.** Before the app is offered to the
    public, and before any feature that shows a friend code. Drafts only.
    A lawyer still has to read them before charging (phase H).
-5. **I. Costume and background coverage.** Needs C. A collection can only
-   claim "every Pikachu costume" for the rows this phase has sourced, so I
-   comes before the checklist.
-6. **J. Collection checklist.** Needs I for the set it counts, and the have
-   and want lists that already exist. It does not need Stripe.
+5. **I. Costume and background coverage.** Needs C. The Pikachu slice is
+   the current build. The rest of the costume and background dex is still
+   later. A collection can only claim the rows this phase has sourced.
+6. **J. Collection checklist.** The Pikachu page is the current build. It
+   needs I for the set it counts, and the have and want lists that already
+   exist. It does not need Stripe. Every Pokémon is the launch shape, and
+   it is the same page with more data.
 7. **D. User reports.** Needs a catalog row to report against, and the age
    gate, so reports are not the first thing a child can submit.
 8. **F. Stripe in test mode.** Needs the tier table below confirmed. No live
@@ -62,7 +65,7 @@ are created in Stripe.
 | Remote raids: queue | Back of the queue | Ahead of Free | Ahead of $4.99 and Free |
 | Trade alerts | No | Not in this plan | Not in this plan |
 | Collection sims | No | No | No |
-| Collection checklist (phase J) | Not decided | Not decided | Not decided |
+| Collection checklist (phase J) | Yes for now | Yes for now | Yes for now |
 | In-app chat | No | No | No |
 | Official sprites | Off | Off | Off |
 | Annual plan | No | Price not set | Price not set |
@@ -72,9 +75,10 @@ table puts $9.99 ahead of $4.99 so the higher price buys a shorter wait.
 Thomas can collapse those two paid bands into one priority. That is an
 approval question in phase F, not a silent default.
 
-The collection checklist row is not a tier choice. Phase J lists the
-options and leaves the split open. Collection sims stay out. They are a
-different idea from the review, and they are still not a commitment.
+The collection checklist is free for now (decision 14). A later paid gate
+is `checklists_open`, and it is not turned on. Collection sims stay out.
+They are a different idea from the review, and they are still not a
+commitment.
 
 ## A. Compact rows
 
@@ -240,9 +244,9 @@ own row, and only when an official page released that combination.
 **Size.** Large, because of the number of pages to open and approve.
 The product surface is the one phase C already shipped.
 
-**Thomas approves.** That this pass is in scope, and that Pikachu then
-most-traded species is the order. Who approves stays the admin list from
-phase C.
+**Thomas approves.** The Pikachu slice is approved (decision 14). The rest
+of the dex is still waiting on the same order: most-traded species, then
+the long tail. Who approves stays the admin list from phase C.
 
 ## J. Collection checklist
 
@@ -279,10 +283,10 @@ when describing the app: progress on a set, not another dex browser.
 Sharing feeds stay out of scope. The hook is the personal count and the
 want list, not a public profile.
 
-Free versus paid is open. Trading stays free, so one option is the whole
-checklist on the free tier. Another is free progress, with a paid action
-that adds every missing row to the want list. This plan does not pick.
-Do not ship a paywall for it until Thomas does.
+Free versus paid is decided for this slice: the checklist is free
+(decision 14). Thomas expects it to move to a paid tier later. The routes
+call `checklists_open`, which returns true. Do not add a paywall until he
+changes that.
 
 **Acceptance.**
 
@@ -298,9 +302,9 @@ Do not ship a paywall for it until Thomas does.
 **Size.** Medium. One screen, each collection defined as a filter over
 approved facts, and the list routes that already exist.
 
-**Thomas approves.** The free versus paid split. Whether the first
-release is Pikachu costumes only, or also Dynamax, backgrounds, and the
-shiny dex. Whether Y is verified-only, which is the suggestion above.
+**Thomas approves.** Decision 14: free for now, Y is verified-only, and
+the first release is Pikachu. Launch coverage of every Pokémon is still
+the goal, and it waits on more approved rows.
 
 ## D. User reports
 
@@ -492,9 +496,6 @@ lawyer or file a trademark.
 - Trade-alert and collection-sim ideas from the review. They are not in
   the tier table as commitments. The collection checklist in phase J is
   not those sims.
-- Whether phase J is free, paid, or split. Not decided.
-- Whether a collection's Y counts verified rows only. The suggestion in
-  J is yes, with unknowns shown beside the count.
-- How many costumes and backgrounds phase I must approve before a
-  collection is worth showing. The suggestion is Pikachu first.
-- Whether the first checklist release is Pikachu costumes only.
+- Decision 14 closed the Pikachu slice: free for now, Y is verified-only,
+  and the first checklist is Pikachu. When the gate turns on, and which
+  species come after Pikachu, are still his call.

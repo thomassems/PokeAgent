@@ -12,6 +12,7 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, Field
 
 _PATH = Path(__file__).parent / "go_base.json"
+_LABELS = Path(__file__).parent / "go_labels.json"
 _FACT_KINDS = {
     "shiny",
     "dynamax",
@@ -21,10 +22,8 @@ _FACT_KINDS = {
     "background",
     "dynamax_costume",
     "gigantamax_costume",
-}
-# Labels for background values that an official page actually named.
-_BACKGROUND_LABELS = {
-    "dynamax-trails": "Dynamax Trails special background",
+    "costume_shiny",
+    "background_shiny",
 }
 _AXES = (
     "shiny",
@@ -56,6 +55,8 @@ class Species(BaseModel):
     forms: list[str] = Field(default_factory=list)
     costume_forms: list[str] = Field(default_factory=list)
     backgrounds: list[str] = Field(default_factory=list)
+    shiny_costumes: list[str] = Field(default_factory=list)
+    shiny_backgrounds: list[str] = Field(default_factory=list)
     dynamax_costume: bool = False
     gigantamax_costume: bool = False
     shiny: bool
@@ -103,6 +104,27 @@ def catalog() -> tuple[Species, ...]:
     return base_catalog()
 
 
+@lru_cache(maxsize=1)
+def variant_labels() -> dict[str, dict[str, str]]:
+    """Display names for costume and background slugs. Data, not code."""
+    raw = json.loads(_LABELS.read_text())
+    return {
+        "costume": dict(raw.get("costume", {})),
+        "background": dict(raw.get("background", {})),
+    }
+
+
+def variant_label(kind: str, value: str) -> str:
+    """The curated label, or the slug with spaces and a capital first letter."""
+    named = variant_labels().get(kind, {}).get(value)
+    if named:
+        return named
+    words = value.replace("-", " ").strip()
+    if not words:
+        return value
+    return words[0].upper() + words[1:]
+
+
 def apply_facts(species: Species, facts: list[dict[str, Any]]) -> Species:
     """Copy a base row and turn on the approved facts for that species."""
     shiny = species.shiny
@@ -113,6 +135,8 @@ def apply_facts(species: Species, facts: list[dict[str, Any]]) -> Species:
     forms = list(species.forms)
     costume_forms = list(species.costume_forms)
     backgrounds = list(species.backgrounds)
+    shiny_costumes = list(species.shiny_costumes)
+    shiny_backgrounds = list(species.shiny_backgrounds)
     dynamax_costume = species.dynamax_costume
     gigantamax_costume = species.gigantamax_costume
     for fact in facts:
@@ -145,6 +169,14 @@ def apply_facts(species: Species, facts: list[dict[str, Any]]) -> Species:
             dynamax_costume = True
         elif kind == "gigantamax_costume" and value == "true":
             gigantamax_costume = True
+        elif kind == "costume_shiny" and value:
+            shiny = True
+            if value not in shiny_costumes:
+                shiny_costumes.append(value)
+        elif kind == "background_shiny" and value:
+            shiny = True
+            if value not in shiny_backgrounds:
+                shiny_backgrounds.append(value)
     return species.model_copy(
         update={
             "shiny": shiny,
@@ -155,6 +187,8 @@ def apply_facts(species: Species, facts: list[dict[str, Any]]) -> Species:
             "forms": forms,
             "costume_forms": costume_forms,
             "backgrounds": backgrounds,
+            "shiny_costumes": shiny_costumes,
+            "shiny_backgrounds": shiny_backgrounds,
             "dynamax_costume": dynamax_costume,
             "gigantamax_costume": gigantamax_costume,
         }
@@ -194,9 +228,11 @@ def available_variants(species: Species) -> dict[str, Any]:
         "forms": list(species.forms),
         "costume_forms": list(species.costume_forms),
         "backgrounds": [
-            {"id": item, "label": _BACKGROUND_LABELS.get(item, item)}
+            {"id": item, "label": variant_label("background", item)}
             for item in species.backgrounds
         ],
+        "shiny_costumes": list(species.shiny_costumes),
+        "shiny_backgrounds": list(species.shiny_backgrounds),
         "dynamax_costume": species.dynamax_costume,
         "gigantamax_costume": species.gigantamax_costume,
     }

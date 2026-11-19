@@ -106,6 +106,57 @@ catch that form. The catchable Eternatus encounter is a GO Pass reward and
 is not described as a Dynamax form, so Eternatus has no dynamax row and no
 background row. The background is not stored under the name "dark skies".
 
+## Pikachu costumes and backgrounds
+
+Checked by opening the English pages on 19 November 2026 and restating them.
+The app does not download these pages. This is the Pikachu slice of phase I,
+not every costume the game has ever released. Rows are in
+`backend/data/go_curated_seed.json`. Display names are in
+`backend/data/go_labels.json`.
+
+36 costume rows and 5 background rows were added for Pikachu. Where the
+post says that costume can be shiny, a `costume_shiny` row uses the same
+slug. Where a background encounter can be shiny, a `background_shiny` row
+uses the background slug. A post that names the costume and does not attach
+a shiny line has the costume only.
+
+### Costumes
+
+- Summer style, straw hat and sunglasses: <https://pokemongolive.com/en/news/birthday2018>
+- Straw hat: <https://pokemongolive.com/en/news/strawhat>
+- Halloween Mischief: <https://pokemongolive.com/en/news/halloween-2021>
+- Pokémon TCG hat, shiny stated: <https://pokemongolive.com/en/news/Pokemon-TCG-Crossover-Event>
+- Party hat, shiny stated: <https://pokemongolive.com/en/news/pokemon-festival-jakarta>
+- Green T-shirt (Berry), Flying with green balloons, Flying with multicolored balloons, each shiny stated: <https://pokemongolive.com/en/news/pokemon-go-safari-zone-taipei>
+- Purple T-shirt (Flower): <https://pokemongolive.com/en/news/safari-zone-singapore-2022-annoucement>
+- Shaymin-inspired Gracidea flower, shiny stated: <https://pokemongolive.com/en/news/gofest2022-tickets-shaymin-fulldetails>
+- Party top hat, shiny stated: <https://pokemongolive.com/en/news/new-years-2023>
+- Holiday attire, shiny stated: <https://pokemongolive.com/en/news/winter-holiday-part-1-2023>
+- Cherry blossoms, shiny stated: <https://pokemongolive.com/en/news/spring-into-spring-2023>
+- Witch hat: <https://pokemongolive.com/en/news/halloween-part-1-2024>
+- Saree, shiny stated: <https://pokemongolive.com/en/news/festival-of-lights-2024>
+- Kurta, shiny stated: <https://pokemongolive.com/en/news/festival-of-lights-2025>
+- Snowflake beanie, shiny stated: <https://pokemongolive.com/en/news/new-years-2025>
+- From the July 2026 anniversary celebration, each with shiny stated: Tricks and Treats, Winter Carnival outfit, summer flair, dapper with red, yellow, and blue accents, safari hat, varsity jacket, amethyst crown, World Championships 2022, 2023, and 2024. <https://pokemongolive.com/en/news/special-anniversary-pikachu-celebration>
+- Sun crown and moon crown, shiny stated: <https://pokemongolive.com/en/news/twilight-wishes-2026>
+- Astronaut, shiny stated: <https://pokemongolive.com/en/news/world-space-week-2026>
+- Batik shirt, shiny stated: <https://pokemongolive.com/en/news/patterns-of-the-wild-2026>
+- Professor Willow's assistant, shiny stated: <https://pokemongolive.com/en/news/happy-birthday-professor-willow-2026>
+- Hat and capelet, shiny stated: <https://pokemongolive.com/en/news/halloween-part-1-2026>
+- PokéXciting (Blue): <https://pokemongolive.com/en/news/event-singapore-30th-anniversary-2026>
+
+### Backgrounds on Pikachu
+
+- Duolingo special background, shiny stated: <https://pokemongolive.com/en/news/duolingo-2026>
+- Festival of Lights special background, shiny stated: the 2026 return of the saree and kurta. <https://pokemongolive.com/en/news/festival-of-lights-2026>
+- Patterns of the Wild special background, shiny stated: the batik-shirt post above.
+- Professor Willow assistant special background, shiny stated. The post says the background is team-leader-specific and does not name one art per team, so this is one row.
+- Singapore location background, on PokéXciting Pikachu (Blue). Shiny is not stated.
+
+The hand seed inserts these as approved, `verified_by` `hand-seed`, the same
+way as the earlier rows. Rejecting one in `/curate` removes it from the
+checklist total.
+
 ## How a missing row is read
 
 A species with no dynamax row is unknown, not "cannot Dynamax". The same
@@ -124,6 +175,26 @@ None of the pages above released a Dynamax costume.
 - Gigantamax backgrounds. Dynamax Trails talks about Dynamax catches.
 - Shadow and lucky, beyond PvPoke's released shadow forms and the Help
   Center trade rule already in the seed.
-- Costumes other than the Lapras scarf from the Water Festival post.
-- PokeMiners, Bulbapedia, LeekDuck, and ScrapedDuck. Third-party Max Monday
-  write-ups were not used as sources.
+- Costumes other than the Lapras scarf and the Pikachu rows in the section
+  above. Known to collectors and not on an official page opened for this
+  pass: a Santa hat distinct from the 2023 holiday attire, an Ash hat, a
+  fragment hat, a detective hat, Pikachu Libre, a flower crown on Pikachu,
+  a Shaymin-inspired scarf (the GO Fest finale URL did not load), other
+  Flying Pikachu balloon colors, World Championships costumes outside
+  2022 to 2024, and anything hidden in "and more" on the July 2026
+  anniversary list. A Russian GO Tour page mixed Dawn, Lucas, Akari, and
+  Rei costumes. No clean English page was opened, so those four are not
+  in the seed.
+- Location cards and special backgrounds the posts did not attach to
+  Pikachu. A Los Angeles location card on the Sinnoh Tour page is for
+  Dialga and Palkia raid catches.
+- Gigantamax Pikachu, from the March 2026 Max Battle Day post. That is a
+  Gigantamax form, not a costume and not a background, so it is outside
+  this slice.
+- Pikachu Pumpkin Head on the 2021 Halloween post. That line is an avatar
+  item, not a caught costume.
+- Shiny for Summer Style, Straw Hat, Halloween Mischief, the purple
+  T-shirt, the witch hat, and PokéXciting Pikachu (Blue). Those posts do
+  not state it.
+- PokeMiners, Bulbapedia, LeekDuck, ScrapedDuck, and Serebii. Third-party
+  costume lists were not used as sources.

@@ -220,3 +220,32 @@ unsourced Dynamax box.** That is what marked Magikarp as unable to Dynamax.
 Rejected: **calling the Trails background "dark skies" in the data.** The
 post names a Special Background. "Darkens the sky" is the Eternamax
 Eternatus battle, and that form cannot be caught.
+
+## 14. Pikachu checklist is free, and totals count verified rows
+
+Decided 19 November 2026, when Thomas approved a Pikachu slice of phases I
+and J from `plan-next.md`.
+
+Checklists are free for now and are likely to move to a paid tier later.
+Every collection route goes through `checklists_open` in
+`services/collections.py`. That function returns true. There is no
+entitlement column yet, because Stripe is still unbuilt. When Thomas turns
+the gate on, the change is that function, not a new page.
+
+A collection total counts approved curated rows only. A draft is not part
+of Y. The first release is Pikachu costumes and Pikachu backgrounds. At
+launch the same model should cover every Pokémon: another definition in
+`data/collections.json` plus more approved rows, not a second checklist
+page.
+
+Hand-checked Pikachu rows are inserted as approved, with `verified_by`
+`hand-seed`, the same way the earlier seed is. Thomas can reject a row in
+`/curate`, and the count drops. A paste from the curation form still lands
+as a draft. Shiny on a costume is its own fact (`costume_shiny`) when the
+official post states it. A background encounter that can be shiny is
+`background_shiny`.
+
+Rejected: **gating the checklist in this build.** Thomas said free for now.
+Rejected: **counting unknown costumes inside Y.** He said totals count
+verified entries only. Rejected: **a Pikachu-only table.** The collection
+id, species, and fact kinds live in data.
