@@ -1,6 +1,7 @@
 # Trainermon: next plan
 
-Status: **proposed, not built.** Decisions 4 to 10 in `decisions.md`
+Status: **A, B, C, and G are built. D, E, F, and H are not.** I and J
+below are proposed, not built. Decisions 4 to 10 in `decisions.md`
 (17 November 2026) are the constraints. This file is the order to approve
 before any of it is implemented. The licensing review is
 `licensing-data-review.md`. The personal app is out of this plan.
@@ -27,17 +28,23 @@ These are build size, not a calendar.
 4. **G. Age gate and policy drafts.** Before the app is offered to the
    public, and before any feature that shows a friend code. Drafts only.
    A lawyer still has to read them before charging (phase H).
-5. **D. User reports.** Needs a catalog row to report against, and the age
+5. **I. Costume and background coverage.** Needs C. A collection can only
+   claim "every Pikachu costume" for the rows this phase has sourced, so I
+   comes before the checklist.
+6. **J. Collection checklist.** Needs I for the set it counts, and the have
+   and want lists that already exist. It does not need Stripe.
+7. **D. User reports.** Needs a catalog row to report against, and the age
    gate, so reports are not the first thing a child can submit.
-6. **F. Stripe in test mode.** Needs the tier table below confirmed. No live
+8. **F. Stripe in test mode.** Needs the tier table below confirmed. No live
    charges. Raid priority needs a real entitlement, so F lands before E.
-7. **E. Remote-raid matchmaking.** The first paid feature. Needs F's
+9. **E. Remote-raid matchmaking.** The first paid feature. Needs F's
    entitlements, G's age gate, and opt-in friend codes.
-8. **H. Open items before charging.** Not a build. Lawyer, trademark search,
-   sprites stay off. Live Stripe is the switch after Thomas says H is done.
+10. **H. Open items before charging.** Not a build. Lawyer, trademark search,
+    sprites stay off. Live Stripe is the switch after Thomas says H is done.
 
 A and B can be reviewed as separate later PRs. Do not start C's admin page
-before B's ids exist. Do not start E before F and G.
+before B's ids exist. Do not start J before that collection's rows exist
+in I. Do not start E before F and G.
 
 ## Feature by tier
 
@@ -55,6 +62,7 @@ are created in Stripe.
 | Remote raids: queue | Back of the queue | Ahead of Free | Ahead of $4.99 and Free |
 | Trade alerts | No | Not in this plan | Not in this plan |
 | Collection sims | No | No | No |
+| Collection checklist (phase J) | Not decided | Not decided | Not decided |
 | In-app chat | No | No | No |
 | Official sprites | Off | Off | Off |
 | Annual plan | No | Price not set | Price not set |
@@ -63,6 +71,10 @@ Trading stays free. Both paid tiers are "paying users" for decision 7. The
 table puts $9.99 ahead of $4.99 so the higher price buys a shorter wait.
 Thomas can collapse those two paid bands into one priority. That is an
 approval question in phase F, not a silent default.
+
+The collection checklist row is not a tier choice. Phase J lists the
+options and leaves the split open. Collection sims stay out. They are a
+different idea from the review, and they are still not a commitment.
 
 ## A. Compact rows
 
@@ -173,6 +185,122 @@ ship a Meltan trade-rule row until that page is pasted and approved.
 The seed does not ship until that person has approved it. Also the column
 list, if he wants raids and events in the first seed or only shiny and
 Dynamax.
+
+## I. Costume and background coverage
+
+**Scope.** Fill the curated GO layer with costumes and backgrounds. Every
+costume the game has released, including the Pikachu hats and the other
+Pikachu costumes, and every special or location background. The Lapras
+scarf and the Dynamax Trails special background already in the seed are
+the pattern, not the whole set.
+
+Each fact is restated by hand from an official Pokémon GO announcement.
+The row has a source link and a checked date. A human approves it in
+`/curate`. The app does not fetch the page. Pasting the text is the same
+flow as phase C.
+
+Allowed sources are the ones already in use: official announcements
+restated by hand, PvPoke, and PokéAPI. No LeekDuck, ScrapedDuck,
+PokeMiners, or Bulbapedia.
+
+This is a large pass of reading, not a large code change. `/curate`
+already exists. Pikachu alone is many costumes, and location backgrounds
+are a second list on top of that. Suggested order:
+
+1. Pikachu costumes. This is the set Thomas named, and it is the first
+   collection people will ask to track.
+2. Costumes and backgrounds on the species people trade most: starters,
+   Eevee, Magikarp, and the other species that already show up on want
+   lists.
+3. The rest of the costume and background dex.
+
+A costume or background with no allowed source stays unknown. The UI
+keeps offering it as not yet verified. This phase does not write a row
+that says the variant does not exist just because the pass has not
+reached it. A sourced, approved row is what marks it verified. A
+background is still offered only when a row names that background for
+that species.
+
+Dynamax and costume stay separate. A costume on a Dynamax form is its
+own row, and only when an official page released that combination.
+
+**Acceptance.**
+
+- A Pikachu costume pasted from an official page, with a link and a
+  date, can be approved in `/curate` and then shows as a verified costume.
+- A background row has the same shape: species, background value, source
+  link, checked date, approved by a human.
+- An unsourced costume still shows as not yet verified and is not stored
+  as unavailable.
+- The refresh script and the app still refuse to fetch pokemongolive.com
+  or a forbidden host.
+- The seed contains no LeekDuck, ScrapedDuck, PokeMiners, or Bulbapedia
+  text.
+
+**Size.** Large, because of the number of pages to open and approve.
+The product surface is the one phase C already shipped.
+
+**Thomas approves.** That this pass is in scope, and that Pikachu then
+most-traded species is the order. Who approves stays the admin list from
+phase C.
+
+## J. Collection checklist
+
+Thomas: "I personally want to collect one of every pikachu costume and
+it'd be nice to know what I have and am missing."
+
+**Scope.** A trainer picks a collection and sees it against what they
+own.
+
+Examples:
+
+- All Pikachu costumes
+- All Dynamax species
+- All backgrounds
+- Shiny dex
+
+They mark what they own. The page shows progress as have X of Y, and it
+lists what is missing. A missing item can go straight onto the want
+list, which trade search already reads. Marking one owned matches or
+creates a have-list row for that species and variant. The checklist does
+not keep a second copy of the Pokémon.
+
+It depends on phase I. "All Pikachu costumes" means the costumes that
+phase has sourced and a human has approved. Until then, the costume is
+not yet verified, and it is not a hole the count treats as missing. Y is
+the verified set. Unverified rows can sit beside the count with the same
+not-yet-verified note the lists already use. They are not added to the
+want list unless the trainer picks them on purpose.
+
+This is a retention and marketing hook. Lists and trade search answer a
+single trade. A checklist is the reason to come back until the set is
+done, and the missing rows are already wants. It is also a clear line
+when describing the app: progress on a set, not another dex browser.
+Sharing feeds stay out of scope. The hook is the personal count and the
+want list, not a public profile.
+
+Free versus paid is open. Trading stays free, so one option is the whole
+checklist on the free tier. Another is free progress, with a paid action
+that adds every missing row to the want list. This plan does not pick.
+Do not ship a paywall for it until Thomas does.
+
+**Acceptance.**
+
+- A signed-in trainer can open the Pikachu costume collection and see
+  have X of Y, where Y is the approved costume rows.
+- Marking one owned writes or matches a have-list row for that species
+  and costume.
+- Adding the missing verified rows creates want-list entries, and trade
+  search can find them.
+- An unverified costume is labelled not yet verified and is not part of Y.
+- A stranger gets 401. No new catalog source is fetched.
+
+**Size.** Medium. One screen, each collection defined as a filter over
+approved facts, and the list routes that already exist.
+
+**Thomas approves.** The free versus paid split. Whether the first
+release is Pikachu costumes only, or also Dynamax, backgrounds, and the
+shiny dex. Whether Y is verified-only, which is the suggestion above.
 
 ## D. User reports
 
@@ -362,4 +490,11 @@ lawyer or file a trademark.
   a proposal.
 - Meltan and Melmetal, until an official page is pasted and approved.
 - Trade-alert and collection-sim ideas from the review. They are not in
-  the tier table as commitments.
+  the tier table as commitments. The collection checklist in phase J is
+  not those sims.
+- Whether phase J is free, paid, or split. Not decided.
+- Whether a collection's Y counts verified rows only. The suggestion in
+  J is yes, with unknowns shown beside the count.
+- How many costumes and backgrounds phase I must approve before a
+  collection is worth showing. The suggestion is Pikachu first.
+- Whether the first checklist release is Pikachu costumes only.
