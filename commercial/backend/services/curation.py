@@ -22,6 +22,8 @@ _KINDS = {
     "background",
     "dynamax_costume",
     "gigantamax_costume",
+    "costume_shiny",
+    "background_shiny",
 }
 
 
@@ -157,7 +159,7 @@ def parse_drafts(text: str) -> list[dict[str, str]]:
             value = "true"
         if kind == "trade_rule":
             value = "untradable"
-        if kind == "background":
+        if kind in {"background", "costume", "costume_shiny", "background_shiny"}:
             value = value.lower().replace(" ", "-")
             if not value.replace("-", "").isalnum():
                 continue
@@ -177,13 +179,18 @@ def draft_prompt(pasted: str) -> str:
         "Do not add species the paste does not name. Reply with a JSON array "
         "and nothing else. Each item has species_name, kind, and value. "
         "kind is one of shiny, dynamax, gigantamax, costume, trade_rule, "
-        "background, dynamax_costume, gigantamax_costume. "
+        "background, dynamax_costume, gigantamax_costume, costume_shiny, "
+        "background_shiny. "
         "For shiny, dynamax, gigantamax, dynamax_costume, and "
         "gigantamax_costume, value is true. "
         "dynamax_costume means the paste released that costume on the "
         "Dynamax form. A Dynamax mention alone is dynamax, not a costume. "
         "For costume, value is a short form name such as scarf. "
+        "costume_shiny means that costume can be shiny. Its value is the "
+        "costume slug. "
         "For background, value is a short slug such as dynamax-trails. "
+        "background_shiny means that background encounter can be shiny. "
+        "Its value is the background slug. "
         "For trade_rule, value is untradable.\n\n"
         f"{pasted.strip()}"
     )

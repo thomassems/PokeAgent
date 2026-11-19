@@ -4,7 +4,15 @@ import Link from "next/link";
 import { useAppName } from "@/lib/app-name";
 
 type AppHeaderProps = {
-  activePage: "chat" | "team" | "account" | "lists" | "trades" | "explorer" | "curate";
+  activePage:
+    | "chat"
+    | "team"
+    | "account"
+    | "lists"
+    | "trades"
+    | "explorer"
+    | "curate"
+    | "collections";
 };
 
 export function AppHeader({ activePage }: AppHeaderProps) {
@@ -38,6 +46,13 @@ export function AppHeader({ activePage }: AppHeaderProps) {
             className={`rounded-sm px-2 py-1 ${activePage === "lists" ? "bg-shell-800 text-ink-100" : "text-ink-500 hover:text-ink-100"}`}
           >
             Lists
+          </Link>
+          <Link
+            href="/collections"
+            aria-current={activePage === "collections" ? "page" : undefined}
+            className={`rounded-sm px-2 py-1 ${activePage === "collections" ? "bg-shell-800 text-ink-100" : "text-ink-500 hover:text-ink-100"}`}
+          >
+            Collection
           </Link>
           <Link
             href="/trades"

@@ -13,6 +13,7 @@ from agents.conversation import ConversationTurn, Game
 from agents.custom import OutputLimitReached
 from agents.events import TraceEvent
 from agents.protocol import Agent
+from api.collections import router as collections_router
 from api.community import router as community_router
 from api.curation import router as curation_router
 
@@ -83,6 +84,7 @@ def _app_name() -> str:
 app = FastAPI(title=f"{_app_name()} API")
 app.include_router(community_router)
 app.include_router(curation_router)
+app.include_router(collections_router)
 app.add_middleware(LeaveEventStreamUntransformed)
 logger = logging.getLogger(__name__)
 

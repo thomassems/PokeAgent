@@ -42,7 +42,7 @@ def test_draft_is_hidden_until_approved(client: TestClient) -> None:
     _register(client, "admin@example.com")
 
     def fake(_prompt: str) -> str:
-        return '[{"species_name":"Pikachu","kind":"costume","value":"party-hat"}]'
+        return '[{"species_name":"Pikachu","kind":"costume","value":"test-cap"}]'
 
     from services.curation import save_drafts
 
@@ -56,14 +56,13 @@ def test_draft_is_hidden_until_approved(client: TestClient) -> None:
     assert saved[0]["status"] == "draft"
     before = client.get("/api/explorer", params={"query": "pikachu"}).json()
     pikachu = next(row for row in before["species"] if row["id"] == "pikachu")
-    assert pikachu["costume"] is False
+    assert "test-cap" not in pikachu["forms"]
 
     approved = client.post(f"/api/curation/{saved[0]['id']}/approve")
     assert approved.status_code == 200
     after = client.get("/api/explorer", params={"query": "pikachu"}).json()
     pikachu = next(row for row in after["species"] if row["id"] == "pikachu")
-    assert pikachu["costume"] is True
-    assert "party-hat" in pikachu["forms"]
+    assert "test-cap" in pikachu["forms"]
 
 
 def test_stranger_cannot_curate(client: TestClient) -> None:
