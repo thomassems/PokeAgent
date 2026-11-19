@@ -3,8 +3,9 @@
 import sqlite3
 from typing import Any
 
-from data.go_catalog import EntryFlags, check_entry, species_by_id
+from data.go_catalog import EntryFlags, check_entry
 from services.accounts import connect, init_db
+from services.catalog import species_by_id
 from tools.trade_rules import trade_notes
 
 
@@ -55,6 +56,7 @@ def _public(row: sqlite3.Row) -> dict[str, Any]:
         "id": row["id"],
         "kind": row["kind"],
         "species_id": species.id,
+        "dex": species.dex,
         "name": species.name,
         "types": species.types,
         "form": flags.form,

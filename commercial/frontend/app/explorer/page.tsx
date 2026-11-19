@@ -2,13 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
-import { SpeciesBadge } from "@/components/SpeciesBadge";
+import { SpeciesRow } from "@/components/SpeciesRow";
+import {
+  EMPTY_VARIANT_FLAGS,
+  VariantFields,
+  type VariantFlags,
+  type VariantOptions,
+} from "@/components/VariantFields";
 import { communityFetch } from "@/lib/community";
 import type { TypeName } from "@/lib/types";
 
 type Species = {
   id: string;
+  dex: number;
   name: string;
+  checked_on?: string | null;
   types: TypeName[];
   forms: string[];
   shiny: boolean;
@@ -20,6 +28,7 @@ type Species = {
   mythical: boolean;
   legendary: boolean;
   tradable: boolean;
+  variants?: VariantOptions;
 };
 
 const TAGS = [
@@ -28,6 +37,8 @@ const TAGS = [
   "gigantamax",
   "shadow",
   "costume",
+  "purified",
+  "lucky",
   "regional",
   "mythical",
   "legendary",
@@ -36,35 +47,74 @@ const TAGS = [
 type Tag = (typeof TAGS)[number];
 
 function chips(species: Species): string[] {
-  const on: string[] = TAGS.filter((tag) => species[tag]);
+  const chipTags = [
+    "shiny",
+    "dynamax",
+    "gigantamax",
+    "shadow",
+    "costume",
+    "regional",
+    "mythical",
+    "legendary",
+  ] as const;
+  const on: string[] = chipTags.filter((tag) => species[tag]);
   if (!species.tradable) on.push("untradable");
-  return [...species.forms, ...on];
+  return [...species.forms, ...on].map(
+    (chip) => chip.charAt(0).toUpperCase() + chip.slice(1),
+  );
 }
 
 export default function ExplorerPage() {
+  const [catalog, setCatalog] = useState<Species[]>([]);
   const [query, setQuery] = useState("");
+  const [speciesId, setSpeciesId] = useState("");
+  const [form, setForm] = useState("");
+  const [flags, setFlags] = useState<VariantFlags>(EMPTY_VARIANT_FLAGS);
   const [tags, setTags] = useState<Record<Tag, boolean>>({
     shiny: false,
     dynamax: false,
     gigantamax: false,
     shadow: false,
     costume: false,
+    purified: false,
+    lucky: false,
     regional: false,
     mythical: false,
     legendary: false,
   });
   const [species, setSpecies] = useState<Species[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    communityFetch<Species[]>("/api/catalog")
+      .then(setCatalog)
+      .catch(() => setCatalog([]));
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams();
-    if (query.trim()) params.set("query", query.trim());
-    for (const tag of TAGS) {
-      if (tags[tag]) params.set(tag, "true");
+    if (speciesId) {
+      params.set("species_id", speciesId);
+      if (form) params.set("form", form);
+      for (const [name, on] of Object.entries(flags)) {
+        if (on) params.set(name, "true");
+      }
+    } else {
+      if (query.trim()) params.set("query", query.trim());
+      for (const tag of TAGS) {
+        if (tags[tag]) params.set(tag, "true");
+      }
     }
-    communityFetch<{ species: Species[] }>(`/api/explorer?${params.toString()}`).then(
-      (body) => setSpecies(body.species),
-    );
-  }, [query, tags]);
+    communityFetch<{ species: Species[] }>(`/api/explorer?${params.toString()}`)
+      .then((body) => {
+        setSpecies(body.species);
+        setError(null);
+      })
+      .catch((err: unknown) => {
+        setSpecies([]);
+        setError(err instanceof Error ? err.message : "Request failed.");
+      });
+  }, [query, tags, speciesId, form, flags]);
 
   return (
     <div className="flex min-h-screen flex-col bg-shell-950 text-ink-100">
@@ -73,32 +123,72 @@ export default function ExplorerPage() {
         <div>
           <h2 className="text-lg font-semibold">Explorer</h2>
           <p className="mt-1 text-sm text-ink-400">
-            This is a hand-kept seed, not a live dex. It is incomplete on
-            purpose until a catalog with a written commercial licence covers
-            shiny, Dynamax, Gigantamax, costume, and tradability.
+            Species names, dex numbers, and types come from PvPoke (MIT) and
+            PokéAPI (BSD). Shiny, Dynamax, Gigantamax, and costume marks are a
+            hand-checked layer and do not cover the whole dex.
           </p>
         </div>
         <div className="flex flex-col gap-3">
           <input
             className="rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-sm"
             value={query}
-            placeholder="Name"
+            placeholder="Filter the Pokémon list"
             onChange={(event) => setQuery(event.target.value)}
           />
-          <div className="flex flex-wrap gap-3 text-xs">
-            {TAGS.map((tag) => (
-              <label key={tag} className="flex items-center gap-1">
-                <input
-                  type="checkbox"
-                  checked={tags[tag]}
-                  onChange={(event) =>
-                    setTags({ ...tags, [tag]: event.target.checked })
-                  }
-                />
-                {tag}
-              </label>
-            ))}
-          </div>
+          <label className="text-xs text-ink-400">
+            Pokémon
+            <select
+              className="mt-1 block w-full rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-sm"
+              value={speciesId}
+              onChange={(event) => {
+                setSpeciesId(event.target.value);
+                setFlags(EMPTY_VARIANT_FLAGS);
+                setForm("");
+              }}
+            >
+              <option value="">Any Pokémon</option>
+              {catalog
+                .filter((row) => {
+                  const needle = query.trim().toLowerCase();
+                  return (
+                    !needle ||
+                    row.name.toLowerCase().includes(needle) ||
+                    row.id.includes(needle)
+                  );
+                })
+                .slice(0, 40)
+                .map((row) => (
+                  <option key={row.id} value={row.id}>
+                    {row.name}
+                  </option>
+                ))}
+            </select>
+          </label>
+          {speciesId && catalog.find((row) => row.id === speciesId)?.variants ? (
+            <VariantFields
+              variants={catalog.find((row) => row.id === speciesId)!.variants!}
+              flags={flags}
+              form={form}
+              onFlags={setFlags}
+              onForm={setForm}
+            />
+          ) : (
+            <div className="flex flex-wrap gap-3 text-xs">
+              {TAGS.map((tag) => (
+                <label key={tag} className="flex items-center gap-1">
+                  <input
+                    type="checkbox"
+                    checked={tags[tag]}
+                    onChange={(event) =>
+                      setTags({ ...tags, [tag]: event.target.checked })
+                    }
+                  />
+                  {tag}
+                </label>
+              ))}
+            </div>
+          )}
+          {error ? <p className="text-sm text-red-300">{error}</p> : null}
         </div>
         <ul className="flex flex-col gap-2">
           {species.map((row) => (
@@ -106,10 +196,18 @@ export default function ExplorerPage() {
               key={row.id}
               className="flex items-center gap-3 rounded-md border border-shell-800 bg-shell-900 p-3"
             >
-              <SpeciesBadge name={row.name} types={row.types} />
-              <div>
-                <p className="text-sm font-medium">{row.name}</p>
-                <p className="text-xs text-ink-400">{chips(row).join(", ")}</p>
+              <div className="min-w-0 flex-1">
+                <SpeciesRow
+                  dex={row.dex}
+                  name={row.name}
+                  types={row.types}
+                  chips={chips(row)}
+                />
+                {row.checked_on ? (
+                  <p className="mt-1 pl-[4.25rem] text-[11px] text-ink-500">
+                    Checked {row.checked_on}
+                  </p>
+                ) : null}
               </div>
             </li>
           ))}

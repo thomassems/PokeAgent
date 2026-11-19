@@ -3,22 +3,31 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
-import { SpeciesBadge } from "@/components/SpeciesBadge";
+import { SpeciesRow } from "@/components/SpeciesRow";
+import {
+  EMPTY_VARIANT_FLAGS,
+  VariantFields,
+  type VariantFlags,
+  type VariantOptions,
+} from "@/components/VariantFields";
 import { useAppName } from "@/lib/app-name";
 import { communityFetch, type Profile } from "@/lib/community";
 import type { TypeName } from "@/lib/types";
 
 type Species = {
   id: string;
+  dex: number;
   name: string;
   types: TypeName[];
   forms: string[];
+  variants: VariantOptions;
 };
 
 type ListEntry = {
   id: number;
   kind: "want" | "have";
   species_id: string;
+  dex: number;
   name: string;
   types: TypeName[];
   form: string;
@@ -41,24 +50,23 @@ const FLAGS = [
   "purified",
   "lucky",
   "costume",
-] as const;
-
-type Flag = (typeof FLAGS)[number];
-
-const EMPTY_FLAGS: Record<Flag, boolean> = {
-  shiny: false,
-  dynamax: false,
-  gigantamax: false,
-  shadow: false,
-  purified: false,
-  lucky: false,
-  costume: false,
-};
+] as const satisfies readonly (keyof VariantFlags)[];
 
 function tags(entry: ListEntry): string {
   const on = FLAGS.filter((flag) => entry[flag]);
   const form = entry.form ? [entry.form] : [];
   return [...form, ...on].join(", ");
+}
+
+function matchesFilter(
+  entry: ListEntry,
+  speciesId: string,
+  form: string,
+  flags: VariantFlags,
+): boolean {
+  if (speciesId && entry.species_id !== speciesId) return false;
+  if (form && entry.form !== form) return false;
+  return FLAGS.every((flag) => !flags[flag] || entry[flag]);
 }
 
 export default function ListsPage() {
@@ -68,9 +76,13 @@ export default function ListsPage() {
   const [entries, setEntries] = useState<ListEntry[]>([]);
   const [kind, setKind] = useState<"want" | "have">("want");
   const [speciesId, setSpeciesId] = useState("magikarp");
+  const [speciesQuery, setSpeciesQuery] = useState("");
   const [form, setForm] = useState("");
   const [notes, setNotes] = useState("");
-  const [flags, setFlags] = useState(EMPTY_FLAGS);
+  const [flags, setFlags] = useState(EMPTY_VARIANT_FLAGS);
+  const [filterSpeciesId, setFilterSpeciesId] = useState("");
+  const [filterForm, setFilterForm] = useState("");
+  const [filterFlags, setFilterFlags] = useState(EMPTY_VARIANT_FLAGS);
   const [error, setError] = useState<string | null>(null);
 
   const load = () => {
@@ -85,7 +97,8 @@ export default function ListsPage() {
       .catch(() => setProfile(null));
     communityFetch<Species[]>("/api/catalog").then((rows) => {
       setCatalog(rows);
-      if (rows[0]) setSpeciesId(rows[0].id);
+      const preferred = rows.find((row) => row.id === "magikarp") ?? rows[0];
+      if (preferred) setSpeciesId(preferred.id);
     });
     load();
   }, []);
@@ -104,7 +117,7 @@ export default function ListsPage() {
         }),
       });
       setNotes("");
-      setFlags(EMPTY_FLAGS);
+      setFlags(EMPTY_VARIANT_FLAGS);
       setForm("");
       load();
     } catch (err) {
@@ -157,44 +170,59 @@ export default function ListsPage() {
                   <option value="have">Have</option>
                 </select>
               </label>
-              <label className="text-xs text-ink-400">
+              <label className="min-w-40 flex-1 text-xs text-ink-400">
                 Pokémon
+                <input
+                  className="mt-1 block w-full rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-sm"
+                  value={speciesQuery}
+                  placeholder="Filter by name"
+                  onChange={(event) => setSpeciesQuery(event.target.value)}
+                />
                 <select
-                  className="mt-1 block rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-sm"
+                  className="mt-1 block w-full rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-sm"
                   value={speciesId}
-                  onChange={(event) => setSpeciesId(event.target.value)}
+                  onChange={(event) => {
+                    setSpeciesId(event.target.value);
+                    setFlags(EMPTY_VARIANT_FLAGS);
+                    setForm("");
+                  }}
                 >
-                  {catalog.map((species) => (
-                    <option key={species.id} value={species.id}>
-                      {species.name}
-                    </option>
-                  ))}
+                  {(() => {
+                    const needle = speciesQuery.trim().toLowerCase();
+                    const matched = catalog.filter(
+                      (species) =>
+                        !needle ||
+                        species.name.toLowerCase().includes(needle) ||
+                        species.id.includes(needle),
+                    );
+                    const limited = matched.slice(0, 40);
+                    const selected = catalog.find((species) => species.id === speciesId);
+                    const options =
+                      selected && !limited.some((species) => species.id === selected.id)
+                        ? [selected, ...limited]
+                        : limited;
+                    return options.map((species) => (
+                      <option key={species.id} value={species.id}>
+                        {species.name}
+                      </option>
+                    ));
+                  })()}
                 </select>
               </label>
-              <label className="text-xs text-ink-400">
-                Form
-                <input
-                  className="mt-1 block rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-sm"
-                  value={form}
-                  onChange={(event) => setForm(event.target.value)}
-                  placeholder="blank is the base form"
+            </div>
+            {(() => {
+              const selected = catalog.find((species) => species.id === speciesId);
+              if (!selected) return null;
+              return (
+                <VariantFields
+                  variants={selected.variants}
+                  flags={flags}
+                  form={form}
+                  onFlags={setFlags}
+                  onForm={setForm}
                 />
-              </label>
-            </div>
-            <div className="flex flex-wrap gap-3 text-xs">
-              {FLAGS.map((flag) => (
-                <label key={flag} className="flex items-center gap-1">
-                  <input
-                    type="checkbox"
-                    checked={flags[flag]}
-                    onChange={(event) =>
-                      setFlags({ ...flags, [flag]: event.target.checked })
-                    }
-                  />
-                  {flag}
-                </label>
-              ))}
-            </div>
+              );
+            })()}
             <label className="text-xs text-ink-400">
               Notes
               <input
@@ -212,18 +240,75 @@ export default function ListsPage() {
             </button>
           </form>
         ) : null}
+        <section className="flex flex-col gap-3">
+          <h3 className="text-sm font-medium">Filter this list</h3>
+          <label className="text-xs text-ink-400">
+            Pokémon
+            <select
+              className="mt-1 block w-full rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-sm"
+              value={filterSpeciesId}
+              onChange={(event) => {
+                setFilterSpeciesId(event.target.value);
+                setFilterFlags(EMPTY_VARIANT_FLAGS);
+                setFilterForm("");
+              }}
+            >
+              <option value="">Any Pokémon</option>
+              {catalog.map((species) => (
+                <option key={species.id} value={species.id}>
+                  {species.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          {filterSpeciesId ? (
+            <VariantFields
+              variants={
+                catalog.find((species) => species.id === filterSpeciesId)?.variants ?? {
+                  shiny: false,
+                  dynamax: false,
+                  gigantamax: false,
+                  shadow: false,
+                  purified: false,
+                  lucky: false,
+                  costume: false,
+                  forms: [],
+                  costume_forms: [],
+                }
+              }
+              flags={filterFlags}
+              form={filterForm}
+              onFlags={setFilterFlags}
+              onForm={setFilterForm}
+            />
+          ) : (
+            <p className="text-xs text-ink-500">
+              Pick a Pokémon to filter by a variant it actually has.
+            </p>
+          )}
+        </section>
         <ul className="flex flex-col gap-3">
-          {entries.map((entry) => (
+          {entries
+            .filter((entry) =>
+              matchesFilter(entry, filterSpeciesId, filterForm, filterFlags),
+            )
+            .map((entry) => (
             <li
               key={entry.id}
               className="flex gap-3 rounded-md border border-shell-800 bg-shell-900 p-3"
             >
-              <SpeciesBadge name={entry.name} types={entry.types} />
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium">
-                  {entry.kind === "want" ? "Want" : "Have"} {entry.name}
-                  {tags(entry) ? ` (${tags(entry)})` : ""}
+                <p className="text-[11px] tracking-wide text-ink-500 uppercase">
+                  {entry.kind}
                 </p>
+                <SpeciesRow
+                  dex={entry.dex}
+                  name={entry.name}
+                  types={entry.types}
+                  chips={tags(entry)
+                    .split(", ")
+                    .filter(Boolean)}
+                />
                 {entry.notes ? (
                   <p className="text-xs text-ink-400">{entry.notes}</p>
                 ) : null}

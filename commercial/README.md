@@ -89,7 +89,20 @@ overrides the path. Unset, the file is `backend/data/local.db`, which is
 gitignored.
 
 Sign-in is a local email and password. The password hash stays in that file.
-There is no call to Pokémon GO, and no account-trading flow.
+There is no call to Pokémon GO, and no account-trading flow. Sign-up asks
+the trainer to confirm they are 13 or older and rejects the account
+otherwise. It also asks for a trainer level from 1 to 80, a team
+(Mystic, Valor, or Instinct), and a timezone from a fixed list. The
+region stored with that timezone is for later raid hours. A friend code
+stays optional and is still not shown to other trainers.
+`SHARE_FRIEND_CODES` defaults off and does not publish a code.
+
+`TRAINERMON_ADMINS` is a comma-separated list of emails that may open
+`/curate`. Nobody is an admin until you set it. `SHOW_OFFICIAL_SPRITES`
+defaults off and does not add artwork. Drafting a curated row needs
+`ANTHROPIC_API_KEY` on the server, the same key the assistant already uses.
+`TRAINERMON_DRAFT_MODEL` overrides the draft model. Unset, it uses
+`deepseek-v4-flash`.
 
 A friend code is optional. It is returned only on `/api/me` for the signed-in
 trainer. Search results do not include it. `SHARE_FRIEND_CODES` defaults off
@@ -108,7 +121,12 @@ CREATE TABLE users (
   trainer_name text not null,
   city text not null,
   friend_code text,
-  created_at timestamptz not null
+  created_at timestamptz not null,
+  age_ok boolean,
+  trainer_level integer,
+  team text,
+  timezone text,
+  region text
 );
 CREATE TABLE sessions (
   token_hash text primary key,
@@ -130,7 +148,29 @@ CREATE TABLE list_entries (
   costume boolean not null,
   notes text not null
 );
+CREATE TABLE curated_facts (
+  id bigint generated always as identity primary key,
+  species_id text not null,
+  kind text not null,
+  value text not null,
+  source_url text not null,
+  verified_at date not null,
+  verified_by text not null,
+  status text not null,
+  notes text not null,
+  unique (species_id, kind, value, source_url)
+);
 ```
+
+The base species list is generated, not typed by hand:
+
+```bash
+cd backend && uv run python -m scripts.refresh_base_catalog
+```
+
+That downloads the PvPoke gamemaster and two PokéAPI CSVs, and nothing else.
+Curated shiny and Dynamax rows ship in `backend/data/go_curated_seed.json`.
+What was checked, and what was left out, is in `docs/go-curated-seed.md`.
 
 Demo trainers for the trade page:
 

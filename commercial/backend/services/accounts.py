@@ -10,6 +10,7 @@ import hmac
 import os
 import secrets
 import sqlite3
+from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -17,6 +18,57 @@ from typing import Any
 _COOKIE = "trainermon_session"
 _SESSION_DAYS = 14
 _HASH_ROUNDS = 120_000
+_LEVEL_MIN = 1
+_LEVEL_MAX = 80
+
+# One list, not a setting. Region is stored with the zone so a later raid
+# lobby can group trainers without asking the question twice.
+TEAMS: dict[str, str] = {
+    "mystic": "Mystic",
+    "valor": "Valor",
+    "instinct": "Instinct",
+}
+TIMEZONES: tuple[tuple[str, str, str], ...] = (
+    ("America/St_Johns", "Americas", "Newfoundland"),
+    ("America/Halifax", "Americas", "Atlantic"),
+    ("America/Toronto", "Americas", "Toronto"),
+    ("America/New_York", "Americas", "US Eastern"),
+    ("America/Winnipeg", "Americas", "Central"),
+    ("America/Chicago", "Americas", "US Central"),
+    ("America/Edmonton", "Americas", "Mountain"),
+    ("America/Denver", "Americas", "US Mountain"),
+    ("America/Vancouver", "Americas", "Pacific"),
+    ("America/Los_Angeles", "Americas", "US Pacific"),
+    ("America/Mexico_City", "Americas", "Mexico City"),
+    ("America/Sao_Paulo", "Americas", "Brasilia"),
+    ("Europe/London", "Europe", "UK"),
+    ("Europe/Dublin", "Europe", "Ireland"),
+    ("Europe/Paris", "Europe", "Central Europe"),
+    ("Europe/Helsinki", "Europe", "Eastern Europe"),
+    ("Africa/Lagos", "Africa", "West Africa"),
+    ("Africa/Cairo", "Africa", "Egypt"),
+    ("Africa/Johannesburg", "Africa", "South Africa"),
+    ("Asia/Dubai", "Middle East", "Gulf"),
+    ("Asia/Kolkata", "Asia", "India"),
+    ("Asia/Bangkok", "Asia", "Indochina"),
+    ("Asia/Singapore", "Asia", "Singapore"),
+    ("Asia/Tokyo", "Asia", "Japan"),
+    ("Asia/Seoul", "Asia", "Korea"),
+    ("Australia/Perth", "Oceania", "Perth"),
+    ("Australia/Sydney", "Oceania", "Sydney"),
+    ("Pacific/Auckland", "Oceania", "New Zealand"),
+)
+_ZONE_BY_ID = {zone_id: (region, label) for zone_id, region, label in TIMEZONES}
+
+
+@dataclass(frozen=True)
+class TrainerDetails:
+    trainer_name: str
+    city: str | None
+    friend_code: str | None
+    trainer_level: int
+    team: str
+    timezone: str
 
 
 def cookie_name() -> str:
@@ -50,7 +102,12 @@ def init_db() -> None:
                 trainer_name TEXT NOT NULL,
                 city TEXT NOT NULL,
                 friend_code TEXT,
-                created_at TEXT NOT NULL
+                created_at TEXT NOT NULL,
+                age_ok INTEGER,
+                trainer_level INTEGER,
+                team TEXT,
+                timezone TEXT,
+                region TEXT
             )
             """
         )
@@ -63,6 +120,37 @@ def init_db() -> None:
             )
             """
         )
+        columns = {row[1] for row in conn.execute("PRAGMA table_info(users)")}
+        # Databases created before these columns existed still need them.
+        additions = {
+            "age_ok": "ALTER TABLE users ADD COLUMN age_ok INTEGER",
+            "trainer_level": "ALTER TABLE users ADD COLUMN trainer_level INTEGER",
+            "team": "ALTER TABLE users ADD COLUMN team TEXT",
+            "timezone": "ALTER TABLE users ADD COLUMN timezone TEXT",
+            "region": "ALTER TABLE users ADD COLUMN region TEXT",
+        }
+        for name, statement in additions.items():
+            if name not in columns:
+                conn.execute(statement)
+
+
+def is_admin(email: str) -> bool:
+    """TRAINERMON_ADMINS is a comma-separated list of account emails."""
+    allowed = {
+        item.strip().lower()
+        for item in os.environ.get("TRAINERMON_ADMINS", "").split(",")
+        if item.strip()
+    }
+    return email.strip().lower() in allowed
+
+
+def official_sprites_enabled() -> bool:
+    """Reserved. Default off. This build has no sprite files either way."""
+    return os.environ.get("SHOW_OFFICIAL_SPRITES", "").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+    }
 
 
 def share_friend_codes() -> bool:
@@ -94,14 +182,33 @@ def _iso(value: datetime) -> str:
     return value.isoformat()
 
 
+def profile_choices() -> dict[str, Any]:
+    """Teams and timezones the account form is allowed to submit."""
+    return {
+        "trainer_level_min": _LEVEL_MIN,
+        "trainer_level_max": _LEVEL_MAX,
+        "teams": [{"id": team_id, "name": name} for team_id, name in TEAMS.items()],
+        "timezones": [
+            {"id": zone_id, "region": region, "label": label}
+            for zone_id, region, label in TIMEZONES
+        ],
+    }
+
+
 def public_user(row: sqlite3.Row) -> dict[str, Any]:
     """Owner profile. friend_code is included because this is their own row."""
+    keys = row.keys()
+    level = row["trainer_level"] if "trainer_level" in keys else None
     return {
         "id": row["id"],
         "email": row["email"],
         "trainer_name": row["trainer_name"],
         "city": row["city"],
         "friend_code": row["friend_code"] or "",
+        "trainer_level": level,
+        "team": (row["team"] or "") if "team" in keys else "",
+        "timezone": (row["timezone"] or "") if "timezone" in keys else "",
+        "region": (row["region"] or "") if "region" in keys else "",
     }
 
 
@@ -140,18 +247,53 @@ def _validate_friend_code(code: str | None) -> str | None:
     return cleaned
 
 
+def _validate_level(level: int) -> int:
+    if isinstance(level, bool) or not isinstance(level, int):
+        raise ValueError("Trainer level is a whole number from 1 to 80.")
+    if level < _LEVEL_MIN or level > _LEVEL_MAX:
+        raise ValueError("Trainer level is a whole number from 1 to 80.")
+    return level
+
+
+def _validate_team(team: str) -> str:
+    cleaned = team.strip().lower()
+    if cleaned not in TEAMS:
+        raise ValueError("Pick a team: Mystic, Valor, or Instinct.")
+    return cleaned
+
+
+def _validate_timezone(timezone: str) -> tuple[str, str]:
+    cleaned = timezone.strip()
+    found = _ZONE_BY_ID.get(cleaned)
+    if found is None:
+        raise ValueError("Pick a timezone from the list.")
+    region, _label = found
+    return cleaned, region
+
+
+def _checked_details(
+    details: TrainerDetails,
+) -> tuple[str, str, str | None, int, str, str, str]:
+    name = _validate_name(details.trainer_name)
+    place = _validate_city(details.city)
+    code = _validate_friend_code(details.friend_code)
+    level = _validate_level(details.trainer_level)
+    team = _validate_team(details.team)
+    timezone, region = _validate_timezone(details.timezone)
+    return name, place, code, level, team, timezone, region
+
+
 def register(
     email: str,
     password: str,
-    trainer_name: str,
-    city: str | None,
-    friend_code: str | None,
+    details: TrainerDetails,
+    age_confirmed: bool,
 ) -> tuple[dict[str, Any], str]:
+    if not age_confirmed:
+        raise ValueError("Trainermon is for trainers aged 13 and over.")
     cleaned_email = _validate_email(email)
     _validate_password(password)
-    name = _validate_name(trainer_name)
-    place = _validate_city(city)
-    code = _validate_friend_code(friend_code)
+    name, place, code, level, team, timezone, region = _checked_details(details)
     init_db()
     with connect() as conn:
         exists = conn.execute(
@@ -162,9 +304,10 @@ def register(
         cursor = conn.execute(
             """
             INSERT INTO users (
-                email, password_hash, trainer_name, city, friend_code, created_at
+                email, password_hash, trainer_name, city, friend_code,
+                created_at, age_ok, trainer_level, team, timezone, region
             )
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 cleaned_email,
@@ -173,6 +316,11 @@ def register(
                 place,
                 code,
                 _iso(_now()),
+                1,
+                level,
+                team,
+                timezone,
+                region,
             ),
         )
         user_id = int(cursor.lastrowid)
@@ -231,19 +379,18 @@ def user_from_token(token: str | None) -> dict[str, Any] | None:
     return public_user(row)
 
 
-def update_profile(
-    user_id: int, trainer_name: str, city: str, friend_code: str | None
-) -> dict[str, Any]:
-    name = _validate_name(trainer_name)
-    place = _validate_city(city)
-    code = _validate_friend_code(friend_code)
+def update_profile(user_id: int, details: TrainerDetails) -> dict[str, Any]:
+    name, place, code, level, team, timezone, region = _checked_details(details)
     init_db()
     with connect() as conn:
         conn.execute(
             """
-            UPDATE users SET trainer_name = ?, city = ?, friend_code = ? WHERE id = ?
+            UPDATE users SET
+                trainer_name = ?, city = ?, friend_code = ?,
+                trainer_level = ?, team = ?, timezone = ?, region = ?
+            WHERE id = ?
             """,
-            (name, place, code, user_id),
+            (name, place, code, level, team, timezone, region, user_id),
         )
         row = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
     return public_user(row)
