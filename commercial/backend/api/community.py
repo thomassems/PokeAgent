@@ -9,17 +9,25 @@ from typing import Literal
 from fastapi import APIRouter, Cookie, HTTPException, Response
 from pydantic import BaseModel, Field
 
-from data.go_catalog import EntryFlags
+from data.go_catalog import EntryFlags, check_variant_filter
 from services.accounts import (
+    TrainerDetails,
     cookie_name,
     login,
     logout,
     official_sprites_enabled,
+    profile_choices,
     register,
+    share_friend_codes,
     update_profile,
     user_from_token,
 )
-from services.catalog import public_catalog
+from services.catalog import (
+    form_exists,
+    public_catalog,
+    species_by_id,
+    species_for_query,
+)
 from services.lists import add_entry, delete_entry, list_entries, update_entry
 from services.trades import search_trades
 
@@ -33,6 +41,9 @@ class RegisterIn(BaseModel):
     trainer_name: str
     city: str = "Toronto"
     friend_code: str = ""
+    trainer_level: int
+    team: str
+    timezone: str
     age_confirmed: bool = False
 
 
@@ -45,6 +56,9 @@ class ProfileIn(BaseModel):
     trainer_name: str
     city: str = Field(default="Toronto")
     friend_code: str = ""
+    trainer_level: int
+    team: str
+    timezone: str
 
 
 class EntryIn(BaseModel):
@@ -71,6 +85,17 @@ class EntryPatch(BaseModel):
     lucky: bool = False
     costume: bool = False
     notes: str = ""
+
+
+def _details(body: RegisterIn | ProfileIn) -> TrainerDetails:
+    return TrainerDetails(
+        trainer_name=body.trainer_name,
+        city=body.city,
+        friend_code=body.friend_code,
+        trainer_level=body.trainer_level,
+        team=body.team,
+        timezone=body.timezone,
+    )
 
 
 def _flags(body: EntryIn | EntryPatch) -> EntryFlags:
@@ -111,9 +136,7 @@ def register_account(body: RegisterIn, response: Response) -> dict:
         user, token = register(
             body.email,
             body.password,
-            body.trainer_name,
-            body.city,
-            body.friend_code,
+            _details(body),
             body.age_confirmed,
         )
     except ValueError as exc:
@@ -152,16 +175,21 @@ def patch_me(
 ) -> dict:
     user = require_user(trainermon_session)
     try:
-        return update_profile(
-            user["id"], body.trainer_name, body.city, body.friend_code
-        )
+        return update_profile(user["id"], _details(body))
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
 @router.get("/api/config")
 def config() -> dict:
-    return {"official_sprites": official_sprites_enabled()}
+    choices = profile_choices()
+    return {
+        "official_sprites": official_sprites_enabled(),
+        # The switch is reported so the form can stay honest. No route publishes
+        # a friend code, including when this is on.
+        "share_friend_codes": share_friend_codes(),
+        **choices,
+    }
 
 
 @router.get("/api/catalog")
@@ -213,38 +241,127 @@ def remove_list(
     return {"ok": True}
 
 
+def _requested(flags: EntryFlags) -> bool:
+    return any(
+        (
+            flags.form.strip(),
+            flags.shiny,
+            flags.dynamax,
+            flags.gigantamax,
+            flags.shadow,
+            flags.purified,
+            flags.lucky,
+            flags.costume,
+        )
+    )
+
+
+def _guard_species_filter(species_id: str, query: str, flags: EntryFlags) -> None:
+    target = species_by_id(species_id) if species_id else None
+    if species_id and target is None:
+        raise ValueError(f"Unknown species '{species_id}'.")
+    if target is None:
+        target = species_for_query(query)
+    if target is not None and _requested(flags):
+        check_variant_filter(target, flags)
+        return
+    if flags.form.strip() and not form_exists(flags.form):
+        raise ValueError("No Pokémon in this catalog has that form.")
+
+
 @router.get("/api/trades/search")
 def trade_search(
     city: str = "Toronto",
+    species_id: str = "",
+    form: str = "",
+    shiny: bool = False,
+    dynamax: bool = False,
+    gigantamax: bool = False,
+    shadow: bool = False,
+    purified: bool = False,
+    lucky: bool = False,
+    costume: bool = False,
     trainermon_session: str | None = Cookie(default=None),
 ) -> dict:
     user = require_user(trainermon_session)
-    return {"city": city, "matches": search_trades(user["id"], city)}
+    flags = EntryFlags(
+        form=form,
+        shiny=shiny,
+        dynamax=dynamax,
+        gigantamax=gigantamax,
+        shadow=shadow,
+        purified=purified,
+        lucky=lucky,
+        costume=costume,
+    )
+    try:
+        if _requested(flags) and not species_id:
+            raise ValueError("Pick a Pokémon before filtering by a variant.")
+        _guard_species_filter(species_id, "", flags)
+        matches = search_trades(
+            user["id"],
+            city,
+            species_id=species_id,
+            form=form,
+            flags={
+                "shiny": shiny,
+                "dynamax": dynamax,
+                "gigantamax": gigantamax,
+                "shadow": shadow,
+                "purified": purified,
+                "lucky": lucky,
+                "costume": costume,
+            },
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return {"city": city, "matches": matches}
 
 
 @router.get("/api/explorer")
 def explorer(
     query: str = "",
+    species_id: str = "",
+    form: str = "",
     shiny: bool = False,
     dynamax: bool = False,
     gigantamax: bool = False,
     shadow: bool = False,
     costume: bool = False,
+    purified: bool = False,
+    lucky: bool = False,
     regional: bool = False,
     mythical: bool = False,
     legendary: bool = False,
 ) -> dict:
-    return {
-        "seed": False,
-        "species": public_catalog(
+    flags = EntryFlags(
+        form=form,
+        shiny=shiny,
+        dynamax=dynamax,
+        gigantamax=gigantamax,
+        shadow=shadow,
+        purified=purified,
+        lucky=lucky,
+        costume=costume,
+    )
+    try:
+        _guard_species_filter(species_id, query, flags)
+        species = public_catalog(
             query=query,
             shiny=shiny,
             dynamax=dynamax,
             gigantamax=gigantamax,
             shadow=shadow,
             costume=costume,
+            purified=purified,
+            lucky=lucky,
+            form=form,
             regional=regional,
             mythical=mythical,
             legendary=legendary,
-        ),
-    }
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    if species_id:
+        species = [row for row in species if row["id"] == species_id]
+    return {"seed": False, "species": species}

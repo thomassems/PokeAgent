@@ -170,3 +170,20 @@ Identity comes from `go_base.json`. GO flags come from approved curated rows.
 
 Rejected for this build: **user reports, Stripe, raid matchmaking, and the
 lawyer consult.** Those stay in the plan as D, F, E, and H.
+
+## 12. Trainer profile and species-valid variants
+
+Decided 19 November 2026, from Thomas's review of the commercial edition.
+
+Sign-up and the profile editor collect trainer level (1 to 80), team, and a
+timezone from a fixed list. The region is stored beside that zone so a later
+raid lobby does not have to ask again. Friend codes stay optional and private.
+`SHARE_FRIEND_CODES` still does not publish one.
+
+List rows, trade search, and Explorer only offer a variant when the base
+catalog plus approved curated facts say that species has it. Purified follows
+shadow. Lucky follows tradable, because lucky is a trade outcome. The API
+returns 400 for any other combination.
+
+Rejected: **letting the trainer type a free-form timezone or a variant the
+catalog does not have.**

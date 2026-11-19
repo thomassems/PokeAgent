@@ -5,7 +5,7 @@ for anything but a local screenshot.
 """
 
 from data.go_catalog import EntryFlags
-from services.accounts import connect, init_db, register
+from services.accounts import TrainerDetails, connect, init_db, register
 from services.lists import add_entry, init_lists
 
 _PASSWORD = "demo-password"
@@ -14,6 +14,8 @@ _PEOPLE = (
         "email": "avery@demo.test",
         "trainer_name": "Avery",
         "city": "Toronto",
+        "trainer_level": 42,
+        "team": "mystic",
         "rows": (
             ("want", "magikarp", EntryFlags(shiny=True)),
             ("have", "heracross", EntryFlags()),
@@ -23,6 +25,8 @@ _PEOPLE = (
         "email": "jordan@demo.test",
         "trainer_name": "Jordan",
         "city": "Toronto",
+        "trainer_level": 37,
+        "team": "valor",
         "rows": (
             ("want", "heracross", EntryFlags()),
             ("have", "magikarp", EntryFlags(shiny=True)),
@@ -32,12 +36,16 @@ _PEOPLE = (
         "email": "sam@demo.test",
         "trainer_name": "Sam",
         "city": "Montreal",
+        "trainer_level": 29,
+        "team": "instinct",
         "rows": (("have", "magikarp", EntryFlags(shiny=True)),),
     },
     {
         "email": "riley@demo.test",
         "trainer_name": "Riley",
         "city": "Toronto",
+        "trainer_level": 51,
+        "team": "mystic",
         "rows": (
             ("want", "beldum", EntryFlags(dynamax=True)),
             ("have", "kangaskhan", EntryFlags()),
@@ -70,9 +78,14 @@ def main() -> None:
         user, _token = register(
             person["email"],
             _PASSWORD,
-            person["trainer_name"],
-            person["city"],
-            None,
+            TrainerDetails(
+                trainer_name=person["trainer_name"],
+                city=person["city"],
+                friend_code=None,
+                trainer_level=person["trainer_level"],
+                team=person["team"],
+                timezone="America/Toronto",
+            ),
             True,
         )
         for kind, species_id, flags in person["rows"]:

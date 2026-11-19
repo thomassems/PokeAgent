@@ -23,6 +23,7 @@ class Species(BaseModel):
     name: str
     types: list[str] = Field(min_length=1, max_length=2)
     forms: list[str] = Field(default_factory=list)
+    costume_forms: list[str] = Field(default_factory=list)
     shiny: bool
     dynamax: bool
     gigantamax: bool
@@ -75,6 +76,7 @@ def apply_facts(species: Species, facts: list[dict[str, Any]]) -> Species:
     costume = species.costume
     tradable = species.tradable
     forms = list(species.forms)
+    costume_forms = list(species.costume_forms)
     for fact in facts:
         if fact.get("status") not in (None, "approved"):
             continue
@@ -94,6 +96,8 @@ def apply_facts(species: Species, facts: list[dict[str, Any]]) -> Species:
             costume = True
             if value not in forms:
                 forms.append(value)
+            if value not in costume_forms:
+                costume_forms.append(value)
         elif kind == "trade_rule" and value == "untradable":
             tradable = False
     return species.model_copy(
@@ -104,6 +108,7 @@ def apply_facts(species: Species, facts: list[dict[str, Any]]) -> Species:
             "costume": costume,
             "tradable": tradable,
             "forms": forms,
+            "costume_forms": costume_forms,
         }
     )
 
@@ -115,6 +120,59 @@ def species_by_id(species_id: str) -> Species | None:
     return None
 
 
+def available_variants(species: Species) -> dict[str, Any]:
+    """Which list and filter options this species actually has.
+
+    Purified is offered only when a shadow form exists, because that is the
+    Pokémon you purify. Lucky is offered only when the species can be traded,
+    because lucky is a trade outcome. Neither is a separate curated fact.
+    """
+    return {
+        "shiny": species.shiny,
+        "dynamax": species.dynamax,
+        "gigantamax": species.gigantamax,
+        "shadow": species.shadow,
+        "purified": species.shadow,
+        "lucky": species.tradable,
+        "costume": bool(species.costume_forms),
+        "forms": list(species.forms),
+        "costume_forms": list(species.costume_forms),
+    }
+
+
+def check_variant_filter(species: Species, flags: EntryFlags) -> None:
+    """Reject a variant combination this species does not have."""
+    options = available_variants(species)
+    form = flags.form.strip().lower()
+    known_forms = set(options["forms"]) | set(options["costume_forms"])
+    if form and form not in known_forms:
+        raise ValueError(f"{species.name} has no {form} form in this catalog.")
+    if flags.shiny and not options["shiny"]:
+        raise ValueError(f"{species.name} has no shiny variant in this catalog.")
+    if flags.dynamax and not options["dynamax"]:
+        raise ValueError(f"{species.name} has no Dynamax variant in this catalog.")
+    if flags.gigantamax and not options["gigantamax"]:
+        raise ValueError(f"{species.name} has no Gigantamax variant in this catalog.")
+    if flags.dynamax and flags.gigantamax:
+        raise ValueError("Pick Dynamax or Gigantamax, not both.")
+    if flags.shadow and not options["shadow"]:
+        raise ValueError(f"{species.name} has no shadow variant in this catalog.")
+    if flags.purified and not options["purified"]:
+        raise ValueError(
+            f"{species.name} has no shadow form, so it cannot be purified."
+        )
+    if flags.shadow and flags.purified:
+        raise ValueError("A Pokémon is shadow or purified, not both.")
+    if flags.lucky and not options["lucky"]:
+        raise ValueError(f"{species.name} cannot be lucky because it cannot be traded.")
+    if flags.costume and form not in options["costume_forms"]:
+        raise ValueError(f"Pick a costume {species.name} actually has.")
+    if form in options["costume_forms"] and not flags.costume:
+        raise ValueError(f"{form} is a costume. Mark it as a costume.")
+    if len(flags.notes) > 280:
+        raise ValueError("Notes are limited to 280 characters.")
+
+
 def check_entry(species: Species, flags: EntryFlags) -> None:
     """Reject a list row the catalog says cannot exist or cannot be traded."""
     if not species.tradable:
@@ -123,21 +181,7 @@ def check_entry(species: Species, flags: EntryFlags) -> None:
                 f"{species.name} is a Mythical Pokémon and cannot be traded."
             )
         raise ValueError(f"{species.name} cannot be traded.")
-    form = flags.form.strip().lower()
-    if form and form not in species.forms:
-        raise ValueError(f"{species.name} has no {form} form in this catalog.")
-    if flags.shiny and not species.shiny:
-        raise ValueError(f"{species.name} is not marked shiny in this catalog.")
-    if flags.dynamax and not species.dynamax:
-        raise ValueError(f"{species.name} is not marked Dynamax in this catalog.")
-    if flags.gigantamax and not species.gigantamax:
-        raise ValueError(f"{species.name} is not marked Gigantamax in this catalog.")
-    if flags.shadow and not species.shadow:
-        raise ValueError(f"{species.name} is not marked shadow in this catalog.")
-    if flags.costume and not species.costume:
-        raise ValueError(f"{species.name} has no costume in this catalog.")
-    if len(flags.notes) > 280:
-        raise ValueError("Notes are limited to 280 characters.")
+    check_variant_filter(species, flags)
 
 
 def filter_catalog(
@@ -152,6 +196,9 @@ def filter_catalog(
     regional: bool = False,
     mythical: bool = False,
     legendary: bool = False,
+    purified: bool = False,
+    lucky: bool = False,
+    form: str = "",
 ) -> list[dict[str, Any]]:
     """AND the selected tags. An unselected tag does not filter."""
     needle = query.strip().lower()
@@ -168,6 +215,14 @@ def filter_catalog(
         if shadow and not item.shadow:
             continue
         if costume and not item.costume:
+            continue
+        if purified and not item.shadow:
+            continue
+        if lucky and not item.tradable:
+            continue
+        wanted_form = form.strip().lower()
+        known = set(item.forms) | set(item.costume_forms)
+        if wanted_form and wanted_form not in known:
             continue
         if regional and not item.regional:
             continue

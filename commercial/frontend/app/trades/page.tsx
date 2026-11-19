@@ -4,8 +4,20 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { SpeciesRow } from "@/components/SpeciesRow";
+import {
+  EMPTY_VARIANT_FLAGS,
+  VariantFields,
+  type VariantFlags,
+  type VariantOptions,
+} from "@/components/VariantFields";
 import { communityFetch, type Profile } from "@/lib/community";
 import type { TypeName } from "@/lib/types";
+
+type Species = {
+  id: string;
+  name: string;
+  variants: VariantOptions;
+};
 
 type Matched = {
   id: number;
@@ -43,30 +55,47 @@ function chips(row: Matched): string[] {
 export default function TradesPage() {
   const [profile, setProfile] = useState<Profile | null | undefined>(undefined);
   const [city, setCity] = useState("Toronto");
+  const [catalog, setCatalog] = useState<Species[]>([]);
+  const [speciesId, setSpeciesId] = useState("");
+  const [form, setForm] = useState("");
+  const [flags, setFlags] = useState<VariantFlags>(EMPTY_VARIANT_FLAGS);
   const [matches, setMatches] = useState<Match[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const search = async (nextCity: string) => {
     setError(null);
+    const params = new URLSearchParams({ city: nextCity });
+    if (speciesId) params.set("species_id", speciesId);
+    if (form) params.set("form", form);
+    for (const [name, on] of Object.entries(flags)) {
+      if (on) params.set(name, "true");
+    }
     try {
       const body = await communityFetch<{ matches: Match[] }>(
-        `/api/trades/search?city=${encodeURIComponent(nextCity)}`,
+        `/api/trades/search?${params.toString()}`,
       );
       setMatches(body.matches);
     } catch (err) {
+      setMatches([]);
       setError(err instanceof Error ? err.message : "Request failed.");
     }
   };
 
   useEffect(() => {
     communityFetch<Profile>("/api/me")
-      .then((me) => {
+      .then(async (me) => {
         setProfile(me);
         const next = me.city || "Toronto";
         setCity(next);
-        void search(next);
+        const body = await communityFetch<{ matches: Match[] }>(
+          `/api/trades/search?city=${encodeURIComponent(next)}`,
+        );
+        setMatches(body.matches);
       })
       .catch(() => setProfile(null));
+    communityFetch<Species[]>("/api/catalog")
+      .then(setCatalog)
+      .catch(() => setCatalog([]));
   }, []);
 
   return (
@@ -91,12 +120,13 @@ export default function TradesPage() {
         ) : null}
         {profile ? (
           <form
-            className="flex items-end gap-3"
+            className="flex flex-col gap-3"
             onSubmit={(event) => {
               event.preventDefault();
               void search(city);
             }}
           >
+            <div className="flex flex-wrap items-end gap-3">
             <label className="text-xs text-ink-400">
               City
               <input
@@ -105,6 +135,52 @@ export default function TradesPage() {
                 onChange={(event) => setCity(event.target.value)}
               />
             </label>
+            <label className="min-w-40 flex-1 text-xs text-ink-400">
+              Pokémon
+              <select
+                className="mt-1 block w-full rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-sm"
+                value={speciesId}
+                onChange={(event) => {
+                  setSpeciesId(event.target.value);
+                  setFlags(EMPTY_VARIANT_FLAGS);
+                  setForm("");
+                }}
+              >
+                <option value="">Any Pokémon</option>
+                {catalog.map((species) => (
+                  <option key={species.id} value={species.id}>
+                    {species.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            </div>
+            {speciesId ? (
+              <VariantFields
+                variants={
+                  catalog.find((species) => species.id === speciesId)?.variants ?? {
+                    shiny: false,
+                    dynamax: false,
+                    gigantamax: false,
+                    shadow: false,
+                    purified: false,
+                    lucky: false,
+                    costume: false,
+                    forms: [],
+                    costume_forms: [],
+                  }
+                }
+                flags={flags}
+                form={form}
+                onFlags={setFlags}
+                onForm={setForm}
+              />
+            ) : (
+              <p className="text-xs text-ink-500">
+                Pick a Pokémon before filtering by shiny, Dynamax, or another variant.
+              </p>
+            )}
+            <div className="flex flex-wrap gap-3">
             <button
               type="submit"
               className="rounded-sm bg-plasma-500 px-3 py-1 text-sm text-shell-950"
@@ -121,6 +197,7 @@ export default function TradesPage() {
             >
               Every city
             </button>
+            </div>
           </form>
         ) : null}
         {error ? <p className="text-sm text-red-300">{error}</p> : null}

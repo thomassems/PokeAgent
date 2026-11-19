@@ -4,6 +4,19 @@ export type Profile = {
   trainer_name: string;
   city: string;
   friend_code: string;
+  trainer_level: number | null;
+  team: string;
+  timezone: string;
+  region: string;
+};
+
+export type AccountConfig = {
+  official_sprites: boolean;
+  share_friend_codes: boolean;
+  trainer_level_min: number;
+  trainer_level_max: number;
+  teams: { id: string; name: string }[];
+  timezones: { id: string; region: string; label: string }[];
 };
 
 export async function communityFetch<T>(path: string, init?: RequestInit): Promise<T> {

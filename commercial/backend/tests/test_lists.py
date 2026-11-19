@@ -22,6 +22,9 @@ def _register(client: TestClient, email: str) -> None:
             "password": "correct horse",
             "trainer_name": "Avery",
             "city": "Toronto",
+            "trainer_level": 40,
+            "team": "mystic",
+            "timezone": "America/Toronto",
             "age_confirmed": True,
         },
     )
@@ -75,7 +78,7 @@ def test_shiny_legendary_and_shadow_notes() -> None:
         ],
     )
     check_entry(shiny, EntryFlags(shiny=True))
-    with pytest.raises(ValueError, match="not marked Dynamax"):
+    with pytest.raises(ValueError, match="no Dynamax variant"):
         check_entry(magikarp, EntryFlags(dynamax=True))
 
 
@@ -121,3 +124,40 @@ def test_crud_and_unknown_species(client: TestClient) -> None:
 
     stranger = client.delete(f"/api/lists/{entry_id}")
     assert stranger.status_code == 404
+
+
+def test_invalid_variant_is_rejected(client: TestClient) -> None:
+    _register(client, "avery@example.com")
+    dynamax = client.post(
+        "/api/lists",
+        json={"kind": "want", "species_id": "magikarp", "dynamax": True},
+    )
+    assert dynamax.status_code == 400
+    assert "Dynamax" in dynamax.json()["detail"]
+
+    purified = client.post(
+        "/api/lists",
+        json={"kind": "have", "species_id": "heracross", "purified": True},
+    )
+    assert purified.status_code == 400
+    assert "purified" in purified.json()["detail"]
+
+    shiny = client.post(
+        "/api/lists",
+        json={"kind": "want", "species_id": "magikarp", "shiny": True, "lucky": True},
+    )
+    assert shiny.status_code == 200
+    assert shiny.json()["shiny"] is True
+    assert shiny.json()["lucky"] is True
+
+    both = client.post(
+        "/api/lists",
+        json={
+            "kind": "have",
+            "species_id": "bulbasaur",
+            "shadow": True,
+            "purified": True,
+        },
+    )
+    assert both.status_code == 400
+    assert "not both" in both.json()["detail"]

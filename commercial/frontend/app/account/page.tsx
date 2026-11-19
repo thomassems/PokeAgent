@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { useAppName } from "@/lib/app-name";
-import { communityFetch, type Profile } from "@/lib/community";
+import { communityFetch, type AccountConfig, type Profile } from "@/lib/community";
 
 export default function AccountPage() {
   const appName = useAppName();
@@ -16,15 +16,25 @@ export default function AccountPage() {
   const [trainerName, setTrainerName] = useState("");
   const [city, setCity] = useState("Toronto");
   const [friendCode, setFriendCode] = useState("");
+  const [level, setLevel] = useState("");
+  const [team, setTeam] = useState("");
+  const [timezone, setTimezone] = useState("America/Toronto");
+  const [config, setConfig] = useState<AccountConfig | null>(null);
   const [ageConfirmed, setAgeConfirmed] = useState(false);
 
   useEffect(() => {
+    communityFetch<AccountConfig>("/api/config")
+      .then(setConfig)
+      .catch(() => setConfig(null));
     communityFetch<Profile>("/api/me")
       .then((me) => {
         setProfile(me);
         setTrainerName(me.trainer_name);
         setCity(me.city);
         setFriendCode(me.friend_code);
+        setLevel(me.trainer_level == null ? "" : String(me.trainer_level));
+        setTeam(me.team);
+        if (me.timezone) setTimezone(me.timezone);
       })
       .catch(() => setProfile(null));
   }, []);
@@ -41,6 +51,9 @@ export default function AccountPage() {
               trainer_name: trainerName,
               city,
               friend_code: friendCode,
+              trainer_level: Number(level),
+              team,
+              timezone,
               age_confirmed: ageConfirmed,
             }
           : { email, password };
@@ -52,6 +65,9 @@ export default function AccountPage() {
       setTrainerName(me.trainer_name);
       setCity(me.city);
       setFriendCode(me.friend_code);
+      setLevel(me.trainer_level == null ? "" : String(me.trainer_level));
+      setTeam(me.team);
+      if (me.timezone) setTimezone(me.timezone);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Request failed.");
     }
@@ -66,6 +82,9 @@ export default function AccountPage() {
           trainer_name: trainerName,
           city,
           friend_code: friendCode,
+          trainer_level: Number(level),
+          team,
+          timezone,
         }),
       });
       setProfile(me);
@@ -99,35 +118,22 @@ export default function AccountPage() {
             }}
           >
             <p className="text-sm text-ink-300">Signed in as {profile.email}</p>
-            <label className="block text-sm text-ink-300">
-              Trainer name
-              <input
-                className="mt-1 w-full rounded-sm border border-shell-700 bg-shell-900 px-2 py-1 text-ink-100"
-                value={trainerName}
-                onChange={(event) => setTrainerName(event.target.value)}
-              />
-            </label>
-            <label className="block text-sm text-ink-300">
-              City
-              <input
-                className="mt-1 w-full rounded-sm border border-shell-700 bg-shell-900 px-2 py-1 text-ink-100"
-                value={city}
-                onChange={(event) => setCity(event.target.value)}
-              />
-            </label>
-            <label className="block text-sm text-ink-300">
-              Friend code
-              <input
-                className="mt-1 w-full rounded-sm border border-shell-700 bg-shell-900 px-2 py-1 text-ink-100"
-                value={friendCode}
-                onChange={(event) => setFriendCode(event.target.value)}
-                inputMode="numeric"
-              />
-            </label>
-            <p className="text-xs text-ink-500">
-              Your friend code is stored and is not shown to other trainers. How people
-              contact each other is not decided yet.
-            </p>
+            <TrainerFields
+              config={config}
+              trainerName={trainerName}
+              setTrainerName={setTrainerName}
+              team={team}
+              setTeam={setTeam}
+              level={level}
+              setLevel={setLevel}
+              city={city}
+              setCity={setCity}
+              timezone={timezone}
+              setTimezone={setTimezone}
+              friendCode={friendCode}
+              setFriendCode={setFriendCode}
+              region={profile.region}
+            />
             <div className="flex gap-2">
               <button type="submit" className="rounded-sm bg-plasma-600 px-3 py-1 text-sm text-ink-100">
                 Save
@@ -173,24 +179,22 @@ export default function AccountPage() {
               />
             </label>
             {mode === "register" && (
-              <>
-                <label className="block text-sm text-ink-300">
-                  Trainer name
-                  <input
-                    className="mt-1 w-full rounded-sm border border-shell-700 bg-shell-900 px-2 py-1 text-ink-100"
-                    value={trainerName}
-                    onChange={(event) => setTrainerName(event.target.value)}
-                  />
-                </label>
-                <label className="block text-sm text-ink-300">
-                  City
-                  <input
-                    className="mt-1 w-full rounded-sm border border-shell-700 bg-shell-900 px-2 py-1 text-ink-100"
-                    value={city}
-                    onChange={(event) => setCity(event.target.value)}
-                  />
-                </label>
-              </>
+              <TrainerFields
+                config={config}
+                trainerName={trainerName}
+                setTrainerName={setTrainerName}
+                team={team}
+                setTeam={setTeam}
+                level={level}
+                setLevel={setLevel}
+                city={city}
+                setCity={setCity}
+                timezone={timezone}
+                setTimezone={setTimezone}
+                friendCode={friendCode}
+                setFriendCode={setFriendCode}
+                region=""
+              />
             )}
             {mode === "register" ? (
               <label className="flex items-start gap-2 text-sm text-ink-300">
@@ -221,5 +225,113 @@ export default function AccountPage() {
         )}
       </main>
     </div>
+  );
+}
+
+function TrainerFields({
+  config,
+  trainerName,
+  setTrainerName,
+  team,
+  setTeam,
+  level,
+  setLevel,
+  city,
+  setCity,
+  timezone,
+  setTimezone,
+  friendCode,
+  setFriendCode,
+  region,
+}: {
+  config: AccountConfig | null;
+  trainerName: string;
+  setTrainerName: (value: string) => void;
+  team: string;
+  setTeam: (value: string) => void;
+  level: string;
+  setLevel: (value: string) => void;
+  city: string;
+  setCity: (value: string) => void;
+  timezone: string;
+  setTimezone: (value: string) => void;
+  friendCode: string;
+  setFriendCode: (value: string) => void;
+  region: string;
+}) {
+  const inputClass =
+    "mt-1 w-full rounded-sm border border-shell-700 bg-shell-900 px-2 py-1 text-ink-100";
+  const chosen = config?.timezones.find((zone) => zone.id === timezone);
+  return (
+    <>
+      <label className="block text-sm text-ink-300">
+        Trainer name
+        <input
+          className={inputClass}
+          value={trainerName}
+          onChange={(event) => setTrainerName(event.target.value)}
+        />
+      </label>
+      <label className="block text-sm text-ink-300">
+        Team
+        <select
+          className={inputClass}
+          value={team}
+          onChange={(event) => setTeam(event.target.value)}
+        >
+          <option value="">Choose a team</option>
+          {(config?.teams ?? []).map((item) => (
+            <option key={item.id} value={item.id}>
+              {item.name}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="block text-sm text-ink-300">
+        Trainer level ({config?.trainer_level_min ?? 1}-{config?.trainer_level_max ?? 80})
+        <input
+          className={inputClass}
+          inputMode="numeric"
+          value={level}
+          onChange={(event) => setLevel(event.target.value.replace(/[^\d]/g, ""))}
+        />
+      </label>
+      <label className="block text-sm text-ink-300">
+        City
+        <input className={inputClass} value={city} onChange={(event) => setCity(event.target.value)} />
+      </label>
+      <label className="block text-sm text-ink-300">
+        Region and timezone
+        <select
+          className={inputClass}
+          value={timezone}
+          onChange={(event) => setTimezone(event.target.value)}
+        >
+          {(config?.timezones ?? []).map((zone) => (
+            <option key={zone.id} value={zone.id}>
+              {zone.region}: {zone.label}
+            </option>
+          ))}
+        </select>
+      </label>
+      <p className="text-xs text-ink-500">
+        Saved for later raid hours. Current region: {region || chosen?.region || "not set yet"}.
+      </p>
+      <label className="block text-sm text-ink-300">
+        Friend code (optional)
+        <input
+          className={inputClass}
+          value={friendCode}
+          onChange={(event) => setFriendCode(event.target.value)}
+          inputMode="numeric"
+        />
+      </label>
+      <p className="text-xs text-ink-500">
+        Optional, 12 digits or blank. It stays on your account.
+        {config?.share_friend_codes
+          ? " The share switch is on, and this build still does not show the code to other trainers."
+          : " Other trainers do not see it."}
+      </p>
+    </>
   );
 }

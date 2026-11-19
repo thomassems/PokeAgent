@@ -21,6 +21,9 @@ def _register(client: TestClient, email: str, name: str, city: str) -> None:
             "password": "correct horse",
             "trainer_name": name,
             "city": city,
+            "trainer_level": 40,
+            "team": "mystic",
+            "timezone": "America/Toronto",
             "age_confirmed": True,
         },
     )
@@ -79,3 +82,23 @@ def test_city_filter_hides_email_and_friend_code(client: TestClient) -> None:
     everywhere = client.get("/api/trades/search", params={"city": "all"})
     everywhere_names = [row["trainer_name"] for row in everywhere.json()["matches"]]
     assert everywhere_names == ["Sam", "Jordan"]
+
+    shiny = client.get(
+        "/api/trades/search",
+        params={"city": "Toronto", "species_id": "magikarp", "shiny": "true"},
+    )
+    assert shiny.status_code == 200
+    assert [row["trainer_name"] for row in shiny.json()["matches"]] == ["Jordan"]
+
+    impossible = client.get(
+        "/api/trades/search",
+        params={"city": "Toronto", "species_id": "magikarp", "dynamax": "true"},
+    )
+    assert impossible.status_code == 400
+    assert "Dynamax" in impossible.json()["detail"]
+
+    needs_species = client.get(
+        "/api/trades/search", params={"city": "Toronto", "shiny": "true"}
+    )
+    assert needs_species.status_code == 400
+    assert "Pokémon" in needs_species.json()["detail"]

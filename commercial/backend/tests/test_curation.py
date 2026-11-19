@@ -22,6 +22,9 @@ def _register(client: TestClient, email: str) -> None:
             "password": "correct horse",
             "trainer_name": "Ada",
             "city": "Toronto",
+            "trainer_level": 40,
+            "team": "mystic",
+            "timezone": "America/Toronto",
             "age_confirmed": True,
         },
     )

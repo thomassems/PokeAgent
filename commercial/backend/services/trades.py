@@ -16,10 +16,31 @@ def _rows(user_id: int) -> list[dict[str, Any]]:
     return [_public(row) for row in rows]
 
 
-def search_trades(user_id: int, city: str) -> list[dict[str, Any]]:
+def _keeps(
+    row: dict[str, Any], species_id: str, form: str, flags: dict[str, bool]
+) -> bool:
+    if species_id and row["species_id"] != species_id:
+        return False
+    if form and row["form"] != form:
+        return False
+    for name, selected in flags.items():
+        if selected and not row.get(name):
+            return False
+    return True
+
+
+def search_trades(
+    user_id: int,
+    city: str,
+    species_id: str = "",
+    form: str = "",
+    flags: dict[str, bool] | None = None,
+) -> list[dict[str, Any]]:
     init_lists()
     needle = city.strip().lower()
     everyone = needle in {"", "all"}
+    selected = flags or {}
+    wanted_form = form.strip().lower()
     mine = _rows(user_id)
     with connect() as conn:
         users = conn.execute(
@@ -31,14 +52,24 @@ def search_trades(user_id: int, city: str) -> list[dict[str, Any]]:
         if not everyone and user["city"].strip().lower() != needle:
             continue
         overlap = pair_matches(mine, _rows(user["id"]))
-        if not overlap["they_have"] and not overlap["i_have"]:
+        they_have = [
+            row
+            for row in overlap["they_have"]
+            if _keeps(row, species_id, wanted_form, selected)
+        ]
+        i_have = [
+            row
+            for row in overlap["i_have"]
+            if _keeps(row, species_id, wanted_form, selected)
+        ]
+        if not they_have and not i_have:
             continue
         matches.append(
             {
                 "trainer_name": user["trainer_name"],
                 "city": user["city"],
-                "they_have": overlap["they_have"],
-                "i_have": overlap["i_have"],
+                "they_have": they_have,
+                "i_have": i_have,
             }
         )
     matches.sort(key=lambda row: (row["city"], row["trainer_name"]))
