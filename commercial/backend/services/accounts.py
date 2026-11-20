@@ -116,6 +116,7 @@ def init_db() -> None:
             ),
             "lemon_status": "ALTER TABLE users ADD COLUMN lemon_status TEXT",
             "lemon_portal_url": "ALTER TABLE users ADD COLUMN lemon_portal_url TEXT",
+            "raid_opt_in": "ALTER TABLE users ADD COLUMN raid_opt_in INTEGER",
         }
         for name, statement in additions.items():
             if name not in columns:

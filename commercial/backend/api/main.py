@@ -17,6 +17,7 @@ from api.billing import router as billing_router
 from api.collections import router as collections_router
 from api.community import router as community_router
 from api.curation import router as curation_router
+from api.raids import router as raids_router
 from services.accounts import user_from_token
 from services.billing import reserve_run
 
@@ -89,6 +90,7 @@ app.include_router(community_router)
 app.include_router(curation_router)
 app.include_router(collections_router)
 app.include_router(billing_router)
+app.include_router(raids_router)
 app.add_middleware(LeaveEventStreamUntransformed)
 logger = logging.getLogger(__name__)
 
