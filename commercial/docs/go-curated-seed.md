@@ -277,6 +277,40 @@ is `doctor`.
 These rows stay drafts until Thomas approves them on `/curate`. A lawyer
 reviews the source before anyone is charged.
 
+### Alias merges on 20 November 2026
+
+Some community game ids are the same costume as an official row. The
+official row keeps its slug, link, and status. `community_aliases` stores
+the game id. The community row is `merged` and points at the official slug
+with `merged_into`, so `/curate` does not list it twice. The pairs are in
+`data/costume_aliases.py`. Each one is there because the official notes,
+already restated from pokemongolive.com, name that costume.
+
+- Pikachu `holiday-2016` into festive hat
+- Pikachu `kanto-2020-noevolve` into Charizard hat
+- Pikachu `johto-2020-noevolve` into Umbreon hat
+- Pikachu `hoenn-2020-noevolve` into Rayquaza hat
+- Pikachu `sinnoh-2020-noevolve` into Lucario hat
+- Pikachu `wcs-2022` into World Championships 2022
+- Pikachu `wcs-2023` into World Championships 2023
+- Pikachu `wcs-2024` into World Championships 2024
+- Pikachu `horizons` into Cap's hat
+- Pikachu `tcg-2022-noevolve` into the Pokémon TCG hat
+- Bulbasaur `fall-2019` into the Shedinja costume
+- Charmander `fall-2019` into the Cubone costume
+- Squirtle `fall-2019` into the Yamask costume
+- Jigglypuff and Wigglytuff `jan-2024` into the ribbon
+- Froakie and Rowlet `fall-2024` into the Pokemon Halloween costume
+- Wooloo, Dubwool, and Dedenne `winter-2024` into holiday attire
+- Teddiursa, Ursaring, and Ursaluna `halloween-2025` into the witch hat
+- Noibat and Noivern `halloween-2025` into the headband
+- Psyduck `swim-2025` into the swim ring
+- Psyduck and Golduck `holiday-2023` into holiday attire
+- Falinks `gofest-2025-train-conductor` into Falinks in train-ing
+
+No shiny row was added from a game id. Shiny stays unknown unless a
+`costume_shiny` or `background_shiny` row was already in the seed.
+
 ### Still unverified
 
 These names came up on a community list, or were already on the list from

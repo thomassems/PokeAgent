@@ -1279,7 +1279,11 @@
       "source_url": "https://pokemongolive.com/en/news/Pokemon-TCG-Crossover-Event",
       "verified_at": "2026-11-19",
       "verified_by": "hand-seed",
-      "notes": "The June 2022 TCG crossover debuts Pikachu wearing a Pokémon TCG hat. The next line says a lucky trainer may encounter a shiny one."
+      "notes": "The June 2022 TCG crossover debuts Pikachu wearing a Pokémon TCG hat. The next line says a lucky trainer may encounter a shiny one.",
+      "community_aliases": [
+        "tcg-2022-noevolve"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "pikachu",
@@ -1378,7 +1382,11 @@
       "source_url": "https://pokemongolive.com/en/news/special-anniversary-pikachu-celebration",
       "verified_at": "2026-11-19",
       "verified_by": "hand-seed",
-      "notes": "The July 2026 Special Anniversary Pikachu Celebration lists World Championships 2022 Pikachu with the shiny footnote."
+      "notes": "The July 2026 Special Anniversary Pikachu Celebration lists World Championships 2022 Pikachu with the shiny footnote.",
+      "community_aliases": [
+        "wcs-2022"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "pikachu",
@@ -1396,7 +1404,11 @@
       "source_url": "https://pokemongolive.com/en/news/special-anniversary-pikachu-celebration",
       "verified_at": "2026-11-19",
       "verified_by": "hand-seed",
-      "notes": "The July 2026 Special Anniversary Pikachu Celebration lists World Championships 2023 Pikachu with the shiny footnote."
+      "notes": "The July 2026 Special Anniversary Pikachu Celebration lists World Championships 2023 Pikachu with the shiny footnote.",
+      "community_aliases": [
+        "wcs-2023"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "pikachu",
@@ -1414,7 +1426,11 @@
       "source_url": "https://pokemongolive.com/en/news/special-anniversary-pikachu-celebration",
       "verified_at": "2026-11-19",
       "verified_by": "hand-seed",
-      "notes": "The July 2026 Special Anniversary Pikachu Celebration lists World Championships 2024 Pikachu with the shiny footnote."
+      "notes": "The July 2026 Special Anniversary Pikachu Celebration lists World Championships 2024 Pikachu with the shiny footnote.",
+      "community_aliases": [
+        "wcs-2024"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "pikachu",
@@ -1854,7 +1870,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "The 23 December 2016 post says Special Pikachu wearing festive hats stay around from 25 December 2016 through 3 January 2017. It does not say Shiny. A 2018 holiday post uses the same festive-hat phrase."
+      "notes": "The 23 December 2016 post says Special Pikachu wearing festive hats stay around from 25 December 2016 through 3 January 2017. It does not say Shiny. A 2018 holiday post uses the same festive-hat phrase.",
+      "community_aliases": [
+        "holiday-2016"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "pikachu",
@@ -1994,7 +2014,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "The Horizons celebration (5 to 11 March 2024) stars Pikachu wearing Cap's hat and then says a lucky Trainer may encounter a Shiny one."
+      "notes": "The Horizons celebration (5 to 11 March 2024) stars Pikachu wearing Cap's hat and then says a lucky Trainer may encounter a Shiny one.",
+      "community_aliases": [
+        "horizons"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "pikachu",
@@ -2994,7 +3018,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "The same post peeks at Psyduck wearing holiday attire in Timed Research and does not mark it Shiny there."
+      "notes": "The same post peeks at Psyduck wearing holiday attire in Timed Research and does not mark it Shiny there.",
+      "community_aliases": [
+        "holiday-2023"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "golduck",
@@ -3004,7 +3032,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Winter Holiday part 2 2023 (25 to 31 December 2023) debuts Golduck wearing holiday attire. The greater-chance shiny sentence names Psyduck eggs, not Golduck."
+      "notes": "Winter Holiday part 2 2023 (25 to 31 December 2023) debuts Golduck wearing holiday attire. The greater-chance shiny sentence names Psyduck eggs, not Golduck.",
+      "community_aliases": [
+        "holiday-2023"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "psyduck",
@@ -3024,7 +3056,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "New Year 2024 (1 to 3 January 2024) names this Pokemon wearing a ribbon. The section says a Shiny one is possible, and this line has no star."
+      "notes": "New Year 2024 (1 to 3 January 2024) names this Pokemon wearing a ribbon. The section says a Shiny one is possible, and this line has no star.",
+      "community_aliases": [
+        "jan-2024"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "wigglytuff",
@@ -3034,7 +3070,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "New Year 2024 (1 to 3 January 2024) names this Pokemon wearing a ribbon. The section says a Shiny one is possible, and this line has no star."
+      "notes": "New Year 2024 (1 to 3 January 2024) names this Pokemon wearing a ribbon. The section says a Shiny one is possible, and this line has no star.",
+      "community_aliases": [
+        "jan-2024"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "cottonee",
@@ -3134,7 +3174,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Halloween 2024 part 1 (22 to 28 October 2024) peeks at this Pokemon wearing a Pokemon Halloween costume. The stars on the paid research list are a pricing footnote, not shiny."
+      "notes": "Halloween 2024 part 1 (22 to 28 October 2024) peeks at this Pokemon wearing a Pokemon Halloween costume. The stars on the paid research list are a pricing footnote, not shiny.",
+      "community_aliases": [
+        "fall-2024"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "rowlet",
@@ -3144,7 +3188,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Halloween 2024 part 1 (22 to 28 October 2024) peeks at this Pokemon wearing a Pokemon Halloween costume. The stars on the paid research list are a pricing footnote, not shiny."
+      "notes": "Halloween 2024 part 1 (22 to 28 October 2024) peeks at this Pokemon wearing a Pokemon Halloween costume. The stars on the paid research list are a pricing footnote, not shiny.",
+      "community_aliases": [
+        "fall-2024"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "froakie",
@@ -3254,7 +3302,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Holiday part 1 2024 (17 to 22 December 2024) stars Dedenne wearing holiday attire and then gives the shiny footnote."
+      "notes": "Holiday part 1 2024 (17 to 22 December 2024) stars Dedenne wearing holiday attire and then gives the shiny footnote.",
+      "community_aliases": [
+        "winter-2024"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "dedenne",
@@ -3344,7 +3396,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Holiday part 2 2024 (22 to 27 December 2024) stars Wooloo wearing holiday attire and then gives the shiny footnote."
+      "notes": "Holiday part 2 2024 (22 to 27 December 2024) stars Wooloo wearing holiday attire and then gives the shiny footnote.",
+      "community_aliases": [
+        "winter-2024"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "wooloo",
@@ -3364,7 +3420,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "The same post names Dubwool wearing holiday attire as the evolution of costumed Wooloo. The line has no star."
+      "notes": "The same post names Dubwool wearing holiday attire as the evolution of costumed Wooloo. The line has no star.",
+      "community_aliases": [
+        "winter-2024"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "jigglypuff",
@@ -3586,7 +3646,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "The same post lists Falinks in train-ing under new costumed Pokemon and does not mark it Shiny."
+      "notes": "The same post lists Falinks in train-ing under new costumed Pokemon and does not mark it Shiny.",
+      "community_aliases": [
+        "gofest-2025-train-conductor"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "psyduck",
@@ -3596,7 +3660,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "The Concierge event (9 to 14 September 2025) calls Psyduck with a swim ring a costumed Pokemon and says there is an increased chance to encounter a Shiny one."
+      "notes": "The Concierge event (9 to 14 September 2025) calls Psyduck with a swim ring a costumed Pokemon and says there is an increased chance to encounter a Shiny one.",
+      "community_aliases": [
+        "swim-2025"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "psyduck",
@@ -3616,7 +3684,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Halloween 2025 part 2 (27 October to 2 November 2025) names this costume. Teddiursa and Noibat are starred. Ursaring, Ursaluna, and Noivern are listed with no star."
+      "notes": "Halloween 2025 part 2 (27 October to 2 November 2025) names this costume. Teddiursa and Noibat are starred. Ursaring, Ursaluna, and Noivern are listed with no star.",
+      "community_aliases": [
+        "halloween-2025"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "teddiursa",
@@ -3636,7 +3708,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Halloween 2025 part 2 (27 October to 2 November 2025) names this costume. Teddiursa and Noibat are starred. Ursaring, Ursaluna, and Noivern are listed with no star."
+      "notes": "Halloween 2025 part 2 (27 October to 2 November 2025) names this costume. Teddiursa and Noibat are starred. Ursaring, Ursaluna, and Noivern are listed with no star.",
+      "community_aliases": [
+        "halloween-2025"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "ursaluna",
@@ -3646,7 +3722,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Halloween 2025 part 2 (27 October to 2 November 2025) names this costume. Teddiursa and Noibat are starred. Ursaring, Ursaluna, and Noivern are listed with no star."
+      "notes": "Halloween 2025 part 2 (27 October to 2 November 2025) names this costume. Teddiursa and Noibat are starred. Ursaring, Ursaluna, and Noivern are listed with no star.",
+      "community_aliases": [
+        "halloween-2025"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "noibat",
@@ -3656,7 +3736,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Halloween 2025 part 2 (27 October to 2 November 2025) names this costume. Teddiursa and Noibat are starred. Ursaring, Ursaluna, and Noivern are listed with no star."
+      "notes": "Halloween 2025 part 2 (27 October to 2 November 2025) names this costume. Teddiursa and Noibat are starred. Ursaring, Ursaluna, and Noivern are listed with no star.",
+      "community_aliases": [
+        "halloween-2025"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "noibat",
@@ -3676,7 +3760,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Halloween 2025 part 2 (27 October to 2 November 2025) names this costume. Teddiursa and Noibat are starred. Ursaring, Ursaluna, and Noivern are listed with no star."
+      "notes": "Halloween 2025 part 2 (27 October to 2 November 2025) names this costume. Teddiursa and Noibat are starred. Ursaring, Ursaluna, and Noivern are listed with no star.",
+      "community_aliases": [
+        "halloween-2025"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "cubone",
@@ -5136,7 +5224,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Throwback Challenge 2020, Kanto week, says Pikachu wearing Charizard hats will appear in the wild. The lucky line on that week names Venonat, not this Pikachu."
+      "notes": "Throwback Challenge 2020, Kanto week, says Pikachu wearing Charizard hats will appear in the wild. The lucky line on that week names Venonat, not this Pikachu.",
+      "community_aliases": [
+        "kanto-2020-noevolve"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "pikachu",
@@ -5146,7 +5238,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Throwback Challenge 2020, Johto week, says Pikachu wearing Umbreon hats will appear in the wild. The lucky line on that week names Dunsparce, not this Pikachu."
+      "notes": "Throwback Challenge 2020, Johto week, says Pikachu wearing Umbreon hats will appear in the wild. The lucky line on that week names Dunsparce, not this Pikachu.",
+      "community_aliases": [
+        "johto-2020-noevolve"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "pikachu",
@@ -5156,7 +5252,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Throwback Challenge 2020, Hoenn week, says Pikachu wearing Rayquaza hats will appear in the wild. The lucky line on that week names Skitty, not this Pikachu."
+      "notes": "Throwback Challenge 2020, Hoenn week, says Pikachu wearing Rayquaza hats will appear in the wild. The lucky line on that week names Skitty, not this Pikachu.",
+      "community_aliases": [
+        "hoenn-2020-noevolve"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "pikachu",
@@ -5166,7 +5266,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Throwback Challenge 2020, Sinnoh week, says Pikachu wearing Lucario hats will appear in the wild. The lucky line on that week names Glameow, not this Pikachu."
+      "notes": "Throwback Challenge 2020, Sinnoh week, says Pikachu wearing Lucario hats will appear in the wild. The lucky line on that week names Glameow, not this Pikachu.",
+      "community_aliases": [
+        "sinnoh-2020-noevolve"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "pikachu",
@@ -5196,7 +5300,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Halloween 2019 says Bulbasaur wearing Shedinja costumes will be in raids, and that these costumed Pokémon may be Shiny."
+      "notes": "Halloween 2019 says Bulbasaur wearing Shedinja costumes will be in raids, and that these costumed Pokémon may be Shiny.",
+      "community_aliases": [
+        "fall-2019"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "bulbasaur",
@@ -5216,7 +5324,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Halloween 2019 says Charmander wearing Cubone costumes will be in raids, and that these costumed Pokémon may be Shiny."
+      "notes": "Halloween 2019 says Charmander wearing Cubone costumes will be in raids, and that these costumed Pokémon may be Shiny.",
+      "community_aliases": [
+        "fall-2019"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "charmander",
@@ -5236,7 +5348,11 @@
       "verified_at": "2026-11-20",
       "verified_by": "hand-seed",
       "status": "draft",
-      "notes": "Halloween 2019 says Squirtle wearing Yamask costumes will be in raids, and that these costumed Pokémon may be Shiny."
+      "notes": "Halloween 2019 says Squirtle wearing Yamask costumes will be in raids, and that these costumed Pokémon may be Shiny.",
+      "community_aliases": [
+        "fall-2019"
+      ],
+      "community_source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
     },
     {
       "species_id": "squirtle",
@@ -5354,9 +5470,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2019. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id FALL_2019. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as shedinja-costume. Kept on that official row as an alias.",
+      "merged_into": "shedinja-costume"
     },
     {
       "species_id": "bulbasaur",
@@ -5453,9 +5570,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2019. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id FALL_2019. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as cubone-costume. Kept on that official row as an alias.",
+      "merged_into": "cubone-costume"
     },
     {
       "species_id": "charmander",
@@ -5585,9 +5703,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id WINTER_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id WINTER_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as holiday-attire. Kept on that official row as an alias.",
+      "merged_into": "holiday-attire"
     },
     {
       "species_id": "delibird",
@@ -5640,9 +5759,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id WINTER_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id WINTER_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as holiday-attire. Kept on that official row as an alias.",
+      "merged_into": "holiday-attire"
     },
     {
       "species_id": "dugtrio",
@@ -5860,9 +5980,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id GOFEST_2025_TRAIN_CONDUCTOR. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id GOFEST_2025_TRAIN_CONDUCTOR. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as train-ing. Kept on that official row as an alias.",
+      "merged_into": "train-ing"
     },
     {
       "species_id": "flareon",
@@ -5937,9 +6058,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id FALL_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as pokemon-halloween. Kept on that official row as an alias.",
+      "merged_into": "pokemon-halloween"
     },
     {
       "species_id": "frogadier",
@@ -6069,9 +6191,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id HOLIDAY_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id HOLIDAY_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as holiday-attire. Kept on that official row as an alias.",
+      "merged_into": "holiday-attire"
     },
     {
       "species_id": "gourgeist_average",
@@ -6179,9 +6302,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id JAN_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id JAN_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as ribbon. Kept on that official row as an alias.",
+      "merged_into": "ribbon"
     },
     {
       "species_id": "jolteon",
@@ -6421,9 +6545,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id HALLOWEEN_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id HALLOWEEN_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as headband. Kept on that official row as an alias.",
+      "merged_into": "headband"
     },
     {
       "species_id": "noivern",
@@ -6432,9 +6557,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id HALLOWEEN_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id HALLOWEEN_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as headband. Kept on that official row as an alias.",
+      "merged_into": "headband"
     },
     {
       "species_id": "pichu",
@@ -7092,9 +7218,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id HOENN_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id HOENN_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as rayquaza-hat. Kept on that official row as an alias.",
+      "merged_into": "rayquaza-hat"
     },
     {
       "species_id": "pikachu",
@@ -7103,9 +7230,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id HOLIDAY_2016. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id HOLIDAY_2016. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as festive-hat. Kept on that official row as an alias.",
+      "merged_into": "festive-hat"
     },
     {
       "species_id": "pikachu",
@@ -7125,9 +7253,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id HORIZONS. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id HORIZONS. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as caps-hat. Kept on that official row as an alias.",
+      "merged_into": "caps-hat"
     },
     {
       "species_id": "pikachu",
@@ -7180,9 +7309,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id JOHTO_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id JOHTO_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as umbreon-hat. Kept on that official row as an alias.",
+      "merged_into": "umbreon-hat"
     },
     {
       "species_id": "pikachu",
@@ -7191,9 +7321,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id KANTO_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id KANTO_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as charizard-hat. Kept on that official row as an alias.",
+      "merged_into": "charizard-hat"
     },
     {
       "species_id": "pikachu",
@@ -7279,9 +7410,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id SINNOH_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id SINNOH_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as lucario-hat. Kept on that official row as an alias.",
+      "merged_into": "lucario-hat"
     },
     {
       "species_id": "pikachu",
@@ -7367,9 +7499,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id TCG_2022_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id TCG_2022_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as tcg-hat. Kept on that official row as an alias.",
+      "merged_into": "tcg-hat"
     },
     {
       "species_id": "pikachu",
@@ -7422,9 +7555,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id WCS_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id WCS_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as worlds-2022. Kept on that official row as an alias.",
+      "merged_into": "worlds-2022"
     },
     {
       "species_id": "pikachu",
@@ -7433,9 +7567,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id WCS_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id WCS_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as worlds-2023. Kept on that official row as an alias.",
+      "merged_into": "worlds-2023"
     },
     {
       "species_id": "pikachu",
@@ -7444,9 +7579,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id WCS_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id WCS_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as worlds-2024. Kept on that official row as an alias.",
+      "merged_into": "worlds-2024"
     },
     {
       "species_id": "pikachu",
@@ -7543,9 +7679,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id HOLIDAY_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id HOLIDAY_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as holiday-attire. Kept on that official row as an alias.",
+      "merged_into": "holiday-attire"
     },
     {
       "species_id": "psyduck",
@@ -7554,9 +7691,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id SWIM_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id SWIM_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as swim-ring. Kept on that official row as an alias.",
+      "merged_into": "swim-ring"
     },
     {
       "species_id": "pumpkaboo_average",
@@ -7796,9 +7934,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id FALL_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as pokemon-halloween. Kept on that official row as an alias.",
+      "merged_into": "pokemon-halloween"
     },
     {
       "species_id": "sableye",
@@ -7961,9 +8100,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2019. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id FALL_2019. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as yamask-costume. Kept on that official row as an alias.",
+      "merged_into": "yamask-costume"
     },
     {
       "species_id": "squirtle",
@@ -8071,9 +8211,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id HALLOWEEN_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id HALLOWEEN_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as witch-hat. Kept on that official row as an alias.",
+      "merged_into": "witch-hat"
     },
     {
       "species_id": "togekiss",
@@ -8203,9 +8344,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id HALLOWEEN_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id HALLOWEEN_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as witch-hat. Kept on that official row as an alias.",
+      "merged_into": "witch-hat"
     },
     {
       "species_id": "ursaring",
@@ -8214,9 +8356,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id HALLOWEEN_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id HALLOWEEN_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as witch-hat. Kept on that official row as an alias.",
+      "merged_into": "witch-hat"
     },
     {
       "species_id": "vaporeon",
@@ -8357,9 +8500,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id JAN_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id JAN_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as ribbon. Kept on that official row as an alias.",
+      "merged_into": "ribbon"
     },
     {
       "species_id": "wobbuffet",
@@ -8379,9 +8523,10 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id WINTER_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded."
+      "notes": "Game id WINTER_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as holiday-attire. Kept on that official row as an alias.",
+      "merged_into": "holiday-attire"
     },
     {
       "species_id": "wooper",

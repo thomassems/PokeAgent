@@ -1,15 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { communityFetch, type Profile } from "@/lib/community";
 
 type Fact = {
   id: number;
   species_id: string;
+  species_name?: string;
   kind: string;
+  kind_label?: string;
   value: string;
+  label?: string;
   source_url: string;
   verified_at: string;
   verified_by: string;
@@ -17,7 +20,17 @@ type Fact = {
   notes: string;
   source_type?: string;
   community_source_url?: string;
+  aliases?: string[];
+  merged_into?: string;
+  shiny?: "confirmed" | "unknown" | null;
 };
+
+type SourceFilter = "all" | "official" | "community";
+type StatusFilter = "all" | "draft" | "approved" | "rejected" | "merged";
+type Pending = "approved" | "rejected" | null;
+
+const inputClass =
+  "mt-1 block w-full rounded-sm border border-shell-700 bg-shell-950 px-2 py-2 text-sm";
 
 export default function CuratePage() {
   const [profile, setProfile] = useState<Profile | null | undefined>(undefined);
@@ -28,12 +41,19 @@ export default function CuratePage() {
   const [pasted, setPasted] = useState("");
   const [sourceUrl, setSourceUrl] = useState("");
   const [verifiedAt, setVerifiedAt] = useState("2026-11-18");
+  const [speciesQuery, setSpeciesQuery] = useState("");
+  const [sourceFilter, setSourceFilter] = useState<SourceFilter>("all");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("draft");
+  const [selected, setSelected] = useState<number[]>([]);
+  const [pending, setPending] = useState<Pending>(null);
 
   const load = () => {
     communityFetch<{ facts: Fact[] }>("/api/curation")
       .then((body) => {
         setFacts(body.facts);
         setDenied(null);
+        setSelected([]);
+        setPending(null);
       })
       .catch((err: unknown) => {
         setFacts([]);
@@ -47,6 +67,34 @@ export default function CuratePage() {
       .catch(() => setProfile(null));
     load();
   }, []);
+
+  const speciesOptions = useMemo(() => {
+    const names = new Map<string, string>();
+    for (const fact of facts) {
+      names.set(fact.species_id, fact.species_name || fact.species_id);
+    }
+    return [...names.entries()].sort((a, b) => a[1].localeCompare(b[1]));
+  }, [facts]);
+
+  const filtered = useMemo(() => {
+    const needle = speciesQuery.trim().toLowerCase();
+    return facts.filter((fact) => {
+      if (needle) {
+        const id = fact.species_id.toLowerCase();
+        const name = (fact.species_name || "").toLowerCase();
+        if (!id.includes(needle) && !name.includes(needle)) return false;
+      }
+      const source = fact.source_type === "community" ? "community" : "official";
+      if (sourceFilter !== "all" && source !== sourceFilter) return false;
+      if (statusFilter !== "all" && fact.status !== statusFilter) return false;
+      return true;
+    });
+  }, [facts, speciesQuery, sourceFilter, statusFilter]);
+
+  const actionable = filtered.filter((fact) => fact.status !== "merged");
+  const selectedHere = actionable.filter((fact) => selected.includes(fact.id));
+  const allSelected =
+    actionable.length > 0 && selectedHere.length === actionable.length;
 
   const draft = async () => {
     setError(null);
@@ -86,7 +134,39 @@ export default function CuratePage() {
     }
   };
 
-  const drafts = facts.filter((fact) => fact.status === "draft");
+  const toggle = (id: number) => {
+    setPending(null);
+    setSelected((current) =>
+      current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
+    );
+  };
+
+  const toggleAll = () => {
+    setPending(null);
+    setSelected(allSelected ? [] : actionable.map((fact) => fact.id));
+  };
+
+  const confirmBulk = async () => {
+    if (!pending || selectedHere.length === 0) return;
+    setError(null);
+    try {
+      await communityFetch("/api/curation/bulk", {
+        method: "POST",
+        body: JSON.stringify({
+          ids: selectedHere.map((fact) => fact.id),
+          status: pending,
+        }),
+      });
+      setNotice(
+        pending === "approved"
+          ? "Those rows are approved. Your email is the check on each one."
+          : "Those rows are rejected.",
+      );
+      load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Request failed.");
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col bg-shell-950 text-ink-100">
@@ -146,71 +226,203 @@ export default function CuratePage() {
             {error ? <p className="text-sm text-red-300">{error}</p> : null}
             <button
               type="submit"
-              className="w-fit rounded-sm bg-plasma-500 px-3 py-1 text-sm text-shell-950"
+              className="min-h-11 w-fit rounded-sm bg-plasma-500 px-3 py-1 text-sm text-shell-950"
             >
               Draft rows
             </button>
           </form>
         ) : null}
-        <section>
-          <h3 className="text-sm font-medium">Drafts</h3>
-          {drafts.length === 0 ? (
-            <p className="mt-2 text-sm text-ink-500">No drafts waiting.</p>
+
+        <section id="curate-filters" className="flex flex-col gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <label className="text-xs text-ink-400">
+              Pokémon
+              <input
+                className={inputClass}
+                list="curate-species"
+                value={speciesQuery}
+                placeholder="pikachu"
+                onChange={(event) => {
+                  setSpeciesQuery(event.target.value);
+                  setSelected([]);
+                  setPending(null);
+                }}
+              />
+              <datalist id="curate-species">
+                {speciesOptions.map(([id, name]) => (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
+                ))}
+              </datalist>
+            </label>
+            <label className="text-xs text-ink-400">
+              Source
+              <select
+                className={inputClass}
+                value={sourceFilter}
+                onChange={(event) => {
+                  setSourceFilter(event.target.value as SourceFilter);
+                  setSelected([]);
+                  setPending(null);
+                }}
+              >
+                <option value="all">All sources</option>
+                <option value="official">Official</option>
+                <option value="community">Community</option>
+              </select>
+            </label>
+            <label className="text-xs text-ink-400">
+              Status
+              <select
+                className={inputClass}
+                value={statusFilter}
+                onChange={(event) => {
+                  setStatusFilter(event.target.value as StatusFilter);
+                  setSelected([]);
+                  setPending(null);
+                }}
+              >
+                <option value="draft">Drafts</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="merged">Merged aliases</option>
+                <option value="all">All statuses</option>
+              </select>
+            </label>
+          </div>
+          <p className="text-sm text-ink-300">
+            Showing {filtered.length} of {facts.length}
+          </p>
+          {profile && !denied ? (
+            <div className="flex flex-col gap-2 rounded-md border border-shell-800 bg-shell-900 p-3">
+              <label className="flex min-h-11 items-center gap-3 text-sm">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4"
+                  checked={allSelected}
+                  onChange={toggleAll}
+                  disabled={actionable.length === 0}
+                />
+                Select all in this filter ({actionable.length})
+              </label>
+              {pending ? (
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm">
+                    {pending === "approved" ? "Approve" : "Reject"} {selectedHere.length}{" "}
+                    selected {selectedHere.length === 1 ? "row" : "rows"}? Approval
+                    writes your admin email on each row, the same as the button on
+                    a single row.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      className="min-h-11 rounded-sm bg-plasma-500 px-3 text-sm text-shell-950"
+                      onClick={() => void confirmBulk()}
+                    >
+                      Confirm {pending === "approved" ? "approve" : "reject"}
+                    </button>
+                    <button
+                      type="button"
+                      className="min-h-11 rounded-sm border border-shell-700 px-3 text-sm"
+                      onClick={() => setPending(null)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    className="min-h-11 rounded-sm bg-plasma-500 px-3 text-sm text-shell-950 disabled:opacity-40"
+                    disabled={selectedHere.length === 0}
+                    onClick={() => setPending("approved")}
+                  >
+                    Approve selected
+                  </button>
+                  <button
+                    type="button"
+                    className="min-h-11 rounded-sm border border-shell-700 px-3 text-sm disabled:opacity-40"
+                    disabled={selectedHere.length === 0}
+                    onClick={() => setPending("rejected")}
+                  >
+                    Reject selected
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : null}
+          {filtered.length === 0 ? (
+            <p className="text-sm text-ink-500">No rows match this filter.</p>
           ) : (
-            <ul className="mt-2 flex flex-col gap-2">
-              {drafts.map((fact) => (
+            <ul className="flex flex-col gap-2">
+              {filtered.map((fact) => (
                 <li
                   key={fact.id}
                   className="rounded-md border border-shell-800 bg-shell-900 p-3 text-sm"
                 >
-                  <p>
-                    {fact.species_id} · {fact.kind} · {fact.value}
-                  </p>
-                  <p className="text-xs text-ink-400">
-                    {fact.source_type === "community" ? "Community" : "Official"}{" "}
-                    draft · {fact.verified_at} · {fact.source_url}
-                  </p>
-                  <div className="mt-2 flex gap-2">
-                    <button
-                      type="button"
-                      className="rounded-sm bg-plasma-500 px-2 py-1 text-xs text-shell-950"
-                      onClick={() => void decide(fact.id, "approve")}
-                    >
-                      Approve
-                    </button>
-                    <button
-                      type="button"
-                      className="rounded-sm border border-shell-700 px-2 py-1 text-xs"
-                      onClick={() => void decide(fact.id, "reject")}
-                    >
-                      Reject
-                    </button>
+                  <div className="flex items-start gap-3">
+                    {fact.status !== "merged" ? (
+                      <label className="flex min-h-11 min-w-11 items-center">
+                        <input
+                          type="checkbox"
+                          className="h-4 w-4"
+                          aria-label={`Select ${fact.species_name || fact.species_id} ${fact.label || fact.value}`}
+                          checked={selected.includes(fact.id)}
+                          onChange={() => toggle(fact.id)}
+                        />
+                      </label>
+                    ) : null}
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium">
+                        {fact.species_name || fact.species_id} ·{" "}
+                        {fact.kind_label || fact.kind} · {fact.label || fact.value}
+                      </p>
+                      <p className="text-xs text-ink-500">{fact.value}</p>
+                      {fact.aliases && fact.aliases.length > 0 ? (
+                        <p className="text-xs text-ink-400">
+                          Community code: {fact.aliases.join(", ")}
+                        </p>
+                      ) : null}
+                      {fact.merged_into ? (
+                        <p className="text-xs text-ink-400">
+                          Merged into {fact.merged_into}
+                        </p>
+                      ) : null}
+                      {fact.shiny ? (
+                        <p className="text-xs text-ink-400">
+                          Shiny: {fact.shiny === "confirmed" ? "confirmed" : "unknown"}
+                        </p>
+                      ) : null}
+                      <p className="break-all text-xs text-ink-400">
+                        {fact.source_type === "community" ? "Community" : "Official"}{" "}
+                        {fact.status} · {fact.verified_at} · {fact.source_url}
+                      </p>
+                      {fact.status !== "merged" ? (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            className="min-h-11 rounded-sm bg-plasma-500 px-2 text-xs text-shell-950"
+                            onClick={() => void decide(fact.id, "approve")}
+                          >
+                            Approve
+                          </button>
+                          <button
+                            type="button"
+                            className="min-h-11 rounded-sm border border-shell-700 px-2 text-xs"
+                            onClick={() => void decide(fact.id, "reject")}
+                          >
+                            Reject
+                          </button>
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
                 </li>
               ))}
             </ul>
           )}
-        </section>
-        <section>
-          <h3 className="text-sm font-medium">Already approved</h3>
-          <ul className="mt-2 flex flex-col gap-2">
-            {facts
-              .filter((fact) => fact.status === "approved")
-              .slice(0, 6)
-              .map((fact) => (
-                <li
-                  key={fact.id}
-                  className="rounded-md border border-shell-800 bg-shell-900 p-3 text-sm"
-                >
-                  <p>
-                    {fact.species_id} · {fact.kind} · {fact.value}
-                  </p>
-                  <p className="break-all text-xs text-ink-400">
-                    Checked {fact.verified_at} · {fact.source_url}
-                  </p>
-                </li>
-              ))}
-          </ul>
         </section>
       </main>
     </div>

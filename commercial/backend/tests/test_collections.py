@@ -60,13 +60,17 @@ def test_pikachu_seed_rows_are_sourced() -> None:
     assert shiny_backgrounds <= backgrounds
     for row in rows:
         status = row.get("status", "approved")
-        assert status in {"approved", "draft"}
+        assert status in {"approved", "draft", "merged"}
         source_type = row.get("source_type", "official")
         if source_type == "community":
             assert row["verified_by"] == "community-import"
             assert row["source_url"].startswith("https://pokemon-go-api.github.io/")
-            assert status == "draft"
+            if status == "merged":
+                assert row.get("merged_into")
+            else:
+                assert status == "draft"
         else:
+            assert status in {"approved", "draft"}
             assert row["verified_by"] == "hand-seed"
             assert row["source_url"].startswith("https://pokemongolive.com/")
         if status == "approved":
