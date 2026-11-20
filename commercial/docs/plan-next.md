@@ -207,9 +207,10 @@ The row has a source link and a checked date. A human approves it in
 `/curate`. The app does not fetch the page. Pasting the text is the same
 flow as phase C.
 
-Allowed sources are the ones already in use: official announcements
-restated by hand, PvPoke, and PokéAPI. No LeekDuck, ScrapedDuck,
-PokeMiners, or Bulbapedia.
+Allowed sources for a stored row are official announcements restated by
+hand, PvPoke, and PokéAPI. Bulbapedia, LeekDuck, Serebii, Pokémon GO Hub,
+and the Fandom wiki may be read to discover a name. They are not copied
+and they are not the source link. ScrapedDuck and PokeMiners stay unused.
 
 This is a large pass of reading, not a large code change. `/curate`
 already exists. Pikachu alone is many costumes, and location backgrounds
@@ -479,8 +480,10 @@ lawyer or file a trademark.
 ## Hard rules for every phase
 
 - No PokeMiners files or assets.
-- No Bulbapedia text.
-- No LeekDuck or ScrapedDuck data.
+- No Bulbapedia text copied into the repo. A community page may be read
+  to discover a name. The stored row still cites an official page.
+- No LeekDuck or ScrapedDuck data copied into the repo. LeekDuck may be
+  read for a name. ScrapedDuck stays unused.
 - No scraping of Scopely or Niantic sites.
 - No game-account access, and no bots.
 - No paying users to host or trade.

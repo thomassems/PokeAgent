@@ -5113,6 +5113,136 @@
       "verified_by": "hand-seed",
       "status": "draft",
       "notes": "Safari Zone: Singapore (18 to 20 November 2022) stars Pikachu wearing a purple T-shirt (Flower) for ticket holders and then gives the shiny footnote. The costume row from the announcement post did not say shiny."
+    },
+    {
+      "species_id": "pikachu",
+      "kind": "costume",
+      "value": "ash-hat",
+      "source_url": "https://pokemongolive.com/en/post/birthday2017",
+      "verified_at": "2026-11-20",
+      "verified_by": "hand-seed",
+      "status": "draft",
+      "notes": "The 6 July 2017 post says wild Pikachu will be wearing Ash's famous hat from the animated series through 24 July. It does not say that hat can be shiny. The post does not name a regional cap."
+    },
+    {
+      "species_id": "pikachu",
+      "kind": "costume",
+      "value": "charizard-hat",
+      "source_url": "https://pokemongolive.com/en/post/throwbackchallenge2020",
+      "verified_at": "2026-11-20",
+      "verified_by": "hand-seed",
+      "status": "draft",
+      "notes": "Throwback Challenge 2020, Kanto week, says Pikachu wearing Charizard hats will appear in the wild. The lucky line on that week names Venonat, not this Pikachu."
+    },
+    {
+      "species_id": "pikachu",
+      "kind": "costume",
+      "value": "umbreon-hat",
+      "source_url": "https://pokemongolive.com/en/post/throwbackchallenge2020",
+      "verified_at": "2026-11-20",
+      "verified_by": "hand-seed",
+      "status": "draft",
+      "notes": "Throwback Challenge 2020, Johto week, says Pikachu wearing Umbreon hats will appear in the wild. The lucky line on that week names Dunsparce, not this Pikachu."
+    },
+    {
+      "species_id": "pikachu",
+      "kind": "costume",
+      "value": "rayquaza-hat",
+      "source_url": "https://pokemongolive.com/en/post/throwbackchallenge2020",
+      "verified_at": "2026-11-20",
+      "verified_by": "hand-seed",
+      "status": "draft",
+      "notes": "Throwback Challenge 2020, Hoenn week, says Pikachu wearing Rayquaza hats will appear in the wild. The lucky line on that week names Skitty, not this Pikachu."
+    },
+    {
+      "species_id": "pikachu",
+      "kind": "costume",
+      "value": "lucario-hat",
+      "source_url": "https://pokemongolive.com/en/post/throwbackchallenge2020",
+      "verified_at": "2026-11-20",
+      "verified_by": "hand-seed",
+      "status": "draft",
+      "notes": "Throwback Challenge 2020, Sinnoh week, says Pikachu wearing Lucario hats will appear in the wild. The lucky line on that week names Glameow, not this Pikachu."
+    },
+    {
+      "species_id": "pikachu",
+      "kind": "costume",
+      "value": "mimikyu",
+      "source_url": "https://pokemongolive.com/en/post/halloween2019",
+      "verified_at": "2026-11-20",
+      "verified_by": "hand-seed",
+      "status": "draft",
+      "notes": "Halloween 2019 says Pikachu wearing Mimikyu costumes will be in the wild. The same sentence says these costumed Pokémon may be encountered as Shiny."
+    },
+    {
+      "species_id": "pikachu",
+      "kind": "costume_shiny",
+      "value": "mimikyu",
+      "source_url": "https://pokemongolive.com/en/post/halloween2019",
+      "verified_at": "2026-11-20",
+      "verified_by": "hand-seed",
+      "status": "draft",
+      "notes": "The Halloween 2019 costume sentence includes Pikachu wearing a Mimikyu costume and then says these may be Shiny."
+    },
+    {
+      "species_id": "bulbasaur",
+      "kind": "costume",
+      "value": "shedinja-costume",
+      "source_url": "https://pokemongolive.com/en/post/halloween2019",
+      "verified_at": "2026-11-20",
+      "verified_by": "hand-seed",
+      "status": "draft",
+      "notes": "Halloween 2019 says Bulbasaur wearing Shedinja costumes will be in raids, and that these costumed Pokémon may be Shiny."
+    },
+    {
+      "species_id": "bulbasaur",
+      "kind": "costume_shiny",
+      "value": "shedinja-costume",
+      "source_url": "https://pokemongolive.com/en/post/halloween2019",
+      "verified_at": "2026-11-20",
+      "verified_by": "hand-seed",
+      "status": "draft",
+      "notes": "The Halloween 2019 sentence that names Bulbasaur wearing a Shedinja costume also says these may be Shiny."
+    },
+    {
+      "species_id": "charmander",
+      "kind": "costume",
+      "value": "cubone-costume",
+      "source_url": "https://pokemongolive.com/en/post/halloween2019",
+      "verified_at": "2026-11-20",
+      "verified_by": "hand-seed",
+      "status": "draft",
+      "notes": "Halloween 2019 says Charmander wearing Cubone costumes will be in raids, and that these costumed Pokémon may be Shiny."
+    },
+    {
+      "species_id": "charmander",
+      "kind": "costume_shiny",
+      "value": "cubone-costume",
+      "source_url": "https://pokemongolive.com/en/post/halloween2019",
+      "verified_at": "2026-11-20",
+      "verified_by": "hand-seed",
+      "status": "draft",
+      "notes": "The Halloween 2019 sentence that names Charmander wearing a Cubone costume also says these may be Shiny."
+    },
+    {
+      "species_id": "squirtle",
+      "kind": "costume",
+      "value": "yamask-costume",
+      "source_url": "https://pokemongolive.com/en/post/halloween2019",
+      "verified_at": "2026-11-20",
+      "verified_by": "hand-seed",
+      "status": "draft",
+      "notes": "Halloween 2019 says Squirtle wearing Yamask costumes will be in raids, and that these costumed Pokémon may be Shiny."
+    },
+    {
+      "species_id": "squirtle",
+      "kind": "costume_shiny",
+      "value": "yamask-costume",
+      "source_url": "https://pokemongolive.com/en/post/halloween2019",
+      "verified_at": "2026-11-20",
+      "verified_by": "hand-seed",
+      "status": "draft",
+      "notes": "The Halloween 2019 sentence that names Squirtle wearing a Yamask costume also says these may be Shiny."
     }
   ]
 }

@@ -227,33 +227,92 @@ Draft shiny flags were also added for the witch hat (Halloween 2024 part 2)
 and the purple T-shirt (Flower) (Safari Zone: Singapore). Those costumes
 were already approved.
 
+### Coverage pass on 20 November 2026
+
+Community pages were used only as a name checklist. Bulbapedia's
+[Pikachu (GO)](https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)) event
+forms table supplied the names. Nothing from that page was copied into a
+row. Each new row below was restated from a page on pokemongolive.com that
+was opened the same day. Shiny follows that official page.
+
+Confirmed and added as drafts:
+
+- Ash's famous hat, shiny not stated:
+  <https://pokemongolive.com/en/post/birthday2017>
+- Charizard hat, Umbreon hat, Rayquaza hat, and Lucario hat, shiny not
+  stated. The lucky line on each week names a different species:
+  <https://pokemongolive.com/en/post/throwbackchallenge2020>
+- Mimikyu costume on Pikachu, shiny stated in the same sentence. The same
+  page names Bulbasaur in a Shedinja costume, Charmander in a Cubone
+  costume, and Squirtle in a Yamask costume, also shiny:
+  <https://pokemongolive.com/en/post/halloween2019>
+
+Fashion Week 2021, 2022, 2023, and 2025 were opened. The Pikachu line on
+the 2023 page is summer flair, which was already approved. The other
+Fashion Week costumes named there were already drafted. Fashion Week
+2020, 2024, and 2026 slugs returned 404. Holiday 2017 calls the Pikachu
+a familiar festive Pikachu and does not name a new garment, so no second
+row was added.
+
 ### Still unverified
 
-These were looked for on official pages and not put in the database.
+These names came up on a community list, or were already on the list from
+the first pass. No official page that was opened names them, so they are
+not in the database. The community page is named so the next lookup can
+start there. It is not a source.
 
-- Ash caps other than World Cap and Cap's hat. Original, Kalos, Alola,
-  Unova, Sinnoh, Johto, Galar, and partner caps. The guessed news slugs
+- Hoenn, Sinnoh, Unova, Kalos, Alola, Partner, Johto, and Galar caps.
+  Bulbapedia's Pikachu in a cap article and the Pikachu (GO) event forms
+  table use those names for the anime caps. The 2017 post confirms only
+  "Ash's famous hat", which is the original cap. World Cap is already in
+  the seed from the Animation Week post. Guessed news slugs returned 404.
+- H.F. Custom Cap (2018), flower hat (2020) as a garment distinct from the
+  flower crown, Explorer Pikachu (2020), New Year's hat (2020) as a
+  garment distinct from the party hat, and Meloetta hat (2021). Named on
+  Bulbapedia's Pikachu (GO) event forms table. No official page was opened.
+- Pikachu Pop Star, Pikachu Rock Star, and Pikachu, Ph.D. Named on that
+  same table. Pikachu Libre is already in the seed. The GO Fest 2021 slug
   returned 404.
-- A Santa hat under those words. The festive hat and holiday hat rows use
-  the words the posts actually use. They may be the same garment. That was
-  not assumed.
-- Dawn, Lucas, Akari, and Rei costumes. The Sinnoh Tour gameplay URLs that
-  were tried returned 404, including the Los Angeles event-gameplay page.
-- A Fragment hat on Pikachu. The FENDI x FRGMT page names avatar items, not
-  a caught Pikachu.
-- Balloon colors other than green, multicolored, purple, and the 5-shaped
-  balloon. The Okinawa post says differently colored balloons and names
-  none.
-- World Championships Pikachu before 2022. No English page naming one was
-  opened.
+- Dawn's hat, Lucas's hat, Rei's cap, and Akari's kerchief. Named on
+  Bulbapedia's Pikachu (GO) event forms table for 2024. The Sinnoh Tour
+  gameplay URLs that were opened returned 404, including
+  gotour.pokemongolive.com event-gameplay.
+- Brendan's hat, May's bow, Hilbert's hat, Hilda's hat, Nate's visor, and
+  Rosa's visor. Named on that table. Hoenn Tour and Unova Tour slugs
+  returned 404.
+- Quartz, pyrite, malachite, and aquamarine crowns. The table lists them
+  beside the amethyst crown, which is already approved. No page opened
+  this pass names the other four.
+- T-shirt years 2023 and 2024 beyond the green and purple shirts already
+  in the seed. Named on that table. No new official shirt page was opened.
+- Captain Pikachu. Named on that table for 2024. The Horizons post that is
+  already the source for Cap's hat says "Cap's hat" and does not say
+  Captain, so the two were not merged.
+- Formal Pikachu as a name distinct from the dapper rows already in the
+  seed. The table lists both. The anniversary page already used for the
+  dapper rows was not re-read as a new garment.
+- A Santa hat under those words. Holiday 2017 says a familiar festive
+  Pikachu is back. Festive hat and holiday hat stay separate rows.
+- A Fragment hat on a caught Pikachu. The FENDI x FRGMT page names avatar
+  items. Further fragment slugs returned 404. Bulbapedia's table did not
+  put a Fragment hat in the event-forms names read this pass.
+- Flying Pikachu colors and years other than the rows already stored
+  (no color named, green, multicolored, purple, and the 5-shaped balloon).
+  The table lists Flying Pikachu for 2020, 2021, 2022 (Okinawa, green,
+  purple), 2023, and 2024. The extra years and colors were not on an
+  official page opened this pass.
+- World Championships Pikachu before 2022, and 2025. The table lists 2022,
+  2023, 2024, and 2026, which are already in the seed. Championship slugs
+  for the missing years returned 404.
 - Pumpkaboo and Gourgeist sizes other than average.
-- Winter Holiday 2025 and 2026, Fashion Week 2024 and 2026, and the in-person
-  Tour and GO Fest city pages that would name location cards species by
-  species. Those slugs returned 404 or were not opened.
+- Winter Holiday 2025 and 2026, Fashion Week 2024 and 2026, and the
+  in-person Tour and GO Fest city pages that would name location cards
+  species by species. Those slugs returned 404 or were not opened.
 - Costumes hidden in "and more", and older events whose English page was
   not opened. A missing row is still unknown, not a denial.
-- PokeMiners, Bulbapedia, LeekDuck, ScrapedDuck, and Serebii. They were not
-  used.
+- PokeMiners and ScrapedDuck. They were not used. LeekDuck, Serebii, and
+  Pokémon GO Hub were not opened this pass. The guessed costume-list URLs
+  returned 404.
 
 ## Left out on purpose
 
@@ -278,5 +337,5 @@ These were looked for on official pages and not put in the database.
 - Shiny for Summer Style, Straw Hat, Halloween Mischief, the purple
   T-shirt, the witch hat, and PokéXciting Pikachu (Blue). Those posts do
   not state it.
-- PokeMiners, Bulbapedia, LeekDuck, ScrapedDuck, and Serebii. Third-party
-  costume lists were not used as sources.
+- PokeMiners and ScrapedDuck. They were not used. The 20 November coverage
+  pass, above, is the one that read a community list for names only.

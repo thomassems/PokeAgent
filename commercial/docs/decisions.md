@@ -62,11 +62,22 @@ user reports can correct it.
 Hard rules:
 
 - No PokeMiners files or assets.
-- No Bulbapedia text.
+- No Bulbapedia text copied into the repo. On 20 November 2026 Thomas
+  allowed a community page to be read as a discovery checklist of names.
+  Bulbapedia, LeekDuck, Serebii, Pokémon GO Hub, and the Fandom wiki are
+  in that set. Their words, tables, and images are not stored and are not
+  the source link on a row.
 - No scraping of official Scopely or Niantic sites, including
-  pokemongolive.com.
-- No LeekDuck or ScrapedDuck data.
+  pokemongolive.com. Opening a named news URL to restate one announcement
+  is the curated-layer method, not a crawl.
+- No LeekDuck or ScrapedDuck data copied into the repo. A LeekDuck page
+  may be read for a name to look up. ScrapedDuck stays unused.
 - No reading of game accounts.
+
+Every costume or background row still cites an official page:
+pokemongolive.com or pokemongo.com news, the official Pokémon GO blog or
+X account, or pokemon.com. A name with no official page stays in the
+unverified list in `go-curated-seed.md` and stays out of the database.
 
 Rejected: **waiting for one licensed feed that already has shiny, Dynamax,
 and costumes.** Nothing reviewed both allows commercial use and covers those
