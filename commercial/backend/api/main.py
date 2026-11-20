@@ -3,7 +3,7 @@ import os
 from collections.abc import Iterator
 from typing import Literal
 
-from fastapi import FastAPI
+from fastapi import Cookie, FastAPI
 from fastapi.sse import EventSourceResponse, ServerSentEvent
 from pydantic import BaseModel, Field
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
@@ -13,9 +13,12 @@ from agents.conversation import ConversationTurn, Game
 from agents.custom import OutputLimitReached
 from agents.events import TraceEvent
 from agents.protocol import Agent
+from api.billing import router as billing_router
 from api.collections import router as collections_router
 from api.community import router as community_router
 from api.curation import router as curation_router
+from services.accounts import user_from_token
+from services.billing import reserve_run
 
 
 def _is_event_stream(headers: list[tuple[bytes, bytes]]) -> bool:
@@ -85,6 +88,7 @@ app = FastAPI(title=f"{_app_name()} API")
 app.include_router(community_router)
 app.include_router(curation_router)
 app.include_router(collections_router)
+app.include_router(billing_router)
 app.add_middleware(LeaveEventStreamUntransformed)
 logger = logging.getLogger(__name__)
 
@@ -133,8 +137,22 @@ def health() -> Health:
 
 
 @app.post("/api/runs", response_class=EventSourceResponse)
-def run_agent(request: RunRequest) -> Iterator[ServerSentEvent]:
+def run_agent(
+    request: RunRequest, trainermon_session: str | None = Cookie(default=None)
+) -> Iterator[ServerSentEvent]:
     """Send progress from one agent run over a single HTTP response."""
+    user = user_from_token(trainermon_session)
+    if user is not None:
+        try:
+            reserve_run(user["id"])
+        except ValueError:
+            yield _frame(
+                TraceEvent(
+                    type="error",
+                    message="Daily assistant cap reached.",
+                )
+            )
+            return
     agent = AGENTS[request.agent]
     try:
         for event in agent(
