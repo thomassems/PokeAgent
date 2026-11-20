@@ -127,6 +127,10 @@ Thomas says to charge.
 Rejected: **a single $9.99 tier**, and **starting on the App Store or Play
 Store.** Store review and store fees wait.
 
+Decision 15 (19 November 2026) replaces this price shape. The $9.99 tier
+is dropped, the annual price is $49.99, and phase F uses Lemon Squeezy in
+test mode instead of Stripe.
+
 ## 9. Age and contact at launch
 
 Decided 17 November 2026.
@@ -150,7 +154,8 @@ Trainermon charges money. Sprites stay off until that consult.
 
 Rejected: **blocking the free catalog and row work on the consult.** Those
 do not charge anyone. Rejected: **charging first and asking the lawyer
-after.** Decision 8 keeps Stripe in test mode until this is done.
+after.** Decision 8 keeps billing in test mode until this is done. Decision
+15 keeps that hold and names Lemon Squeezy as the merchant.
 
 ## 11. Build A, B, C, and G. Leave the paid phases unbuilt
 
@@ -165,7 +170,8 @@ and a human approves them. Drafts are not public. Sign-up requires a 13+
 confirmation. Privacy and terms pages are drafts.
 
 No approver was named, so `TRAINERMON_ADMINS` is the allow-list. Empty means
-nobody can curate. The old hand seed `backend/data/go_catalog.json` is gone.
+nobody can curate. Decision 15 (19 November 2026) names the list: Thomas
+only. The old hand seed `backend/data/go_catalog.json` is gone.
 Identity comes from `go_base.json`. GO flags come from approved curated rows.
 
 Rejected for this build: **user reports, Stripe, raid matchmaking, and the
@@ -229,8 +235,9 @@ and J from `plan-next.md`.
 Checklists are free for now and are likely to move to a paid tier later.
 Every collection route goes through `checklists_open` in
 `services/collections.py`. That function returns true. There is no
-entitlement column yet, because Stripe is still unbuilt. When Thomas turns
-the gate on, the change is that function, not a new page.
+entitlement column yet, because billing is still unbuilt. Decision 15
+names Lemon Squeezy for that, still in test mode. When Thomas turns the
+gate on, the change is that function, not a new page.
 
 A collection total counts approved curated rows only. A draft is not part
 of Y. The first release is Pikachu costumes and Pikachu backgrounds. At
@@ -249,3 +256,44 @@ Rejected: **gating the checklist in this build.** Thomas said free for now.
 Rejected: **counting unknown costumes inside Y.** He said totals count
 verified entries only. Rejected: **a Pikachu-only table.** The collection
 id, species, and fact kinds live in data.
+
+## 15. One paid tier, Lemon Squeezy, and only Thomas approves
+
+Decided 19 November 2026.
+
+Only Thomas approves curated rows. `TRAINERMON_ADMINS` is his email and
+nobody else's. Decision 11 left that allow-list unnamed. It is named now.
+
+There is one paid tier: $4.99 a month or $49.99 a year. The $9.99 tier
+from decision 8 is dropped. The feature table in `plan-next.md` is Free
+versus Paid. Paid gets one raid-priority band ahead of Free, and the same
+assistant with a modest usage cap above Free. That cap stays low, to
+control API cost. The exact request counts wait until phase F. Everything
+else stays as it is now. The collection checklist stays free for now
+(decision 14).
+
+Phase F uses Lemon Squeezy as the merchant of record, in test mode, instead
+of plain Stripe. Thomas sells as a sole proprietor in Canada. He is not
+incorporated, and he incorporates only if revenue becomes meaningful.
+Lemon Squeezy is the choice because it handles sales tax and VAT, refunds,
+and chargebacks. The fee is higher than Stripe: roughly 5% + 50c per
+transaction, against about 2.9% + 30c. The Lemon Squeezy pricing page still
+showed 5% + 50¢ on 20 November 2026
+(https://www.lemonsqueezy.com/pricing), and it says some payments can cost
+more. Check Lemon Squeezy's current docs again before phase F creates
+products. This note is not the fee schedule.
+
+Keys stay out of the repo. Environment variables only. There are no live
+charges. Test mode holds until phase H.
+
+Phase H also includes a one-time lawyer review of the terms and the name
+before charging, and an accountant check on taxes. GST/HST registration
+only once sales pass $30k CAD a year.
+
+The annual price and the raid-priority bands are closed. There is one paid
+band, ahead of Free.
+
+Rejected: **keeping the $9.99 tier.** Rejected: **two raid-priority bands.**
+Rejected: **plain Stripe as the merchant for phase F.** Rejected: **a
+higher assistant cap that ignores API cost.** Rejected: **incorporating
+before there is meaningful revenue.** Rejected: **a second curator.**
