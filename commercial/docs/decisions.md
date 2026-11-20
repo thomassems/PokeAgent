@@ -74,10 +74,10 @@ Hard rules:
   may be read for a name to look up. ScrapedDuck stays unused.
 - No reading of game accounts.
 
-Every costume or background row still cites an official page:
-pokemongolive.com or pokemongo.com news, the official Pokémon GO blog or
-X account, or pokemon.com. A name with no official page stays in the
-unverified list in `go-curated-seed.md` and stays out of the database.
+An official row still cites an official page: pokemongolive.com or
+pokemongo.com news, the official Pokémon GO blog or X account, or
+pokemon.com. Decision 16 is the exception. A community JSON import may
+add a draft that cites that JSON URL. It does not replace an official row.
 
 Rejected: **waiting for one licensed feed that already has shiny, Dynamax,
 and costumes.** Nothing reviewed both allows commercial use and covers those
@@ -260,3 +260,46 @@ Rejected: **gating the checklist in this build.** Thomas said free for now.
 Rejected: **counting unknown costumes inside Y.** He said totals count
 verified entries only. Rejected: **a Pikachu-only table.** The collection
 id, species, and fact kinds live in data.
+
+## 16. Community-sourced drafts are allowed, pending a lawyer
+
+Decided 19 November 2026, when Thomas asked for a public list of every
+costume and form variant and for a manual importer. Applied 20 November
+2026.
+
+The importer reads one file, the pokemon-go-api pokedex JSON at
+`https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json`. That
+file is a structured list of costume ids and costume-like form ids,
+including Pop Star, Rock Star, and Doctor, which is the Ph.D. costume.
+It has no location backgrounds. Every asset carries a shiny image URL,
+including costumes that were not released shiny, so the importer does not
+write shiny flags from it.
+
+The host has no robots.txt. The request returned 404. The importer still
+sends a named User-Agent, waits a second between requests, and caches the
+body. A second run reads the cache and does not add a duplicate row.
+
+New rows are status `draft`, `source_type` `community`, with that JSON URL
+and the fetch date. An existing official row with the same species, kind,
+and slug is not overwritten. The importer only fills `community_source_url`.
+`/curate` labels each draft Community or Official. No images and no
+announcement prose are stored.
+
+Rejected for this import:
+
+- **ScrapedDuck.** AGPL-3.0, and its own terms say an application of the
+  data cannot sit behind a paywall or ads. The published JSON is events
+  and raids, not a costume index.
+- **PokeMiners game master.** The upstream of the chosen file. About 19 MB,
+  no license, and the asset repo says educational use only. This import
+  does not download it.
+- **pogo_assets.** Sprites and sounds. Not stored.
+- **Bulbapedia.** HTML under CC BY-NC-SA. Used earlier as a name checklist
+  only.
+- **pogoapi.net.** All rights reserved, and the public files that were
+  reviewed are release lists, not costumes.
+- **Pokémon GO Hub.** No costume JSON from that site was opened.
+
+These drafts are not a commercial grant. A lawyer reviews this source
+before anyone is charged. Until then the drafts stay off Explorer and off
+checklist totals.

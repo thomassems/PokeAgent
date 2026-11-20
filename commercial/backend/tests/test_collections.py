@@ -59,15 +59,27 @@ def test_pikachu_seed_rows_are_sourced() -> None:
     assert shiny_costumes <= costumes
     assert shiny_backgrounds <= backgrounds
     for row in rows:
-        assert row["source_url"].startswith("https://pokemongolive.com/")
-        assert row["verified_by"] == "hand-seed"
         status = row.get("status", "approved")
         assert status in {"approved", "draft"}
+        source_type = row.get("source_type", "official")
+        if source_type == "community":
+            assert row["verified_by"] == "community-import"
+            assert row["source_url"].startswith("https://pokemon-go-api.github.io/")
+            assert status == "draft"
+        else:
+            assert row["verified_by"] == "hand-seed"
+            assert row["source_url"].startswith("https://pokemongolive.com/")
         if status == "approved":
             assert row["verified_at"] == "2026-11-19"
-        else:
+        elif source_type != "community":
             assert row["verified_at"] == "2026-11-20"
-        blob = f"{row['source_url']} {row['notes']}".lower()
+        blob = " ".join(
+            (
+                row["source_url"],
+                row.get("community_source_url", ""),
+                row["notes"],
+            )
+        ).lower()
         assert not any(banned in blob for banned in _BANNED)
         if row["kind"] != "shiny":
             assert row["value"].replace("-", "").isalnum()
@@ -79,8 +91,13 @@ def test_new_costume_rows_stay_draft_until_approved() -> None:
     assert drafts
     assert {row["kind"] for row in drafts} >= {"costume", "background"}
     for row in drafts:
-        assert row["verified_at"] == "2026-11-20"
-        assert row["verified_by"] == "hand-seed"
+        if row.get("source_type") == "community":
+            assert row["verified_at"]
+            assert row["verified_by"] == "community-import"
+            assert row["source_url"].startswith("https://pokemon-go-api.github.io/")
+        else:
+            assert row["verified_at"] == "2026-11-20"
+            assert row["verified_by"] == "hand-seed"
         assert row["source_url"].startswith("https://")
     approved = [row for row in rows if _approved(row)]
     assert all("status" not in row or row["status"] == "approved" for row in approved)

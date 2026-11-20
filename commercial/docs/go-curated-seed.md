@@ -254,6 +254,29 @@ Fashion Week costumes named there were already drafted. Fashion Week
 a familiar festive Pikachu and does not name a new garment, so no second
 row was added.
 
+### Community import on 20 November 2026
+
+Thomas asked for a manual import of a public costume list. Decision 16
+records the source choice. The file is the pokemon-go-api pokedex JSON.
+The script is `commercial/backend/tools/import_community_variants.py`.
+It is run by hand. It caches the download, and it does not store images
+or announcement text.
+
+The run on 20 November 2026 added 288 community costume drafts across 124
+species, and 34 new checklists. Four existing rows gained a
+`community_source_url` and were otherwise left alone: approved Pikachu
+kurta, draft Pikachu kariyushi, and the draft Fashion Week 2025 rows for
+Minccino and Cinccino. No shiny flags and no backgrounds were added.
+That file has no background field, and a shiny image URL is present on
+every asset, so it is not treated as a shiny release.
+
+Pop Star, Rock Star, and Ph.D. are in the seed as community drafts.
+The game ids are `POP_STAR`, `ROCK_STAR`, and `DOCTOR`. The Ph.D. label
+is `doctor`.
+
+These rows stay drafts until Thomas approves them on `/curate`. A lawyer
+reviews the source before anyone is charged.
+
 ### Still unverified
 
 These names came up on a community list, or were already on the list from

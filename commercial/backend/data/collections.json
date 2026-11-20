@@ -385,6 +385,7 @@
       "summary": "Verified Electabuzz backgrounds.",
       "species_id": "electabuzz",
       "kinds": [
+        "costume",
         "background"
       ]
     },
@@ -466,6 +467,7 @@
       "summary": "Verified Gardevoir backgrounds.",
       "species_id": "gardevoir",
       "kinds": [
+        "costume",
         "background"
       ]
     },
@@ -639,6 +641,7 @@
       "summary": "Verified Ivysaur backgrounds.",
       "species_id": "ivysaur",
       "kinds": [
+        "costume",
         "background"
       ]
     },
@@ -775,6 +778,7 @@
       "summary": "Verified Lugia backgrounds.",
       "species_id": "lugia",
       "kinds": [
+        "costume",
         "background"
       ]
     },
@@ -838,6 +842,7 @@
       "summary": "Verified Mewtwo backgrounds.",
       "species_id": "mewtwo",
       "kinds": [
+        "costume",
         "background"
       ]
     },
@@ -1398,6 +1403,7 @@
       "summary": "Verified Venusaur backgrounds.",
       "species_id": "venusaur",
       "kinds": [
+        "costume",
         "background"
       ]
     },
@@ -1570,6 +1576,312 @@
       "title": "Zubat costumes",
       "summary": "Verified Zubat costumes.",
       "species_id": "zubat",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "aerodactyl-costumes",
+      "title": "Aerodactyl costumes",
+      "summary": "Verified Aerodactyl costumes.",
+      "species_id": "aerodactyl",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "bewear-costumes",
+      "title": "Bewear costumes",
+      "summary": "Verified Bewear costumes.",
+      "species_id": "bewear",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "blissey-costumes",
+      "title": "Blissey costumes",
+      "summary": "Verified Blissey costumes.",
+      "species_id": "blissey",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "charjabug-costumes",
+      "title": "Charjabug costumes",
+      "summary": "Verified Charjabug costumes.",
+      "species_id": "charjabug",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "chimchar-costumes",
+      "title": "Chimchar costumes",
+      "summary": "Verified Chimchar costumes.",
+      "species_id": "chimchar",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "dartrix-costumes",
+      "title": "Dartrix costumes",
+      "summary": "Verified Dartrix costumes.",
+      "species_id": "dartrix",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "decidueye-costumes",
+      "title": "Decidueye costumes",
+      "summary": "Verified Decidueye costumes.",
+      "species_id": "decidueye",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "electivire-costumes",
+      "title": "Electivire costumes",
+      "summary": "Verified Electivire costumes.",
+      "species_id": "electivire",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "elekid-costumes",
+      "title": "Elekid costumes",
+      "summary": "Verified Elekid costumes.",
+      "species_id": "elekid",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "floragato-costumes",
+      "title": "Floragato costumes",
+      "summary": "Verified Floragato costumes.",
+      "species_id": "floragato",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "flygon-costumes",
+      "title": "Flygon costumes",
+      "summary": "Verified Flygon costumes.",
+      "species_id": "flygon",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "frogadier-costumes",
+      "title": "Frogadier costumes",
+      "summary": "Verified Frogadier costumes.",
+      "species_id": "frogadier",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "gourgeist_large-costumes",
+      "title": "Gourgeist costumes",
+      "summary": "Verified Gourgeist costumes.",
+      "species_id": "gourgeist_large",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "gourgeist_small-costumes",
+      "title": "Gourgeist costumes",
+      "summary": "Verified Gourgeist costumes.",
+      "species_id": "gourgeist_small",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "gourgeist_super-costumes",
+      "title": "Gourgeist costumes",
+      "summary": "Verified Gourgeist costumes.",
+      "species_id": "gourgeist_super",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "greninja-costumes",
+      "title": "Greninja costumes",
+      "summary": "Verified Greninja costumes.",
+      "species_id": "greninja",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "nidoking-costumes",
+      "title": "Nidoking costumes",
+      "summary": "Verified Nidoking costumes.",
+      "species_id": "nidoking",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "nidoqueen-costumes",
+      "title": "Nidoqueen costumes",
+      "summary": "Verified Nidoqueen costumes.",
+      "species_id": "nidoqueen",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "ponyta-costumes",
+      "title": "Ponyta costumes",
+      "summary": "Verified Ponyta costumes.",
+      "species_id": "ponyta",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "pumpkaboo_large-costumes",
+      "title": "Pumpkaboo costumes",
+      "summary": "Verified Pumpkaboo costumes.",
+      "species_id": "pumpkaboo_large",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "pumpkaboo_small-costumes",
+      "title": "Pumpkaboo costumes",
+      "summary": "Verified Pumpkaboo costumes.",
+      "species_id": "pumpkaboo_small",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "pumpkaboo_super-costumes",
+      "title": "Pumpkaboo costumes",
+      "summary": "Verified Pumpkaboo costumes.",
+      "species_id": "pumpkaboo_super",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "rapidash-costumes",
+      "title": "Rapidash costumes",
+      "summary": "Verified Rapidash costumes.",
+      "species_id": "rapidash",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "sableye-costumes",
+      "title": "Sableye costumes",
+      "summary": "Verified Sableye costumes.",
+      "species_id": "sableye",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "slaking-costumes",
+      "title": "Slaking costumes",
+      "summary": "Verified Slaking costumes.",
+      "species_id": "slaking",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "slakoth-costumes",
+      "title": "Slakoth costumes",
+      "summary": "Verified Slakoth costumes.",
+      "species_id": "slakoth",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "slowbro-costumes",
+      "title": "Slowbro costumes",
+      "summary": "Verified Slowbro costumes.",
+      "species_id": "slowbro",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "slowking-costumes",
+      "title": "Slowking costumes",
+      "summary": "Verified Slowking costumes.",
+      "species_id": "slowking",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "snorlax-costumes",
+      "title": "Snorlax costumes",
+      "summary": "Verified Snorlax costumes.",
+      "species_id": "snorlax",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "sudowoodo-costumes",
+      "title": "Sudowoodo costumes",
+      "summary": "Verified Sudowoodo costumes.",
+      "species_id": "sudowoodo",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "turtwig-costumes",
+      "title": "Turtwig costumes",
+      "summary": "Verified Turtwig costumes.",
+      "species_id": "turtwig",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "vigoroth-costumes",
+      "title": "Vigoroth costumes",
+      "summary": "Verified Vigoroth costumes.",
+      "species_id": "vigoroth",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "vikavolt-costumes",
+      "title": "Vikavolt costumes",
+      "summary": "Verified Vikavolt costumes.",
+      "species_id": "vikavolt",
+      "kinds": [
+        "costume"
+      ]
+    },
+    {
+      "id": "zigzagoon_galarian-costumes",
+      "title": "Zigzagoon (Galarian) (Shadow) costumes",
+      "summary": "Verified Zigzagoon (Galarian) (Shadow) costumes.",
+      "species_id": "zigzagoon_galarian",
       "kinds": [
         "costume"
       ]
