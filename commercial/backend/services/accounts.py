@@ -110,6 +110,12 @@ def init_db() -> None:
             "team": "ALTER TABLE users ADD COLUMN team TEXT",
             "timezone": "ALTER TABLE users ADD COLUMN timezone TEXT",
             "region": "ALTER TABLE users ADD COLUMN region TEXT",
+            "plan": "ALTER TABLE users ADD COLUMN plan TEXT",
+            "lemon_subscription_id": (
+                "ALTER TABLE users ADD COLUMN lemon_subscription_id TEXT"
+            ),
+            "lemon_status": "ALTER TABLE users ADD COLUMN lemon_status TEXT",
+            "lemon_portal_url": "ALTER TABLE users ADD COLUMN lemon_portal_url TEXT",
         }
         for name, statement in additions.items():
             if name not in columns:

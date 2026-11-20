@@ -12,7 +12,8 @@ type AppHeaderProps = {
     | "trades"
     | "explorer"
     | "curate"
-    | "collections";
+    | "collections"
+    | "billing";
 };
 
 export function AppHeader({ activePage }: AppHeaderProps) {
@@ -74,6 +75,13 @@ export function AppHeader({ activePage }: AppHeaderProps) {
             className={`rounded-sm px-2 py-1 ${activePage === "curate" ? "bg-shell-800 text-ink-100" : "text-ink-500 hover:text-ink-100"}`}
           >
             Curate
+          </Link>
+          <Link
+            href="/billing"
+            aria-current={activePage === "billing" ? "page" : undefined}
+            className={`rounded-sm px-2 py-1 ${activePage === "billing" ? "bg-shell-800 text-ink-100" : "text-ink-500 hover:text-ink-100"}`}
+          >
+            Paid
           </Link>
           <Link
             href="/team"

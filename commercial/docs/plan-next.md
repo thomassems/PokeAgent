@@ -1,8 +1,8 @@
 # Trainermon: next plan
 
-Status: **A, B, C, and G are built.** A Pikachu slice of I and J is in
-progress (decision 14, 19 November 2026). The rest of those phases, and
-D, E, F, and H, are not built. Decisions 4 to 10 in `decisions.md`
+Status: **A, B, C, and G are built.** The Pikachu slice of I and J is
+built (decision 14). Paid checkout is Lemon Squeezy in test mode only.
+D, E, and H are not built. Decisions 4 to 10 in `decisions.md`
 (17 November 2026) are the constraints. This file is the order to approve
 before any of it is implemented. The licensing review is
 `licensing-data-review.md`. The personal app is out of this plan.
@@ -38,12 +38,13 @@ These are build size, not a calendar.
    it is the same page with more data.
 7. **D. User reports.** Needs a catalog row to report against, and the age
    gate, so reports are not the first thing a child can submit.
-8. **F. Stripe in test mode.** Needs the tier table below confirmed. No live
-   charges. Raid priority needs a real entitlement, so F lands before E.
+8. **F. Lemon Squeezy in test mode.** One Paid tier, $4.99 a month or
+   $49.99 a year. No live charges. Raid priority needs that entitlement,
+   so F lands before E.
 9. **E. Remote-raid matchmaking.** The first paid feature. Needs F's
    entitlements, G's age gate, and opt-in friend codes.
 10. **H. Open items before charging.** Not a build. Lawyer, trademark search,
-    sprites stay off. Live Stripe is the switch after Thomas says H is done.
+    sprites stay off. Live billing is the switch after Thomas says H is done.
 
 A and B can be reviewed as separate later PRs. Do not start C's admin page
 before B's ids exist. Do not start J before that collection's rows exist
@@ -51,29 +52,28 @@ in I. Do not start E before F and G.
 
 ## Feature by tier
 
-Prices are decided. Annual amounts are not. What the middle tier adds beyond
-raid priority is a proposal: Thomas confirms it in phase F before products
-are created in Stripe.
+One Paid tier: $4.99 a month or $49.99 a year. The $9.99 tier is dropped.
+There is one raid-priority band. The assistant caps in code are 5 runs a
+day on Free and 20 on Paid, for a signed-in trainer. They stay low because
+model calls cost money.
 
-| Feature | Free | $4.99 / month | $9.99 / month |
-| --- | --- | --- | --- |
-| Want and have lists | Yes | Yes | Yes |
-| Trade search (no model, no friend code) | Yes | Yes | Yes |
-| Explorer | Yes | Yes | Yes |
-| Assistant | Yes, with a cap Thomas sets | Same assistant, higher cap (proposal) | Same assistant, higher cap (proposal) |
-| Remote raids: see open lobbies | Yes | Yes | Yes |
-| Remote raids: queue | Back of the queue | Ahead of Free | Ahead of $4.99 and Free |
-| Trade alerts | No | Not in this plan | Not in this plan |
-| Collection sims | No | No | No |
-| Collection checklist (phase J) | Yes for now | Yes for now | Yes for now |
-| In-app chat | No | No | No |
-| Official sprites | Off | Off | Off |
-| Annual plan | No | Price not set | Price not set |
+| Feature | Free | Paid |
+| --- | --- | --- |
+| Want and have lists | Yes | Yes |
+| Trade search (no model, no friend code) | Yes | Yes |
+| Explorer | Yes | Yes |
+| Assistant, signed in | 5 runs a day | 20 runs a day |
+| Remote raids: see open lobbies | Yes | Yes |
+| Remote raids: queue | Back of the queue | Ahead of Free |
+| Trade alerts | No | No |
+| Collection sims | No | No |
+| Collection checklist | Yes | Yes |
+| In-app chat | No | No |
+| Official sprites | Off | Off |
+| Annual plan | No | $49.99 a year |
 
-Trading stays free. Both paid tiers are "paying users" for decision 7. The
-table puts $9.99 ahead of $4.99 so the higher price buys a shorter wait.
-Thomas can collapse those two paid bands into one priority. That is an
-approval question in phase F, not a silent default.
+Trading stays free. Paid is a "paying user" for decision 7. The checklist
+stays free.
 
 The collection checklist is free for now (decision 14). A later paid gate
 is `checklists_open`, and it is not turned on. Collection sims stay out.
@@ -364,7 +364,7 @@ Scopely terms, as acceptance constraints:
 
 **Acceptance.**
 
-- Two free users and one $9.99 user request the same lobby in that order.
+- Two free users and one Paid user request the same lobby in that order.
   The paid user is offered first. A test uses a fake entitlement, not a
   live card.
 - A host who has not opted in cannot create a lobby.
@@ -374,39 +374,40 @@ Scopely terms, as acceptance constraints:
 
 **Size.** Large.
 
-**Thomas approves.** Whether $4.99 and $9.99 are two priority bands or one.
-Whether lobbies are city-scoped at launch (Toronto only, or any city).
-The max lobby size. That we do not pay hosts.
+**Thomas approves.** One raid band is already chosen. Still open: whether
+lobbies are city-scoped at launch (Toronto only, or any city), the max
+lobby size, and that we do not pay hosts.
 
-## F. Subscriptions (Stripe, test mode)
+## F. Subscriptions (Lemon Squeezy, test mode)
 
-**Scope.** Web checkout only. Stripe test keys. No app store product.
+**Scope.** Web checkout only. Lemon Squeezy is the merchant of record.
+Test mode only. No app store product. No SDK: the server calls the HTTP
+API. Docs checked 20 November 2026. The published fee on
+https://www.lemonsqueezy.com/pricing was 5% plus 50 cents per transaction,
+with some payment methods extra.
 
-- Products: $4.99 monthly, $9.99 monthly, and two annual prices once Thomas
-  sets them. A suggestion to react to, not a decision: charge 10 months for
-  12. He picks the number before the products exist.
-- Free is the absence of a subscription.
-- A webhook sets an entitlement on the user: `free`, `plus` ($4.99), or
-  `pro` ($9.99). Names can change. The rank is what the queue reads.
-- Cancel and the customer portal stay in Stripe's test portal.
-- The server rejects a live secret. Test mode is a code check, not only a
-  comment. Live keys wait for phase H.
-- What each tier unlocks is the table above, after Thomas confirms it.
+- One product: $4.99 a month or $49.99 a year. The prices are the two
+  variants in the dashboard. The server does not send a custom price.
+- Free is the absence of a subscription. Entitlement is `free` or `paid`.
+  Paid has the one raid-priority band.
+- A signed webhook sets that entitlement. `X-Signature` is HMAC-SHA256 of
+  the raw body. `test_mode` must be true or the event is refused.
+- Cancel stays on Lemon Squeezy's customer portal. The webhook stores that
+  URL. This app does not charge a card.
+- `LEMONSQUEEZY_TEST_MODE` must be the word `true`. A key containing "live"
+  is refused. Live keys wait for phase H.
+- Signed-in assistant runs stop at 5 a day on Free and 20 a day on Paid.
 
 **Acceptance.**
 
-- A test webhook fixture moves a user from free to pro and back.
-- The raid queue test from phase E reads that entitlement.
-- The repo has no Stripe secret. `.env.example` lists the key names only.
-- Hitting checkout with a live-looking key fails the test.
+- A test webhook fixture moves a user from free to paid and back.
+- A payload with `test_mode: false` does not change the plan.
+- The repo has no Lemon Squeezy secret. `.env.example` lists the key names.
+- Checkout with a live-looking key fails the test.
 
-**Size.** Large. Billing routes, webhook, entitlement column, a pricing
-page, tests. No new paid dependency beyond Stripe's HTTP API. If a Stripe
-SDK is wanted, that is a dependency ask before the phase starts.
-
-**Thomas approves.** The annual amounts. Whether the two paid tiers share
-one raid priority. The assistant cap, if the middle tier should change it
-at all. That test mode stays until phase H.
+**Thomas approves.** This follows the 19 November pricing choice. The
+numbered write-up of that choice is on the pricing docs branch, so this
+file does not add a second decision 15.
 
 ## G. Age gate, privacy, and terms
 
@@ -458,8 +459,8 @@ Not a coding phase. Live charges stay off until all of these are done.
 3. Sprites: stay off unless that consult says otherwise. The flag from
    phase A is the switch. Default remains off. Marketing, the logo, and the
    site icon never use Pokémon art even if the flag is later turned on.
-4. Thomas sets annual prices and the refund line, then says test mode may
-   become live mode.
+4. The annual price is $49.99. Thomas still sets the refund line, then says
+   test mode may become live mode.
 5. Hosting: the review notes Vercel Hobby is non-commercial, so a paid host
    plan is part of turning on charges. Confirm the plan before the switch.
 
@@ -483,15 +484,12 @@ lawyer or file a trademark.
 - No in-app chat.
 - Friend codes stay opt-in, and trade search keeps hiding them.
 - Sprites stay behind the flag, default off.
-- Stripe stays in test mode until phase H is done.
+- Lemon Squeezy stays in test mode until phase H is done.
 
 ## Still open inside this plan
 
-- Who approves curated rows, and who moderates reports.
-- Annual prices, and whether $4.99 and $9.99 are one raid-priority band or
-  two.
-- Whether the $4.99 tier changes the assistant cap. The table marks that as
-  a proposal.
+- Who else, besides the admin list, might moderate reports later.
+- The refund line, before test mode becomes live mode.
 - Meltan and Melmetal, until an official page is pasted and approved.
 - Trade-alert and collection-sim ideas from the review. They are not in
   the tier table as commitments. The collection checklist in phase J is
