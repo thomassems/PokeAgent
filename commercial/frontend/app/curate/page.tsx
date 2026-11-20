@@ -5,6 +5,15 @@ import { useEffect, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { communityFetch, type Profile } from "@/lib/community";
 
+type Report = {
+  id: number;
+  species_id: string;
+  tag: string;
+  note: string;
+  trainer_name: string;
+  created_at: string;
+};
+
 type Fact = {
   id: number;
   species_id: string;
@@ -26,6 +35,7 @@ export default function CuratePage() {
   const [pasted, setPasted] = useState("");
   const [sourceUrl, setSourceUrl] = useState("");
   const [verifiedAt, setVerifiedAt] = useState("2026-11-18");
+  const [reports, setReports] = useState<Report[]>([]);
 
   const load = () => {
     communityFetch<{ facts: Fact[] }>("/api/curation")
@@ -37,6 +47,9 @@ export default function CuratePage() {
         setFacts([]);
         setDenied(err instanceof Error ? err.message : "Request failed.");
       });
+    communityFetch<{ reports: Report[] }>("/api/reports")
+      .then((body) => setReports(body.reports))
+      .catch(() => setReports([]));
   };
 
   useEffect(() => {
@@ -150,6 +163,106 @@ export default function CuratePage() {
             </button>
           </form>
         ) : null}
+        <section>
+          <h3 className="text-sm font-medium">Reports</h3>
+          <p className="mt-1 text-xs text-ink-500">
+            Confirming opens a draft. It does not change Explorer until you
+            approve that draft below.
+          </p>
+          {reports.length === 0 ? (
+            <p className="mt-2 text-sm text-ink-500">No open reports.</p>
+          ) : (
+            <ul className="mt-2 flex flex-col gap-2">
+              {reports.map((report) => (
+                <li
+                  key={report.id}
+                  className="rounded-md border border-shell-800 bg-shell-900 p-3 text-sm"
+                >
+                  <p>
+                    {report.species_id} · {report.tag} · {report.trainer_name}
+                  </p>
+                  <p className="text-xs text-ink-400">{report.note}</p>
+                  <form
+                    className="mt-2 flex flex-col gap-2"
+                    onSubmit={(event) => {
+                      event.preventDefault();
+                      const form = event.currentTarget;
+                      const data = new FormData(form);
+                      setError(null);
+                      communityFetch(`/api/reports/${report.id}/confirm`, {
+                        method: "POST",
+                        body: JSON.stringify({
+                          kind: String(data.get("kind") || ""),
+                          value: String(data.get("value") || ""),
+                          source_url: String(data.get("source_url") || ""),
+                          verified_at: String(data.get("verified_at") || ""),
+                        }),
+                      })
+                        .then(() => load())
+                        .catch((err: unknown) => {
+                          setError(
+                            err instanceof Error ? err.message : "Request failed.",
+                          );
+                        });
+                    }}
+                  >
+                    <div className="flex flex-wrap gap-2">
+                      <input
+                        name="kind"
+                        placeholder="kind"
+                        className="w-28 rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-xs"
+                      />
+                      <input
+                        name="value"
+                        placeholder="value"
+                        className="w-32 rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-xs"
+                      />
+                      <input
+                        name="verified_at"
+                        defaultValue="2026-11-20"
+                        className="w-28 rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-xs"
+                      />
+                    </div>
+                    <input
+                      name="source_url"
+                      placeholder="https:// source"
+                      className="rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-xs"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        type="submit"
+                        className="rounded-sm bg-plasma-500 px-2 py-1 text-xs text-shell-950"
+                      >
+                        Open draft
+                      </button>
+                      <button
+                        type="button"
+                        className="rounded-sm border border-shell-700 px-2 py-1 text-xs"
+                        onClick={() => {
+                          setError(null);
+                          communityFetch(`/api/reports/${report.id}/reject`, {
+                            method: "POST",
+                            body: "{}",
+                          })
+                            .then(() => load())
+                            .catch((err: unknown) => {
+                              setError(
+                                err instanceof Error
+                                  ? err.message
+                                  : "Request failed.",
+                              );
+                            });
+                        }}
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  </form>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
         <section>
           <h3 className="text-sm font-medium">Drafts</h3>
           {drafts.length === 0 ? (

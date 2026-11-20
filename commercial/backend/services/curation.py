@@ -253,6 +253,60 @@ def save_drafts(
     return saved
 
 
+def save_manual_draft(
+    email: str,
+    species_id: str,
+    kind: str,
+    value: str,
+    source_url: str,
+    verified_at: str,
+    notes: str,
+) -> dict[str, Any]:
+    """Open one draft from fields an admin typed. It is not approved."""
+    _require_admin(email)
+    url, day = _check_source(source_url, verified_at)
+    if kind not in _KINDS:
+        raise ValueError("Unknown fact kind.")
+    species = _species_id(species_id)
+    stored = value.strip()
+    if kind in {
+        "shiny",
+        "dynamax",
+        "gigantamax",
+        "dynamax_costume",
+        "gigantamax_costume",
+    }:
+        stored = "true"
+    elif kind == "trade_rule":
+        stored = "untradable"
+    else:
+        stored = stored.lower().replace(" ", "-")
+        if not stored.replace("-", "").isalnum():
+            raise ValueError("Use a short slug for that value.")
+    note = notes.strip()[:280]
+    init_curation()
+    with connect() as conn:
+        conn.execute(
+            """
+            INSERT OR IGNORE INTO curated_facts (
+                species_id, kind, value, source_url, verified_at,
+                verified_by, status, notes
+            ) VALUES (?, ?, ?, ?, ?, ?, 'draft', ?)
+            """,
+            (species, kind, stored, url, day, email, note),
+        )
+        row = conn.execute(
+            """
+            SELECT * FROM curated_facts
+            WHERE species_id = ? AND kind = ? AND value = ? AND source_url = ?
+            """,
+            (species, kind, stored, url),
+        ).fetchone()
+    if row is None:
+        raise RuntimeError("The draft was not stored.")
+    return dict(row)
+
+
 def set_status(email: str, fact_id: int, status: str) -> dict[str, Any]:
     _require_admin(email)
     if status not in {"approved", "rejected"}:

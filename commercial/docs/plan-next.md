@@ -1,11 +1,12 @@
 # Trainermon: next plan
 
-Status: **A, B, C, and G are built.** A Pikachu slice of I and J is in
-progress (decision 14, 19 November 2026). The rest of those phases, and
-D, E, F, and H, are not built. Decisions 4 to 10 in `decisions.md`
-(17 November 2026) are the constraints. This file is the order to approve
-before any of it is implemented. The licensing review is
-`licensing-data-review.md`. The personal app is out of this plan.
+Status: **A, B, C, G, and D are built.** The Pikachu slice of I and J is
+built (decision 14, 19 November 2026). Players can flag a wrong or
+missing row, and only an admin can open a draft from that report. E, F,
+and H are not built. Decisions 4 to 10 in `decisions.md` (17 November
+2026) are the constraints. This file is the order to approve before any
+of it is implemented. The licensing review is `licensing-data-review.md`.
+The personal app is out of this plan.
 
 Nothing here asks LeekDuck, ScrapedDuck, Pokebattler, or pogoapi.net for a
 licence. Decision 5 closed that for now.

@@ -9,7 +9,7 @@ import {
   type VariantFlags,
   type VariantOptions,
 } from "@/components/VariantFields";
-import { communityFetch } from "@/lib/community";
+import { communityFetch, type Profile } from "@/lib/community";
 import type { TypeName } from "@/lib/types";
 
 type Species = {
@@ -86,11 +86,18 @@ export default function ExplorerPage() {
   });
   const [species, setSpecies] = useState<Species[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [reportTag, setReportTag] = useState<"wrong" | "missing">("missing");
+  const [reportNote, setReportNote] = useState("");
+  const [reportNotice, setReportNotice] = useState<string | null>(null);
 
   useEffect(() => {
     communityFetch<Species[]>("/api/catalog")
       .then(setCatalog)
       .catch(() => setCatalog([]));
+    communityFetch<Profile>("/api/me")
+      .then(setProfile)
+      .catch(() => setProfile(null));
   }, []);
 
   useEffect(() => {
@@ -204,6 +211,76 @@ export default function ExplorerPage() {
             </p>
           ) : null}
           {error ? <p className="text-sm text-red-300">{error}</p> : null}
+          {speciesId ? (
+            <form
+              className="flex flex-col gap-2 rounded-md border border-shell-800 bg-shell-900 p-3"
+              onSubmit={(event) => {
+                event.preventDefault();
+                setReportNotice(null);
+                communityFetch("/api/reports", {
+                  method: "POST",
+                  body: JSON.stringify({
+                    species_id: speciesId,
+                    tag: reportTag,
+                    note: reportNote,
+                  }),
+                })
+                  .then(() => {
+                    setReportNote("");
+                    setReportNotice("Sent. It waits for review and is not public.");
+                  })
+                  .catch((err: unknown) => {
+                    setReportNotice(
+                      err instanceof Error ? err.message : "Request failed.",
+                    );
+                  });
+              }}
+            >
+              <p className="text-xs text-ink-400">
+                Flag this Pokémon as wrong or missing. An admin reviews it.
+                Nothing changes on this page until that review is approved.
+              </p>
+              {profile ? (
+                <>
+                  <div className="flex gap-3 text-xs">
+                    <label className="flex items-center gap-1">
+                      <input
+                        type="radio"
+                        checked={reportTag === "missing"}
+                        onChange={() => setReportTag("missing")}
+                      />
+                      Missing
+                    </label>
+                    <label className="flex items-center gap-1">
+                      <input
+                        type="radio"
+                        checked={reportTag === "wrong"}
+                        onChange={() => setReportTag("wrong")}
+                      />
+                      Wrong
+                    </label>
+                  </div>
+                  <input
+                    className="rounded-sm border border-shell-700 bg-shell-950 px-2 py-1 text-sm"
+                    value={reportNote}
+                    placeholder="Short note"
+                    onChange={(event) => setReportNote(event.target.value)}
+                  />
+                  <button
+                    type="submit"
+                    className="w-fit rounded-sm border border-shell-700 px-2 py-1 text-xs"
+                  >
+                    Send report
+                  </button>
+                </>
+              ) : (
+                <p className="text-xs text-ink-500">Sign in to send a report.</p>
+              )}
+              {reportNotice ? (
+                <p className="text-xs text-ink-300">{reportNotice}</p>
+              ) : null}
+            </form>
+          ) : null}
         </div>
         <ul className="flex flex-col gap-2">
           {species.map((row) => (
