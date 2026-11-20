@@ -1,11 +1,13 @@
 # Trainermon: next plan
 
-Status: **A, B, C, and G are built.** A Pikachu slice of I and J is in
-progress (decision 14, 19 November 2026). The rest of those phases, and
-D, E, F, and H, are not built. Decisions 4 to 10 in `decisions.md`
-(17 November 2026) are the constraints. This file is the order to approve
-before any of it is implemented. The licensing review is
-`licensing-data-review.md`. The personal app is out of this plan.
+Status: **A, B, C, and G are built.** The Pikachu slice of I and J is
+built (decision 14, 19 November 2026). On 20 November 2026 the rest of I
+and J was seeded as drafts for Thomas to approve on `/curate`. Those drafts
+are not part of a checklist total until he approves them. D, E, F, and H
+are not built. Decisions 4 to 10 in `decisions.md` (17 November 2026) are
+the constraints. This file is the order to approve before any of it is
+implemented. The licensing review is `licensing-data-review.md`. The
+personal app is out of this plan.
 
 Nothing here asks LeekDuck, ScrapedDuck, Pokebattler, or pogoapi.net for a
 licence. Decision 5 closed that for now.
@@ -30,12 +32,14 @@ These are build size, not a calendar.
    public, and before any feature that shows a friend code. Drafts only.
    A lawyer still has to read them before charging (phase H).
 5. **I. Costume and background coverage.** Needs C. The Pikachu slice is
-   the current build. The rest of the costume and background dex is still
-   later. A collection can only claim the rows this phase has sourced.
-6. **J. Collection checklist.** The Pikachu page is the current build. It
-   needs I for the set it counts, and the have and want lists that already
-   exist. It does not need Stripe. Every Pokémon is the launch shape, and
-   it is the same page with more data.
+   built. Further costumes and backgrounds are in the seed as drafts.
+   Anything not confirmed on an official page stays out of the database.
+   A collection can only claim the rows this phase has sourced.
+6. **J. Collection checklist.** The Pikachu page is built. Every species
+   with a costume or background row has a collection in `collections.json`.
+   It needs I for the set it counts, and the have and want lists that
+   already exist. It does not need billing. Totals count approved rows
+   only. The checklist stays free.
 7. **D. User reports.** Needs a catalog row to report against, and the age
    gate, so reports are not the first thing a child can submit.
 8. **F. Stripe in test mode.** Needs the tier table below confirmed. No live

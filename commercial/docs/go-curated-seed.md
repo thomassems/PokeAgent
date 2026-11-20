@@ -166,6 +166,95 @@ different: it appears only when a row names it. Dynamax plus a costume is
 rejected unless a `dynamax_costume` row says that costume was released.
 None of the pages above released a Dynamax costume.
 
+## Drafts checked on 20 November 2026
+
+Thomas approved the rest of phases I and J. These rows are drafts. They
+insert with status `draft` and stay off Explorer, lists, and checklist
+totals until he approves them on `/curate`. The Pikachu rows from 19
+November stay approved. A new shiny flag on an already approved costume is
+its own draft `costume_shiny` row.
+
+The pages were opened in English, or the English URL was opened when the
+body was still the official post. `pokemongolive.com` news URLs often
+redirect to `pokemongo.com/news`. The stored link is the `pokemongolive.com`
+URL that was opened. Nothing was copied from LeekDuck, ScrapedDuck,
+PokeMiners, Bulbapedia, or Serebii.
+
+359 draft rows were added on top of the approved seed: costumes,
+backgrounds, and shiny flags. 173 species have at least one costume or
+background row, and each of those species has a collection. A species whose
+rows are all drafts shows have 0 of 0 until approval.
+
+Shiny is recorded only when the opened page stars that costume or
+background, or says that one can be shiny. A section that says "if you are
+lucky" without a star on the costume line does not get a shiny row.
+
+Pumpkaboo and Gourgeist posts do not name a size. Those rows use the
+average catalog id. The other sizes are unverified.
+
+Road of Legends names a large raid pool that may have a Special Background.
+Each named species is one background row. Formes that share a catalog id,
+such as Deoxys and Genesect drives, are one row. A star on the raid boss is
+not treated as shiny for the background.
+
+### Pikachu confirmed in this pass
+
+These were missing from the 19 November seed. Shiny follows the page.
+
+- World Cap, shiny stated: <https://pokemongolive.com/news/animationweek2020>
+- Flower crown, shiny stated: <https://pokemongolive.com/news/egg-citing-spring-surprise-2022>
+- Pikachu Libre, shiny not stated: <https://pokemongolive.com/news/go-battle-league-hidden-gems>
+- Flying, purple balloons, shiny stated: <https://pokemongolive.com/news/pokemon-go-safari-zone-singapore>
+- Flying, 5-shaped balloon, shiny not stated: <https://pokemongolive.com/news/birthday2021>
+- Flying Pikachu with no balloon color, shiny stated by a Shiny Icon On image: <https://pokemongolive.com/news/air-adventures-global>
+- Okinawa kariyushi shirt, shiny not stated: <https://pokemongolive.com/news/flying-pikachu-2022>
+- Cosmog-themed spacesuit, shiny stated: <https://pokemongolive.com/news/world-championships-event-2026>
+- World Championships 2026, shiny stated: the same page
+- Clone, shiny not stated: <https://pokemongolive.com/news/pokemonday2020>
+- Beanie, shiny not stated: <https://pokemongolive.com/news/holiday2019>
+- Festive hat, shiny not stated: <https://pokemongolive.com/news/holiday2016>
+- Holiday hat, shiny not stated: <https://pokemongolive.com/news/holiday2021>
+- 2020 holiday costume, garment not named, shiny not stated: <https://pokemongolive.com/news/holiday2020>
+- Cake hat. The 2022 debut does not star it. The 2023 anniversary page does: <https://pokemongolive.com/news/pokemongo-7th-anniversary>
+- Shaymin-inspired scarf, shiny stated: <https://pokemongolive.com/news/gofest2022-finale-event>
+- Detective hat, shiny not stated: <https://pokemongolive.com/news/detective-pikachu-returns-event>
+- Cap's hat, shiny stated: <https://pokemongolive.com/news/pokemon-horizons-anime-celebration>
+- Dapper, without a color, shiny not stated: <https://pokemongolive.com/en/news/go-fest-2025-ultra-unlock-challenges>
+- Team hat, shiny not stated: <https://pokemongolive.com/en/news/road-of-legends-2026>
+- Festival of Colors 2026 special background, shiny stated: <https://pokemongolive.com/en/news/festival-of-colors-2026>
+
+Draft shiny flags were also added for the witch hat (Halloween 2024 part 2)
+and the purple T-shirt (Flower) (Safari Zone: Singapore). Those costumes
+were already approved.
+
+### Still unverified
+
+These were looked for on official pages and not put in the database.
+
+- Ash caps other than World Cap and Cap's hat. Original, Kalos, Alola,
+  Unova, Sinnoh, Johto, Galar, and partner caps. The guessed news slugs
+  returned 404.
+- A Santa hat under those words. The festive hat and holiday hat rows use
+  the words the posts actually use. They may be the same garment. That was
+  not assumed.
+- Dawn, Lucas, Akari, and Rei costumes. The Sinnoh Tour gameplay URLs that
+  were tried returned 404, including the Los Angeles event-gameplay page.
+- A Fragment hat on Pikachu. The FENDI x FRGMT page names avatar items, not
+  a caught Pikachu.
+- Balloon colors other than green, multicolored, purple, and the 5-shaped
+  balloon. The Okinawa post says differently colored balloons and names
+  none.
+- World Championships Pikachu before 2022. No English page naming one was
+  opened.
+- Pumpkaboo and Gourgeist sizes other than average.
+- Winter Holiday 2025 and 2026, Fashion Week 2024 and 2026, and the in-person
+  Tour and GO Fest city pages that would name location cards species by
+  species. Those slugs returned 404 or were not opened.
+- Costumes hidden in "and more", and older events whose English page was
+  not opened. A missing row is still unknown, not a denial.
+- PokeMiners, Bulbapedia, LeekDuck, ScrapedDuck, and Serebii. They were not
+  used.
+
 ## Left out on purpose
 
 - Species hid inside "and more" on Forever Forward, Delightful Days, and
@@ -175,16 +264,9 @@ None of the pages above released a Dynamax costume.
 - Gigantamax backgrounds. Dynamax Trails talks about Dynamax catches.
 - Shadow and lucky, beyond PvPoke's released shadow forms and the Help
   Center trade rule already in the seed.
-- Costumes other than the Lapras scarf and the Pikachu rows in the section
-  above. Known to collectors and not on an official page opened for this
-  pass: a Santa hat distinct from the 2023 holiday attire, an Ash hat, a
-  fragment hat, a detective hat, Pikachu Libre, a flower crown on Pikachu,
-  a Shaymin-inspired scarf (the GO Fest finale URL did not load), other
-  Flying Pikachu balloon colors, World Championships costumes outside
-  2022 to 2024, and anything hidden in "and more" on the July 2026
-  anniversary list. A Russian GO Tour page mixed Dawn, Lucas, Akari, and
-  Rei costumes. No clean English page was opened, so those four are not
-  in the seed.
+- Costumes other than the Lapras scarf and the Pikachu rows, as of the 19
+  November pass. The 20 November draft section above replaces this bullet.
+  What is still unverified is listed there.
 - Location cards and special backgrounds the posts did not attach to
   Pikachu. A Los Angeles location card on the Sinnoh Tour page is for
   Dialga and Palkia raid catches.

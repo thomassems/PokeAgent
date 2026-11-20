@@ -42,6 +42,10 @@ def _pikachu_rows() -> list[dict[str, str]]:
     return [row for row in rows if row["species_id"] == "pikachu"]
 
 
+def _approved(row: dict[str, str]) -> bool:
+    return row.get("status", "approved") == "approved"
+
+
 def test_pikachu_seed_rows_are_sourced() -> None:
     rows = _pikachu_rows()
     costumes = {row["value"] for row in rows if row["kind"] == "costume"}
@@ -56,18 +60,38 @@ def test_pikachu_seed_rows_are_sourced() -> None:
     assert shiny_backgrounds <= backgrounds
     for row in rows:
         assert row["source_url"].startswith("https://pokemongolive.com/")
-        assert row["verified_at"] == "2026-11-19"
         assert row["verified_by"] == "hand-seed"
+        status = row.get("status", "approved")
+        assert status in {"approved", "draft"}
+        if status == "approved":
+            assert row["verified_at"] == "2026-11-19"
+        else:
+            assert row["verified_at"] == "2026-11-20"
         blob = f"{row['source_url']} {row['notes']}".lower()
         assert not any(banned in blob for banned in _BANNED)
         if row["kind"] != "shiny":
             assert row["value"].replace("-", "").isalnum()
 
 
+def test_new_costume_rows_stay_draft_until_approved() -> None:
+    rows = json.loads(_SEED.read_text())["rows"]
+    drafts = [row for row in rows if row.get("status") == "draft"]
+    assert drafts
+    assert {row["kind"] for row in drafts} >= {"costume", "background"}
+    for row in drafts:
+        assert row["verified_at"] == "2026-11-20"
+        assert row["verified_by"] == "hand-seed"
+        assert row["source_url"].startswith("https://")
+    approved = [row for row in rows if _approved(row)]
+    assert all("status" not in row or row["status"] == "approved" for row in approved)
+
+
 def test_checklist_counts_verified_rows_only(client: TestClient) -> None:
     _register(client)
     rows = _pikachu_rows()
-    expected = sum(1 for row in rows if row["kind"] in {"costume", "background"})
+    expected = sum(
+        1 for row in rows if row["kind"] in {"costume", "background"} and _approved(row)
+    )
     body = client.get("/api/collections/pikachu-costumes")
     assert body.status_code == 200
     payload = body.json()
@@ -130,6 +154,36 @@ def test_mark_owned_and_add_missing_wants(client: TestClient) -> None:
     missing_wants = [entry for entry in entries if entry["kind"] == "want"]
     assert len(missing_wants) == wants.json()["added"]
     assert all(entry["species_id"] == "pikachu" for entry in missing_wants)
+
+
+def test_every_costumed_species_has_a_collection() -> None:
+    seed = json.loads(_SEED.read_text())["rows"]
+    definitions = json.loads(
+        Path(__file__)
+        .resolve()
+        .parents[1]
+        .joinpath("data/collections.json")
+        .read_text()
+    )["collections"]
+    by_species = {item["species_id"]: item for item in definitions}
+    wanted: dict[str, set[str]] = {}
+    for row in seed:
+        if row["kind"] in {"costume", "background"}:
+            wanted.setdefault(row["species_id"], set()).add(row["kind"])
+    assert set(by_species) == set(wanted)
+    for species, kinds in wanted.items():
+        assert set(by_species[species]["kinds"]) == kinds
+
+
+def test_a_draft_only_collection_totals_zero(client: TestClient) -> None:
+    _register(client)
+    body = client.get("/api/collections/eevee-costumes")
+    assert body.status_code == 200
+    payload = body.json()
+    assert payload["total"] == 0
+    assert payload["items"] == []
+    listing = client.get("/api/collections").json()["collections"]
+    assert any(item["id"] == "eevee-costumes" for item in listing)
 
 
 def test_stranger_is_rejected_and_the_gate_is_one_function(

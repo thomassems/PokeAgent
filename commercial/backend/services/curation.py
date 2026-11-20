@@ -57,12 +57,13 @@ def init_curation() -> None:
             key = (row["species_id"], row["kind"], row["value"], row["source_url"])
             if key in existing:
                 continue
+            status = _seed_status(row)
             conn.execute(
                 """
                 INSERT INTO curated_facts (
                     species_id, kind, value, source_url, verified_at,
                     verified_by, status, notes
-                ) VALUES (?, ?, ?, ?, ?, ?, 'approved', ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     row["species_id"],
@@ -71,9 +72,22 @@ def init_curation() -> None:
                     row["source_url"],
                     row["verified_at"],
                     row["verified_by"],
+                    status,
                     row["notes"],
                 ),
             )
+
+
+def _seed_status(row: dict[str, Any]) -> str:
+    """Older seed rows omit status and stay approved.
+
+    Rows added after the Pikachu slice set status to draft. Thomas approves
+    those on /curate. The loader does not promote a draft on its own.
+    """
+    status = str(row.get("status") or "approved")
+    if status not in {"draft", "approved"}:
+        raise ValueError(f"Seed status must be draft or approved, not {status}.")
+    return status
 
 
 def approved_facts() -> list[dict[str, Any]]:
