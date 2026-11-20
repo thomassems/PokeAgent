@@ -15,6 +15,8 @@ type Fact = {
   verified_by: string;
   status: string;
   notes: string;
+  source_type?: string;
+  community_source_url?: string;
 };
 
 export default function CuratePage() {
@@ -165,7 +167,8 @@ export default function CuratePage() {
                     {fact.species_id} · {fact.kind} · {fact.value}
                   </p>
                   <p className="text-xs text-ink-400">
-                    {fact.verified_at} · {fact.source_url}
+                    {fact.source_type === "community" ? "Community" : "Official"}{" "}
+                    draft · {fact.verified_at} · {fact.source_url}
                   </p>
                   <div className="mt-2 flex gap-2">
                     <button

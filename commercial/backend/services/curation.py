@@ -43,10 +43,14 @@ def init_curation() -> None:
                 status TEXT NOT NULL
                     CHECK (status IN ('draft', 'approved', 'rejected')),
                 notes TEXT NOT NULL DEFAULT '',
+                source_type TEXT NOT NULL DEFAULT 'official'
+                    CHECK (source_type IN ('official', 'community')),
+                community_source_url TEXT NOT NULL DEFAULT '',
                 UNIQUE (species_id, kind, value, source_url)
             )
             """
         )
+        _ensure_source_columns(conn)
         existing = {
             (row["species_id"], row["kind"], row["value"], row["source_url"])
             for row in conn.execute(
@@ -55,14 +59,29 @@ def init_curation() -> None:
         }
         for row in json.loads(_SEED.read_text())["rows"]:
             key = (row["species_id"], row["kind"], row["value"], row["source_url"])
+            community_source = str(row.get("community_source_url") or "")
             if key in existing:
+                # A later import may attach a community URL. It does not
+                # change status, the official link, or the notes.
+                if community_source:
+                    conn.execute(
+                        """
+                        UPDATE curated_facts
+                        SET community_source_url = ?
+                        WHERE species_id = ? AND kind = ? AND value = ?
+                          AND source_url = ? AND community_source_url = ''
+                        """,
+                        (community_source, *key),
+                    )
                 continue
+            status = _seed_status(row)
             conn.execute(
                 """
                 INSERT INTO curated_facts (
                     species_id, kind, value, source_url, verified_at,
-                    verified_by, status, notes
-                ) VALUES (?, ?, ?, ?, ?, ?, 'approved', ?)
+                    verified_by, status, notes, source_type,
+                    community_source_url
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     row["species_id"],
@@ -71,9 +90,52 @@ def init_curation() -> None:
                     row["source_url"],
                     row["verified_at"],
                     row["verified_by"],
+                    status,
                     row["notes"],
+                    _source_type(row),
+                    community_source,
                 ),
             )
+
+
+def _ensure_source_columns(conn: Any) -> None:
+    """Add source columns when the table was created before them."""
+    columns = {row[1] for row in conn.execute("PRAGMA table_info(curated_facts)")}
+    if "source_type" not in columns:
+        conn.execute(
+            """
+            ALTER TABLE curated_facts
+            ADD COLUMN source_type TEXT NOT NULL DEFAULT 'official'
+            """
+        )
+    if "community_source_url" not in columns:
+        conn.execute(
+            """
+            ALTER TABLE curated_facts
+            ADD COLUMN community_source_url TEXT NOT NULL DEFAULT ''
+            """
+        )
+
+
+def _source_type(row: dict[str, Any]) -> str:
+    source_type = str(row.get("source_type") or "official")
+    if source_type not in {"official", "community"}:
+        raise ValueError(
+            f"Source type must be official or community, not {source_type}."
+        )
+    return source_type
+
+
+def _seed_status(row: dict[str, Any]) -> str:
+    """Older seed rows omit status and stay approved.
+
+    Rows added after the Pikachu slice set status to draft. Thomas approves
+    those on /curate. The loader does not promote a draft on its own.
+    """
+    status = str(row.get("status") or "approved")
+    if status not in {"draft", "approved"}:
+        raise ValueError(f"Seed status must be draft or approved, not {status}.")
+    return status
 
 
 def approved_facts() -> list[dict[str, Any]]:
