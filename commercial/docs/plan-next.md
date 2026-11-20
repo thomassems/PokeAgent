@@ -2,7 +2,8 @@
 
 Status: **A, B, C, and G are built.** The Pikachu slice of I and J is
 built (decision 14). Paid checkout is Lemon Squeezy in test mode only.
-D, E, and H are not built. Decisions 4 to 10 in `decisions.md`
+Remote-raid lobbies are built on the Paid entitlement. D and H are not
+built. Decisions 4 to 10 in `decisions.md`
 (17 November 2026) are the constraints. This file is the order to approve
 before any of it is implemented. The licensing review is
 `licensing-data-review.md`. The personal app is out of this plan.
