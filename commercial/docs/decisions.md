@@ -303,3 +303,34 @@ Rejected for this import:
 These drafts are not a commercial grant. A lawyer reviews this source
 before anyone is charged. Until then the drafts stay off Explorer and off
 checklist totals.
+
+## 17. A repeated community code is an alias, not a second costume
+
+Decided 20 November 2026, when Thomas asked `/curate` to filter the queue,
+show readable names, approve in bulk, and stop listing the same costume
+twice.
+
+Some ids in the pokemon-go-api pokedex are the game's code for a costume
+the official seed already names. `hoenn-2020-noevolve` is the Rayquaza hat.
+`wcs-2022` is World Championships 2022. `horizons` is Cap's hat.
+`holiday-2016` is the festive hat. The full list is
+`data/costume_aliases.py`. A pair is on that list only when the official
+row's own notes, restated from pokemongolive.com, name that costume.
+
+The official row keeps its slug, source link, and status.
+`community_aliases` stores the game id. The community row becomes
+`merged`, and `merged_into` points at the official slug. `/curate` hides
+merged rows unless that status is selected. Approving a merged row is
+refused, so the costume cannot be published twice. A later import still
+sees the row and does not insert it again.
+
+Community drafts that are not aliases stay drafts. An admin approves or
+rejects them one at a time or in a batch. A batch writes the same
+`verified_by` email a single approval writes. Shiny is `confirmed` only
+when a `costume_shiny` or `background_shiny` row already exists, and
+`unknown` otherwise. A shiny image URL in the pokedex file is still not
+confirmation, which is decision 16.
+
+Rejected: **deleting the community row.** The next import would add it
+back as a new draft. Rejected: **marking every asset shiny** because the
+file includes a shiny image for costumes that were not released shiny.

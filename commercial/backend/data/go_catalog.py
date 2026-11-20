@@ -114,15 +114,83 @@ def variant_labels() -> dict[str, dict[str, str]]:
     }
 
 
+# Game ids use these tokens for words that title case would get wrong.
+# "noevolve" is dropped: it marks a costume that could not evolve, not a
+# second costume name.
+_SLUG_WORDS = {
+    "gotour": "GO Tour",
+    "gofest": "GO Fest",
+    "wcs": "Worlds",
+    "tcg": "TCG",
+    "tshirt": "T-shirt",
+    "noevolve": "",
+    "anniv": "anniversary",
+    "5th": "5th",
+    "stiara": "S-tiara",
+    "mtiara": "M-tiara",
+    "sscarf": "S-scarf",
+    "mscarf": "M-scarf",
+    "vs": "VS",
+    "jan": "January",
+    "feb": "February",
+    "mar": "March",
+    "apr": "April",
+    "jun": "June",
+    "jul": "July",
+    "aug": "August",
+    "sep": "September",
+    "oct": "October",
+    "nov": "November",
+    "dec": "December",
+}
+
+
+def format_slug(value: str) -> str:
+    """A readable fallback for a slug that has no curated label.
+
+    A trailing single letter becomes "(A)". A four-digit year stays a year.
+    "gotour-2024-a" is "GO Tour 2024 (A)".
+    """
+    parts: list[str] = []
+    for token in value.split("-"):
+        if not token:
+            continue
+        if token in _SLUG_WORDS:
+            word = _SLUG_WORDS[token]
+            if word:
+                parts.append(word)
+            continue
+        if len(token) == 1 and token.isalpha():
+            parts.append(f"({token.upper()})")
+            continue
+        if token.isdigit():
+            parts.append(token)
+            continue
+        parts.append(token[0].upper() + token[1:])
+    return " ".join(parts) if parts else value
+
+
 def variant_label(kind: str, value: str) -> str:
-    """The curated label, or the slug with spaces and a capital first letter."""
-    named = variant_labels().get(kind, {}).get(value)
+    """The curated label, or format_slug when the map has no entry."""
+    table = kind
+    if kind == "costume_shiny":
+        table = "costume"
+    elif kind == "background_shiny":
+        table = "background"
+    named = variant_labels().get(table, {}).get(value)
     if named:
         return named
-    words = value.replace("-", " ").strip()
-    if not words:
-        return value
-    return words[0].upper() + words[1:]
+    if kind in {
+        "shiny",
+        "dynamax",
+        "gigantamax",
+        "dynamax_costume",
+        "gigantamax_costume",
+    }:
+        return "Yes"
+    if kind == "trade_rule" and value == "untradable":
+        return "Untradable"
+    return format_slug(value)
 
 
 def apply_facts(species: Species, facts: list[dict[str, Any]]) -> Species:

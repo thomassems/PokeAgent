@@ -9,8 +9,41 @@ import os
 from pathlib import Path
 from typing import Any
 
-from data.go_catalog import base_catalog
+from data.go_catalog import base_catalog, variant_label
 from services.accounts import connect, init_db, is_admin
+
+_CREATE_FACTS = """
+CREATE TABLE curated_facts (
+    id INTEGER PRIMARY KEY,
+    species_id TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    value TEXT NOT NULL,
+    source_url TEXT NOT NULL,
+    verified_at TEXT NOT NULL,
+    verified_by TEXT NOT NULL,
+    status TEXT NOT NULL
+        CHECK (status IN ('draft', 'approved', 'rejected', 'merged')),
+    notes TEXT NOT NULL DEFAULT '',
+    source_type TEXT NOT NULL DEFAULT 'official'
+        CHECK (source_type IN ('official', 'community')),
+    community_source_url TEXT NOT NULL DEFAULT '',
+    community_aliases TEXT NOT NULL DEFAULT '',
+    merged_into TEXT NOT NULL DEFAULT '',
+    UNIQUE (species_id, kind, value, source_url)
+)
+"""
+_KIND_LABELS = {
+    "shiny": "Shiny",
+    "dynamax": "Dynamax",
+    "gigantamax": "Gigantamax",
+    "costume": "Costume",
+    "trade_rule": "Trade rule",
+    "background": "Background",
+    "dynamax_costume": "Dynamax costume",
+    "gigantamax_costume": "Gigantamax costume",
+    "costume_shiny": "Shiny costume",
+    "background_shiny": "Shiny background",
+}
 
 _SEED = Path(__file__).resolve().parents[1] / "data" / "go_curated_seed.json"
 _KINDS = {
@@ -31,26 +64,9 @@ def init_curation() -> None:
     init_db()
     with connect() as conn:
         conn.execute(
-            """
-            CREATE TABLE IF NOT EXISTS curated_facts (
-                id INTEGER PRIMARY KEY,
-                species_id TEXT NOT NULL,
-                kind TEXT NOT NULL,
-                value TEXT NOT NULL,
-                source_url TEXT NOT NULL,
-                verified_at TEXT NOT NULL,
-                verified_by TEXT NOT NULL,
-                status TEXT NOT NULL
-                    CHECK (status IN ('draft', 'approved', 'rejected')),
-                notes TEXT NOT NULL DEFAULT '',
-                source_type TEXT NOT NULL DEFAULT 'official'
-                    CHECK (source_type IN ('official', 'community')),
-                community_source_url TEXT NOT NULL DEFAULT '',
-                UNIQUE (species_id, kind, value, source_url)
-            )
-            """
+            _CREATE_FACTS.replace("CREATE TABLE", "CREATE TABLE IF NOT EXISTS", 1)
         )
-        _ensure_source_columns(conn)
+        _ensure_fact_shape(conn)
         existing = {
             (row["species_id"], row["kind"], row["value"], row["source_url"])
             for row in conn.execute(
@@ -60,9 +76,11 @@ def init_curation() -> None:
         for row in json.loads(_SEED.read_text())["rows"]:
             key = (row["species_id"], row["kind"], row["value"], row["source_url"])
             community_source = str(row.get("community_source_url") or "")
+            aliases = _alias_text(row)
+            merged_into = str(row.get("merged_into") or "")
             if key in existing:
-                # A later import may attach a community URL. It does not
-                # change status, the official link, or the notes.
+                # A later import may attach a community URL or an alias.
+                # It does not change an approved row's status or its notes.
                 if community_source:
                     conn.execute(
                         """
@@ -73,15 +91,34 @@ def init_curation() -> None:
                         """,
                         (community_source, *key),
                     )
+                if aliases:
+                    conn.execute(
+                        """
+                        UPDATE curated_facts
+                        SET community_aliases = ?
+                        WHERE species_id = ? AND kind = ? AND value = ?
+                          AND source_url = ? AND community_aliases = ''
+                        """,
+                        (aliases, *key),
+                    )
+                if merged_into:
+                    conn.execute(
+                        """
+                        UPDATE curated_facts
+                        SET status = 'merged', merged_into = ?
+                        WHERE species_id = ? AND kind = ? AND value = ?
+                          AND source_url = ? AND status = 'draft'
+                        """,
+                        (merged_into, *key),
+                    )
                 continue
-            status = _seed_status(row)
             conn.execute(
                 """
                 INSERT INTO curated_facts (
                     species_id, kind, value, source_url, verified_at,
                     verified_by, status, notes, source_type,
-                    community_source_url
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    community_source_url, community_aliases, merged_into
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     row["species_id"],
@@ -90,31 +127,86 @@ def init_curation() -> None:
                     row["source_url"],
                     row["verified_at"],
                     row["verified_by"],
-                    status,
+                    _seed_status(row),
                     row["notes"],
                     _source_type(row),
                     community_source,
+                    aliases,
+                    merged_into,
                 ),
             )
 
 
-def _ensure_source_columns(conn: Any) -> None:
-    """Add source columns when the table was created before them."""
-    columns = {row[1] for row in conn.execute("PRAGMA table_info(curated_facts)")}
-    if "source_type" not in columns:
+def _fact_columns(conn: Any) -> set[str]:
+    return {row[1] for row in conn.execute("PRAGMA table_info(curated_facts)")}
+
+
+def _ensure_fact_shape(conn: Any) -> None:
+    """Add alias columns, and rebuild when status cannot be merged.
+
+    SQLite will not change a CHECK constraint in place. A database created
+    before merged aliases is copied into a table that allows that status.
+    """
+    sql = conn.execute(
+        "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'curated_facts'"
+    ).fetchone()
+    if sql is None or "'merged'" not in (sql[0] or ""):
+        _rebuild_facts(conn)
+        return
+    columns = _fact_columns(conn)
+    if "community_aliases" not in columns:
         conn.execute(
             """
             ALTER TABLE curated_facts
-            ADD COLUMN source_type TEXT NOT NULL DEFAULT 'official'
+            ADD COLUMN community_aliases TEXT NOT NULL DEFAULT ''
             """
         )
-    if "community_source_url" not in columns:
+    if "merged_into" not in columns:
         conn.execute(
             """
             ALTER TABLE curated_facts
-            ADD COLUMN community_source_url TEXT NOT NULL DEFAULT ''
+            ADD COLUMN merged_into TEXT NOT NULL DEFAULT ''
             """
         )
+
+
+def _rebuild_facts(conn: Any) -> None:
+    columns = _fact_columns(conn)
+    conn.execute("ALTER TABLE curated_facts RENAME TO curated_facts_old")
+    conn.execute(_CREATE_FACTS)
+
+    def column(name: str, default: str) -> str:
+        if name in columns:
+            return name
+        return default
+
+    conn.execute(
+        f"""
+        INSERT INTO curated_facts (
+            id, species_id, kind, value, source_url, verified_at, verified_by,
+            status, notes, source_type, community_source_url, community_aliases,
+            merged_into
+        )
+        SELECT
+            id, species_id, kind, value, source_url, verified_at, verified_by,
+            status, notes,
+            {column("source_type", "'official'")},
+            {column("community_source_url", "''")},
+            {column("community_aliases", "''")},
+            {column("merged_into", "''")}
+        FROM curated_facts_old
+        """
+    )
+    conn.execute("DROP TABLE curated_facts_old")
+
+
+def _alias_text(row: dict[str, Any]) -> str:
+    raw = row.get("community_aliases") or ""
+    if isinstance(raw, list):
+        parts = [str(item).strip() for item in raw if str(item).strip()]
+    else:
+        parts = [part.strip() for part in str(raw).split(",") if part.strip()]
+    return ",".join(parts)
 
 
 def _source_type(row: dict[str, Any]) -> str:
@@ -131,10 +223,13 @@ def _seed_status(row: dict[str, Any]) -> str:
 
     Rows added after the Pikachu slice set status to draft. Thomas approves
     those on /curate. The loader does not promote a draft on its own.
+    A merged row is a community duplicate of an official costume.
     """
     status = str(row.get("status") or "approved")
-    if status not in {"draft", "approved"}:
-        raise ValueError(f"Seed status must be draft or approved, not {status}.")
+    if status not in {"draft", "approved", "merged"}:
+        raise ValueError(
+            f"Seed status must be draft, approved, or merged, not {status}."
+        )
     return status
 
 
@@ -153,11 +248,57 @@ def approved_facts() -> list[dict[str, Any]]:
 
 def list_facts() -> list[dict[str, Any]]:
     init_curation()
+    names = {item.id: item.name for item in base_catalog()}
     with connect() as conn:
-        rows = conn.execute(
-            "SELECT * FROM curated_facts ORDER BY status, id"
-        ).fetchall()
-    return [dict(row) for row in rows]
+        rows = [
+            dict(row)
+            for row in conn.execute(
+                """
+                SELECT * FROM curated_facts
+                ORDER BY status, species_id, kind, value
+                """
+            )
+        ]
+    confirmed = _confirmed_shiny(rows)
+    for row in rows:
+        row["label"] = variant_label(str(row["kind"]), str(row["value"]))
+        row["species_name"] = names.get(row["species_id"], row["species_id"])
+        row["kind_label"] = _KIND_LABELS.get(str(row["kind"]), str(row["kind"]))
+        row["aliases"] = [
+            part for part in str(row.get("community_aliases") or "").split(",") if part
+        ]
+        row["shiny"] = _shiny_label(row, confirmed)
+    return rows
+
+
+def _confirmed_shiny(rows: list[dict[str, Any]]) -> set[tuple[str, str, str]]:
+    """Species, costume or background, and value where a source row says shiny.
+
+    Rejected and merged rows do not confirm a shiny release. A draft shiny
+    row still counts: the source said so, and approval is a separate step.
+    """
+    base = {"costume_shiny": "costume", "background_shiny": "background"}
+    found: set[tuple[str, str, str]] = set()
+    for row in rows:
+        kind = base.get(str(row["kind"]))
+        if kind is None or row["status"] in {"rejected", "merged"}:
+            continue
+        found.add((str(row["species_id"]), kind, str(row["value"])))
+    return found
+
+
+def _shiny_label(
+    row: dict[str, Any], confirmed: set[tuple[str, str, str]]
+) -> str | None:
+    kind = str(row["kind"])
+    if kind in {"costume", "background"}:
+        key = (str(row["species_id"]), kind, str(row["value"]))
+        return "confirmed" if key in confirmed else "unknown"
+    if kind in {"costume_shiny", "background_shiny", "shiny"}:
+        if row["status"] in {"rejected", "merged"}:
+            return "unknown"
+        return "confirmed"
+    return None
 
 
 def _require_admin(email: str) -> None:
@@ -316,30 +457,48 @@ def save_drafts(
 
 
 def set_status(email: str, fact_id: int, status: str) -> dict[str, Any]:
+    updated = set_statuses(email, [fact_id], status)
+    return updated[0]
+
+
+def set_statuses(email: str, fact_ids: list[int], status: str) -> list[dict[str, Any]]:
+    """Approve or reject every id. One failure rolls the whole batch back.
+
+    Approval records the admin email in verified_by, the same field a single
+    approval writes. Rejection leaves verified_by as it was. A merged alias
+    cannot be approved on its own, or the costume would exist twice.
+    """
     _require_admin(email)
     if status not in {"approved", "rejected"}:
         raise ValueError("Choose approved or rejected.")
+    if not fact_ids:
+        raise ValueError("Select at least one row.")
     init_curation()
+    updated: list[dict[str, Any]] = []
     with connect() as conn:
-        row = conn.execute(
-            "SELECT * FROM curated_facts WHERE id = ?", (fact_id,)
-        ).fetchone()
-        if row is None:
-            raise LookupError("That curated row does not exist.")
-        if not row["source_url"] or not row["verified_at"]:
-            raise ValueError("A row needs a source link and a verified date.")
-        verified_by = row["verified_by"]
-        if status == "approved":
-            verified_by = email
-        conn.execute(
-            """
-            UPDATE curated_facts
-            SET status = ?, verified_by = ?
-            WHERE id = ?
-            """,
-            (status, verified_by, fact_id),
-        )
-        updated = conn.execute(
-            "SELECT * FROM curated_facts WHERE id = ?", (fact_id,)
-        ).fetchone()
-    return dict(updated)
+        for fact_id in fact_ids:
+            row = conn.execute(
+                "SELECT * FROM curated_facts WHERE id = ?", (fact_id,)
+            ).fetchone()
+            if row is None:
+                raise LookupError("That curated row does not exist.")
+            if row["status"] == "merged" or row["merged_into"]:
+                raise ValueError("That community code is an alias of an official row.")
+            if not row["source_url"] or not row["verified_at"]:
+                raise ValueError("A row needs a source link and a verified date.")
+            verified_by = row["verified_by"]
+            if status == "approved":
+                verified_by = email
+            conn.execute(
+                """
+                UPDATE curated_facts
+                SET status = ?, verified_by = ?
+                WHERE id = ?
+                """,
+                (status, verified_by, fact_id),
+            )
+            fresh = conn.execute(
+                "SELECT * FROM curated_facts WHERE id = ?", (fact_id,)
+            ).fetchone()
+            updated.append(dict(fresh))
+    return updated
