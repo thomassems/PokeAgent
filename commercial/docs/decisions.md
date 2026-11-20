@@ -334,3 +334,49 @@ confirmation, which is decision 16.
 Rejected: **deleting the community row.** The next import would add it
 back as a new draft. Rejected: **marking every asset shiny** because the
 file includes a shiny image for costumes that were not released shiny.
+
+## 18. The verifier approves a costume when two sources agree
+
+Decided 20 November 2026, when Thomas said he does not want to go through
+and confirm every draft. The verifier should be able to tell whether a
+costume or variant is real.
+
+This supersedes the manual-approval part of decision 16, and the same
+requirement as restated in decision 17. Community costume drafts no longer
+wait for a person when the evidence agrees. The log has no decision 15.
+The rule this replaces is decision 16's "these drafts stay drafts until
+they are approved", which decision 17 repeated. Decision 11 still applies
+to a row pasted on `/curate`: that paste stays a draft until an admin
+approves it.
+
+A lawyer still reviews community-sourced data before anyone is charged.
+That part of decision 16 is unchanged. An auto-approved row does count on
+a checklist. A checklist total is verified rows, and this verifier is the
+check.
+
+The script is `uv run python -m tools.verify_costumes`, run from
+`commercial/backend`. A second run reads the cache and does not fetch.
+The checklist site asks for a five-second crawl delay, and the script
+waits that long between requests. It reads the event-form list to check
+an id or a name. It does not copy the page's sentences or images into
+the database. Each judged row stores the sources checked, their URLs,
+the check date, a one-line reason, and a confidence. `verified_by` is
+`auto-verifier`, which is not an admin email.
+
+An official draft that already cites pokemongolive.com is approved from
+that post. A community draft is approved when its code is in the
+pokemon-go-api pokedex import and the same species and code, or the same
+costume name, is on the event-form list. One source, or two sources that
+do not point at one costume, stays a draft for Thomas. Codes that are
+battle forms or internal ids are rejected: normal, shadow, purified,
+regional forms, test ids, and a bare `costume-1` style slot. Those rows
+do not count on a checklist. A shiny image URL is still not a shiny
+release.
+
+An admin can return any approved row to draft. That writes the admin
+email into `verified_by`, and a later run leaves the row alone.
+
+Rejected: **approving every pokedex id.** That file includes assets that
+were not released. Rejected: **storing checklist sentences or images.**
+The URL is the citation. Rejected: **guessing that a lettered game id is
+a named trainer costume** when the two codes are not the same.

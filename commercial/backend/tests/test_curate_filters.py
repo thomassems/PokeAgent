@@ -108,7 +108,10 @@ def test_list_marks_confirmed_shiny_and_hides_nothing_from_the_payload(
     assert worlds["shiny"] == "confirmed"
     assert doctor["label"] == "Ph.D."
     assert doctor["shiny"] == "unknown"
-    assert doctor["status"] == "draft"
+    assert doctor["status"] == "approved"
+    assert doctor["verified_by"] == "auto-verifier"
+    assert doctor["verification"]["verdict"] == "auto-approve"
+    assert doctor["verification"]["urls"]
     assert merged["status"] == "merged"
 
 
@@ -143,8 +146,25 @@ def test_bulk_approve_records_the_admin_and_bulk_reject_does_not(
         json={"ids": [festive["id"]], "status": "rejected"},
     )
     assert rejected.status_code == 200
-    assert rejected.json()["facts"][0]["verified_by"] == "hand-seed"
+    assert rejected.json()["facts"][0]["verified_by"] == festive["verified_by"]
     assert rejected.json()["facts"][0]["status"] == "rejected"
+
+
+def test_unapprove_records_the_admin_and_drops_the_checklist_row(
+    client: TestClient,
+) -> None:
+    _register(client, "admin@example.com")
+    facts = client.get("/api/curation").json()["facts"]
+    doctor = next(row for row in facts if row["value"] == "doctor")
+    before = client.get("/api/collections/pikachu-costumes").json()
+    assert any(item["value"] == "doctor" for item in before["items"])
+    returned = client.post(f"/api/curation/{doctor['id']}/unapprove")
+    assert returned.status_code == 200
+    assert returned.json()["status"] == "draft"
+    assert returned.json()["verified_by"] == "admin@example.com"
+    after = client.get("/api/collections/pikachu-costumes").json()
+    assert after["total"] == before["total"] - 1
+    assert all(item["value"] != "doctor" for item in after["items"])
 
 
 def test_merged_alias_and_stranger_cannot_be_bulk_approved(client: TestClient) -> None:

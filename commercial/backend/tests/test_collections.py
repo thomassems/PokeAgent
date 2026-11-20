@@ -60,22 +60,37 @@ def test_pikachu_seed_rows_are_sourced() -> None:
     assert shiny_backgrounds <= backgrounds
     for row in rows:
         status = row.get("status", "approved")
-        assert status in {"approved", "draft", "merged"}
+        assert status in {"approved", "draft", "merged", "rejected"}
         source_type = row.get("source_type", "official")
+        verification = row.get("verification") or {}
         if source_type == "community":
-            assert row["verified_by"] == "community-import"
             assert row["source_url"].startswith("https://pokemon-go-api.github.io/")
             if status == "merged":
+                assert row["verified_by"] == "community-import"
                 assert row.get("merged_into")
+            elif status == "approved":
+                assert row["verified_by"] == "auto-verifier"
+                assert verification["verdict"] == "auto-approve"
+                assert len(verification["urls"]) >= 2
+            elif status == "rejected":
+                assert row["verified_by"] == "auto-verifier"
+                assert verification["verdict"] == "reject-non-costume"
             else:
                 assert status == "draft"
+                assert row["verified_by"] == "community-import"
+                assert verification["verdict"] == "needs-review"
         else:
-            assert status in {"approved", "draft"}
-            assert row["verified_by"] == "hand-seed"
             assert row["source_url"].startswith("https://pokemongolive.com/")
-        if status == "approved":
+            if row["verified_by"] == "auto-verifier":
+                assert status == "approved"
+                assert verification["verdict"] == "auto-approve"
+                assert row["source_url"] in verification["urls"]
+            else:
+                assert row["verified_by"] == "hand-seed"
+                assert status == "approved"
+        if row["verified_by"] == "hand-seed":
             assert row["verified_at"] == "2026-11-19"
-        elif source_type != "community":
+        if row["verified_by"] == "auto-verifier":
             assert row["verified_at"] == "2026-11-20"
         blob = " ".join(
             (
@@ -89,22 +104,17 @@ def test_pikachu_seed_rows_are_sourced() -> None:
             assert row["value"].replace("-", "").isalnum()
 
 
-def test_new_costume_rows_stay_draft_until_approved() -> None:
+def test_uncorroborated_costumes_stay_draft() -> None:
     rows = json.loads(_SEED.read_text())["rows"]
     drafts = [row for row in rows if row.get("status") == "draft"]
     assert drafts
-    assert {row["kind"] for row in drafts} >= {"costume", "background"}
+    assert {row["kind"] for row in drafts} == {"costume"}
     for row in drafts:
-        if row.get("source_type") == "community":
-            assert row["verified_at"]
-            assert row["verified_by"] == "community-import"
-            assert row["source_url"].startswith("https://pokemon-go-api.github.io/")
-        else:
-            assert row["verified_at"] == "2026-11-20"
-            assert row["verified_by"] == "hand-seed"
+        assert row["verification"]["verdict"] == "needs-review"
+        assert row["verified_by"] == "community-import"
         assert row["source_url"].startswith("https://")
     approved = [row for row in rows if _approved(row)]
-    assert all("status" not in row or row["status"] == "approved" for row in approved)
+    assert any(row.get("verified_by") == "auto-verifier" for row in approved)
 
 
 def test_checklist_counts_verified_rows_only(client: TestClient) -> None:
@@ -197,14 +207,27 @@ def test_every_costumed_species_has_a_collection() -> None:
 
 
 def test_a_draft_only_collection_totals_zero(client: TestClient) -> None:
+    rows = json.loads(_SEED.read_text())["rows"]
+    by_species: dict[str, list[str]] = {}
+    for row in rows:
+        if row["kind"] in {"costume", "background"}:
+            by_species.setdefault(row["species_id"], []).append(
+                row.get("status", "approved")
+            )
+    draft_only = sorted(
+        species
+        for species, statuses in by_species.items()
+        if statuses and set(statuses) == {"draft"}
+    )
+    assert draft_only
     _register(client)
-    body = client.get("/api/collections/eevee-costumes")
+    body = client.get(f"/api/collections/{draft_only[0]}-costumes")
     assert body.status_code == 200
     payload = body.json()
     assert payload["total"] == 0
     assert payload["items"] == []
     listing = client.get("/api/collections").json()["collections"]
-    assert any(item["id"] == "eevee-costumes" for item in listing)
+    assert any(item["id"] == f"{draft_only[0]}-costumes" for item in listing)
 
 
 def test_stranger_is_rejected_and_the_gate_is_one_function(
