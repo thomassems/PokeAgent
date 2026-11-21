@@ -83,6 +83,13 @@ def reject(fact_id: int, trainermon_session: str | None = Cookie(default=None)) 
     return _decide(fact_id, "rejected", trainermon_session)
 
 
+@router.post("/api/curation/{fact_id}/unapprove")
+def unapprove(
+    fact_id: int, trainermon_session: str | None = Cookie(default=None)
+) -> dict:
+    return _decide(fact_id, "draft", trainermon_session)
+
+
 def _decide(fact_id: int, status: str, token: str | None) -> dict:
     user = require_user(token)
     try:

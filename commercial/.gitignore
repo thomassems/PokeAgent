@@ -170,6 +170,7 @@ out/
 # PokeAPI CSVs downloaded by data/fetch_dex.py. Regenerable, ~11MB, and the
 # generated JSON is what actually gets committed.
 backend/data/.cache/
+backend/data/cache/
 
 # Local account database. Created at runtime. Never commit it.
 backend/data/local.db

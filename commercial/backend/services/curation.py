@@ -1,7 +1,9 @@
-"""Curated GO facts. Drafts stay hidden until an admin approves them.
+"""Curated GO facts.
 
-The app does not fetch the source URL. A human pastes the announcement,
-and the model may only use that paste.
+A paste stays a draft until an admin approves it. Costume and variant
+drafts can also be approved by the costume verifier, which records
+`verified_by` as `auto-verifier`. The app does not fetch the source URL
+while it is serving a page.
 """
 
 import json
@@ -29,6 +31,7 @@ CREATE TABLE curated_facts (
     community_source_url TEXT NOT NULL DEFAULT '',
     community_aliases TEXT NOT NULL DEFAULT '',
     merged_into TEXT NOT NULL DEFAULT '',
+    verification TEXT NOT NULL DEFAULT '',
     UNIQUE (species_id, kind, value, source_url)
 )
 """
@@ -78,6 +81,7 @@ def init_curation() -> None:
             community_source = str(row.get("community_source_url") or "")
             aliases = _alias_text(row)
             merged_into = str(row.get("merged_into") or "")
+            verification = _verification_text(row)
             if key in existing:
                 # A later import may attach a community URL or an alias.
                 # It does not change an approved row's status or its notes.
@@ -111,14 +115,36 @@ def init_curation() -> None:
                         """,
                         (merged_into, *key),
                     )
+                if verification:
+                    # A person who already signed the row keeps that decision.
+                    conn.execute(
+                        """
+                        UPDATE curated_facts
+                        SET verification = ?, status = ?, verified_by = ?,
+                            verified_at = ?
+                        WHERE species_id = ? AND kind = ? AND value = ?
+                          AND source_url = ?
+                          AND status = 'draft'
+                          AND instr(verified_by, '@') = 0
+                          AND verification = ''
+                        """,
+                        (
+                            verification,
+                            _seed_status(row),
+                            row["verified_by"],
+                            row["verified_at"],
+                            *key,
+                        ),
+                    )
                 continue
             conn.execute(
                 """
                 INSERT INTO curated_facts (
                     species_id, kind, value, source_url, verified_at,
                     verified_by, status, notes, source_type,
-                    community_source_url, community_aliases, merged_into
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    community_source_url, community_aliases, merged_into,
+                    verification
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     row["species_id"],
@@ -133,6 +159,7 @@ def init_curation() -> None:
                     community_source,
                     aliases,
                     merged_into,
+                    verification,
                 ),
             )
 
@@ -168,6 +195,13 @@ def _ensure_fact_shape(conn: Any) -> None:
             ADD COLUMN merged_into TEXT NOT NULL DEFAULT ''
             """
         )
+    if "verification" not in columns:
+        conn.execute(
+            """
+            ALTER TABLE curated_facts
+            ADD COLUMN verification TEXT NOT NULL DEFAULT ''
+            """
+        )
 
 
 def _rebuild_facts(conn: Any) -> None:
@@ -185,7 +219,7 @@ def _rebuild_facts(conn: Any) -> None:
         INSERT INTO curated_facts (
             id, species_id, kind, value, source_url, verified_at, verified_by,
             status, notes, source_type, community_source_url, community_aliases,
-            merged_into
+            merged_into, verification
         )
         SELECT
             id, species_id, kind, value, source_url, verified_at, verified_by,
@@ -193,7 +227,8 @@ def _rebuild_facts(conn: Any) -> None:
             {column("source_type", "'official'")},
             {column("community_source_url", "''")},
             {column("community_aliases", "''")},
-            {column("merged_into", "''")}
+            {column("merged_into", "''")},
+            {column("verification", "''")}
         FROM curated_facts_old
         """
     )
@@ -218,17 +253,23 @@ def _source_type(row: dict[str, Any]) -> str:
     return source_type
 
 
+def _verification_text(row: dict[str, Any]) -> str:
+    raw = row.get("verification") or ""
+    if isinstance(raw, dict):
+        return json.dumps(raw, ensure_ascii=False, separators=(", ", ": "))
+    return str(raw)
+
+
 def _seed_status(row: dict[str, Any]) -> str:
     """Older seed rows omit status and stay approved.
 
-    Rows added after the Pikachu slice set status to draft. Thomas approves
-    those on /curate. The loader does not promote a draft on its own.
-    A merged row is a community duplicate of an official costume.
+    A merged row is a community duplicate of an official costume. A rejected
+    row was flagged by the verifier as something other than a costume.
     """
     status = str(row.get("status") or "approved")
-    if status not in {"draft", "approved", "merged"}:
+    if status not in {"draft", "approved", "merged", "rejected"}:
         raise ValueError(
-            f"Seed status must be draft, approved, or merged, not {status}."
+            f"Seed status must be draft, approved, merged, or rejected, not {status}."
         )
     return status
 
@@ -268,7 +309,17 @@ def list_facts() -> list[dict[str, Any]]:
             part for part in str(row.get("community_aliases") or "").split(",") if part
         ]
         row["shiny"] = _shiny_label(row, confirmed)
+        row["verification"] = _verification_payload(row.get("verification"))
     return rows
+
+
+def _verification_payload(raw: object) -> dict[str, Any] | None:
+    if raw is None or raw == "":
+        return None
+    parsed = json.loads(str(raw))
+    if not isinstance(parsed, dict):
+        raise ValueError("Verification evidence was not an object.")
+    return parsed
 
 
 def _confirmed_shiny(rows: list[dict[str, Any]]) -> set[tuple[str, str, str]]:
@@ -465,12 +516,14 @@ def set_statuses(email: str, fact_ids: list[int], status: str) -> list[dict[str,
     """Approve or reject every id. One failure rolls the whole batch back.
 
     Approval records the admin email in verified_by, the same field a single
-    approval writes. Rejection leaves verified_by as it was. A merged alias
-    cannot be approved on its own, or the costume would exist twice.
+    approval writes. Sending a row back to draft records that email too, so
+    the verifier will not approve it again. Rejection leaves verified_by as
+    it was. A merged alias cannot be approved on its own, or the costume
+    would exist twice.
     """
     _require_admin(email)
-    if status not in {"approved", "rejected"}:
-        raise ValueError("Choose approved or rejected.")
+    if status not in {"approved", "rejected", "draft"}:
+        raise ValueError("Choose approved, rejected, or draft.")
     if not fact_ids:
         raise ValueError("Select at least one row.")
     init_curation()
@@ -487,7 +540,7 @@ def set_statuses(email: str, fact_ids: list[int], status: str) -> list[dict[str,
             if not row["source_url"] or not row["verified_at"]:
                 raise ValueError("A row needs a source link and a verified date.")
             verified_by = row["verified_by"]
-            if status == "approved":
+            if status in {"approved", "draft"}:
                 verified_by = email
             conn.execute(
                 """

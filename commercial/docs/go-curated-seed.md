@@ -274,8 +274,9 @@ Pop Star, Rock Star, and Ph.D. are in the seed as community drafts.
 The game ids are `POP_STAR`, `ROCK_STAR`, and `DOCTOR`. The Ph.D. label
 is `doctor`.
 
-These rows stay drafts until Thomas approves them on `/curate`. A lawyer
-reviews the source before anyone is charged.
+Decision 18 approves a community row when the game id is also on the
+event-form list. The rest stay drafts. A lawyer reviews the source before
+anyone is charged.
 
 ### Alias merges on 20 November 2026
 
@@ -310,6 +311,29 @@ already restated from pokemongolive.com, name that costume.
 
 No shiny row was added from a game id. Shiny stays unknown unless a
 `costume_shiny` or `background_shiny` row was already in the seed.
+
+### Verifier run on 20 November 2026
+
+`uv run python -m tools.verify_costumes` judged every draft costume,
+background, and shiny-variant row. 508 were auto-approved, 122 were left
+as drafts, and 2 were rejected as internal costume slots (`pikachu`
+`costume-1` and `raichu` `costume-1`). An official draft was approved
+from the pokemongolive.com post already on the row. A community draft was
+approved only when the pokedex id also matched the event-form list. The
+list was read for the check. Its sentences were not copied. Pikachu's
+checklist then has 104 verified rows: 98 costumes and 6 backgrounds.
+
+### Verifier run on 21 November 2026
+
+The same script read official posts for the 122 drafts. It approved 10,
+merged 21 into the official row for that event, and merged one already
+approved no-evolve slot (`pikachu` `gofest-2022-noevolve` into
+`gofest-2022`). 91 stayed drafts. Pikachu's checklist stays at 104:
+the new Indonesia 2025 shirt is one verified row, and the merged
+no-evolve slot is no longer a second row. GO Tour letter codes and the
+numbered Flying Pikachu and T-shirt ids stayed drafts. The posts do not
+say which file is which, and the `-02` icons are different costumes,
+not copies.
 
 ### Still unverified
 

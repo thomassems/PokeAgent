@@ -23,6 +23,14 @@ type Fact = {
   aliases?: string[];
   merged_into?: string;
   shiny?: "confirmed" | "unknown" | null;
+  verification?: {
+    verdict: string;
+    confidence: string;
+    sources: string[];
+    urls: string[];
+    checked_at: string;
+    reason: string;
+  } | null;
 };
 
 type SourceFilter = "all" | "official" | "community";
@@ -121,7 +129,7 @@ export default function CuratePage() {
     }
   };
 
-  const decide = async (id: number, status: "approve" | "reject") => {
+  const decide = async (id: number, status: "approve" | "reject" | "unapprove") => {
     setError(null);
     try {
       await communityFetch(`/api/curation/${id}/${status}`, {
@@ -175,9 +183,10 @@ export default function CuratePage() {
         <div>
           <h2 className="text-lg font-semibold">Curate</h2>
           <p className="mt-1 text-sm text-ink-400">
-            Paste an announcement. The model drafts rows from that text only.
-            Nothing is public until you approve it. Every row keeps the source
-            link and the date you checked it.
+            Paste an announcement and the model drafts rows from that text only.
+            The costume verifier approves a row when an official Pokémon GO post
+            is already cited, or when the game data and a second source agree.
+            Needs you is what it could not corroborate.
           </p>
         </div>
         {profile === null ? (
@@ -283,7 +292,7 @@ export default function CuratePage() {
                   setPending(null);
                 }}
               >
-                <option value="draft">Drafts</option>
+                <option value="draft">Needs you</option>
                 <option value="approved">Approved</option>
                 <option value="rejected">Rejected</option>
                 <option value="merged">Merged aliases</option>
@@ -378,8 +387,33 @@ export default function CuratePage() {
                       <p className="font-medium">
                         {fact.species_name || fact.species_id} ·{" "}
                         {fact.kind_label || fact.kind} · {fact.label || fact.value}
+                        {fact.verified_by === "auto-verifier" &&
+                        fact.status === "approved" ? (
+                          <span className="ml-2 rounded-sm bg-plasma-500 px-1.5 py-0.5 text-xs font-medium text-shell-950">
+                            Auto-verified
+                          </span>
+                        ) : null}
                       </p>
                       <p className="text-xs text-ink-500">{fact.value}</p>
+                      {fact.verification?.reason ? (
+                        <p className="text-xs text-ink-300">{fact.verification.reason}</p>
+                      ) : null}
+                      {fact.verification?.urls?.length ? (
+                        <ul className="mt-1 flex flex-col gap-1">
+                          {fact.verification.urls.map((url) => (
+                            <li key={url}>
+                              <a
+                                href={url}
+                                className="break-all text-xs text-plasma-400 underline"
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                {url}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
                       {fact.aliases && fact.aliases.length > 0 ? (
                         <p className="text-xs text-ink-400">
                           Community code: {fact.aliases.join(", ")}
@@ -401,13 +435,23 @@ export default function CuratePage() {
                       </p>
                       {fact.status !== "merged" ? (
                         <div className="mt-2 flex flex-wrap gap-2">
-                          <button
-                            type="button"
-                            className="min-h-11 rounded-sm bg-plasma-500 px-2 text-xs text-shell-950"
-                            onClick={() => void decide(fact.id, "approve")}
-                          >
-                            Approve
-                          </button>
+                          {fact.status !== "approved" ? (
+                            <button
+                              type="button"
+                              className="min-h-11 rounded-sm bg-plasma-500 px-2 text-xs text-shell-950"
+                              onClick={() => void decide(fact.id, "approve")}
+                            >
+                              Approve
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              className="min-h-11 rounded-sm border border-shell-700 px-2 text-xs"
+                              onClick={() => void decide(fact.id, "unapprove")}
+                            >
+                              Return to draft
+                            </button>
+                          )}
                           <button
                             type="button"
                             className="min-h-11 rounded-sm border border-shell-700 px-2 text-xs"
