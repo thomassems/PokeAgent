@@ -376,6 +376,17 @@ release.
 An admin can return any approved row to draft. That writes the admin
 email into `verified_by`, and a later run leaves the row alone.
 
+On 21 November 2026 the same script grew a second pass. It reads
+official Pokémon GO posts and keeps only the species name and the
+costume phrase. A leftover draft is approved when one of those posts
+names that species in that costume. A game id is merged into the
+official row when that same post is the one the official row cites and
+the id's year does not contradict the post. A second internal slot is
+merged only when it is the same costume: a `noevolve` suffix, or an
+`-a-02` suffix whose icon matches the primary icon. Numbered balloon
+and shirt ids stay drafts, because the posts name the colors and do not
+number the files. The post text and its images are not stored.
+
 Rejected: **approving every pokedex id.** That file includes assets that
 were not released. Rejected: **storing checklist sentences or images.**
 The URL is the citation. Rejected: **guessing that a lettered game id is

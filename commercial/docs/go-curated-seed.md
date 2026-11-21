@@ -323,6 +323,18 @@ approved only when the pokedex id also matched the event-form list. The
 list was read for the check. Its sentences were not copied. Pikachu's
 checklist then has 104 verified rows: 98 costumes and 6 backgrounds.
 
+### Verifier run on 21 November 2026
+
+The same script read official posts for the 122 drafts. It approved 10,
+merged 21 into the official row for that event, and merged one already
+approved no-evolve slot (`pikachu` `gofest-2022-noevolve` into
+`gofest-2022`). 91 stayed drafts. Pikachu's checklist stays at 104:
+the new Indonesia 2025 shirt is one verified row, and the merged
+no-evolve slot is no longer a second row. GO Tour letter codes and the
+numbered Flying Pikachu and T-shirt ids stayed drafts. The posts do not
+say which file is which, and the `-02` icons are different costumes,
+not copies.
+
 ### Still unverified
 
 These names came up on a community list, or were already on the list from

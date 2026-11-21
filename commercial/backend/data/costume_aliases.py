@@ -47,4 +47,31 @@ COSTUME_ALIASES: tuple[CostumeAlias, ...] = (
     CostumeAlias("psyduck", "holiday-2023", "holiday-attire", "holiday attire"),
     CostumeAlias("golduck", "holiday-2023", "holiday-attire", "2023"),
     CostumeAlias("falinks", "gofest-2025-train-conductor", "train-ing", "train-ing"),
+    CostumeAlias("absol", "fall-2022-noevolve", "fashion-2022", "fashionable costume"),
+    CostumeAlias("cottonee", "spring-2024", "flower-crown", "flower crown"),
+    CostumeAlias("diglett", "fall-2022", "fashion-2022", "fashionable costume"),
+    CostumeAlias("dragonite", "fall-2023", "fashion-2023", "fashionable costume"),
+    CostumeAlias("dugtrio", "fall-2022", "fashion-2022", "fashionable costume"),
+    CostumeAlias(
+        "dusclops", "fall-2022-noevolve", "cempasuchil-crown", "cempasuchil crown"
+    ),
+    CostumeAlias(
+        "dusknoir", "fall-2022-noevolve", "cempasuchil-crown", "cempasuchil crown"
+    ),
+    CostumeAlias(
+        "duskull", "fall-2022-noevolve", "cempasuchil-crown", "cempasuchil crown"
+    ),
+    CostumeAlias("gengar", "fall-2022-noevolve", "spooky-festival", "Halloween 2022"),
+    CostumeAlias("gourgeist_average", "fall-2022", "spooky-festival", "Halloween 2022"),
+    CostumeAlias("grimer", "anniversary-2024", "party-hat", "party hat"),
+    CostumeAlias("muk", "anniversary-2024", "party-hat", "party hat"),
+    CostumeAlias("ninetales", "fall-2022", "spooky-festival", "Halloween 2022"),
+    CostumeAlias("pikachu", "diwali-2024", "saree", "saree"),
+    CostumeAlias("pikachu", "flying-5th-anniv", "flying-5-balloon", "5-shaped balloon"),
+    CostumeAlias("pikachu", "one-year-anniversary", "ash-hat", "Ash's famous hat"),
+    CostumeAlias("pumpkaboo_average", "fall-2022", "spooky-festival", "Halloween 2022"),
+    CostumeAlias("quagsire", "fall-2023", "fashion-2023", "fashionable costume"),
+    CostumeAlias("vulpix", "fall-2022", "spooky-festival", "Halloween 2022"),
+    CostumeAlias("whimsicott", "spring-2024", "flower-crown", "flower crown"),
+    CostumeAlias("wooper", "fall-2023", "fashion-2023", "fashionable costume"),
 )

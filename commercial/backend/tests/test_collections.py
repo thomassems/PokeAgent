@@ -91,7 +91,7 @@ def test_pikachu_seed_rows_are_sourced() -> None:
         if row["verified_by"] == "hand-seed":
             assert row["verified_at"] == "2026-11-19"
         if row["verified_by"] == "auto-verifier":
-            assert row["verified_at"] == "2026-11-20"
+            assert row["verified_at"] in {"2026-11-20", "2026-11-21"}
         blob = " ".join(
             (
                 row["source_url"],

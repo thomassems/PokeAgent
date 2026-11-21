@@ -1,6 +1,6 @@
 {
   "verified_on": "2026-11-20",
-  "method": "Rows a person checked stay as they were. Costume and variant drafts are approved by tools/verify_costumes.py when an official Pokémon GO post is already cited, or when the game-data id is also on the independent event-form list. Anything else stays a draft. The verifier last ran on 2026-11-20.",
+  "method": "Rows a person checked stay as they were. Costume and variant drafts are approved by tools/verify_costumes.py when an official Pokémon GO post is already cited, or when the game-data id is also on the independent event-form list. A later pass reads official posts and approves a leftover only when a post names that species in that costume. A second slot is merged when it is the same costume. The verifier last ran on 2026-11-21.",
   "rows": [
     {
       "species_id": "barboach",
@@ -1171,7 +1171,10 @@
       "source_url": "https://pokemongolive.com/en/news/festival-of-lights-2024",
       "verified_at": "2026-11-19",
       "verified_by": "hand-seed",
-      "notes": "Festival of Lights 2024 debuts Pikachu wearing a saree for Trainers in India, and the encounter line is followed by the shiny footnote. The 2026 return says this costume can also have a Special Background."
+      "notes": "Festival of Lights 2024 debuts Pikachu wearing a saree for Trainers in India, and the encounter line is followed by the shiny footnote. The 2026 return says this costume can also have a Special Background.",
+      "community_aliases": [
+        "diwali-2024"
+      ]
     },
     {
       "species_id": "pikachu",
@@ -2013,7 +2016,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "flying-5th-anniv"
+      ]
     },
     {
       "species_id": "pikachu",
@@ -2638,7 +2644,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "fall-2022"
+      ]
     },
     {
       "species_id": "dugtrio",
@@ -2660,7 +2669,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "fall-2022"
+      ]
     },
     {
       "species_id": "absol",
@@ -2682,7 +2694,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "fall-2022-noevolve"
+      ]
     },
     {
       "species_id": "toxicroak",
@@ -2858,7 +2873,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "fall-2022"
+      ]
     },
     {
       "species_id": "ninetales",
@@ -2880,7 +2898,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "fall-2022"
+      ]
     },
     {
       "species_id": "gengar",
@@ -2902,7 +2923,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "fall-2022-noevolve"
+      ]
     },
     {
       "species_id": "pumpkaboo_average",
@@ -2924,7 +2948,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "fall-2022"
+      ]
     },
     {
       "species_id": "gourgeist_average",
@@ -2946,7 +2973,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "fall-2022"
+      ]
     },
     {
       "species_id": "piplup",
@@ -3012,7 +3042,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "fall-2022-noevolve"
+      ]
     },
     {
       "species_id": "dusclops",
@@ -3034,7 +3067,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "fall-2022-noevolve"
+      ]
     },
     {
       "species_id": "dusknoir",
@@ -3056,7 +3092,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "fall-2022-noevolve"
+      ]
     },
     {
       "species_id": "bulbasaur",
@@ -4354,7 +4393,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "fall-2023"
+      ]
     },
     {
       "species_id": "dragonite",
@@ -4398,7 +4440,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "fall-2023"
+      ]
     },
     {
       "species_id": "wooper",
@@ -4442,7 +4487,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "fall-2023"
+      ]
     },
     {
       "species_id": "diglett",
@@ -4920,7 +4968,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "spring-2024"
+      ]
     },
     {
       "species_id": "cottonee",
@@ -4964,7 +5015,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "spring-2024"
+      ]
     },
     {
       "species_id": "whimsicott",
@@ -5008,7 +5062,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "anniversary-2024"
+      ]
     },
     {
       "species_id": "grimer",
@@ -5052,7 +5109,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "anniversary-2024"
+      ]
     },
     {
       "species_id": "eevee",
@@ -9546,7 +9606,10 @@
         ],
         "reason": "Official Pokémon GO post already cited on this row.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "one-year-anniversary"
+      ]
     },
     {
       "species_id": "pikachu",
@@ -9847,25 +9910,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2022_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FALL_2022_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as fashion-2022. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/fashion-week-2022"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "fashionable costume"
+      },
+      "merged_into": "fashion-2022"
     },
     {
       "species_id": "aerodactyl",
@@ -9890,8 +9951,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -9944,8 +10005,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -9998,8 +10059,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -10145,8 +10206,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -10307,8 +10368,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -10465,25 +10526,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id SPRING_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id SPRING_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as flower-crown. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/verdant-wonders-2024"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "flower crown"
+      },
+      "merged_into": "flower-crown"
     },
     {
       "species_id": "croagunk",
@@ -10508,8 +10567,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -10589,8 +10648,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -10616,8 +10675,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -10666,25 +10725,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as fashion-2022. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/fashion-week-2022"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "fashionable costume"
+      },
+      "merged_into": "fashion-2022"
     },
     {
       "species_id": "dragonite",
@@ -10693,25 +10750,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FALL_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as fashion-2023. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/fashion-week-2023"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "fashionable costume"
+      },
+      "merged_into": "fashion-2023"
     },
     {
       "species_id": "drifblim",
@@ -10759,25 +10814,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as fashion-2022. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/fashion-week-2022"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "fashionable costume"
+      },
+      "merged_into": "fashion-2022"
     },
     {
       "species_id": "dusclops",
@@ -10786,25 +10839,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2022_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FALL_2022_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as cempasuchil-crown. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/dia-de-muertos-2022"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "cempasuchil crown"
+      },
+      "merged_into": "cempasuchil-crown"
     },
     {
       "species_id": "dusknoir",
@@ -10813,25 +10864,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2022_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FALL_2022_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as cempasuchil-crown. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/dia-de-muertos-2022"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "cempasuchil crown"
+      },
+      "merged_into": "cempasuchil-crown"
     },
     {
       "species_id": "duskull",
@@ -10840,25 +10889,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2022_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FALL_2022_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as cempasuchil-crown. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/dia-de-muertos-2022"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "cempasuchil crown"
+      },
+      "merged_into": "cempasuchil-crown"
     },
     {
       "species_id": "eevee",
@@ -10883,8 +10930,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -10910,8 +10957,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -10991,8 +11038,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -11072,8 +11119,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The Instinctive Hero post names Elekid and does not name this species.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -11099,8 +11146,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The Instinctive Hero post names Elekid and does not name this species.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -11108,26 +11155,24 @@
       "kind": "costume",
       "value": "spring-2023-instinct",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-21",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SPRING_2023_INSTINCT. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "auto-approve",
+        "confidence": "high",
         "sources": [
           "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
           "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongo.com/news/an-instinctive-hero"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The Instinctive Hero post says Elekid wears a Spark accessory.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -11153,8 +11198,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -11207,8 +11252,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -11327,8 +11372,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -11474,8 +11519,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -11539,25 +11584,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2022_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FALL_2022_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as spooky-festival. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/halloween-2022-event-details-part-2"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "Halloween 2022"
+      },
+      "merged_into": "spooky-festival"
     },
     {
       "species_id": "gengar",
@@ -11690,8 +11733,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -11767,51 +11810,47 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as spooky-festival. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/halloween-2022-event-details-part-2"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "Halloween 2022"
+      },
+      "merged_into": "spooky-festival"
     },
     {
       "species_id": "gourgeist_large",
       "kind": "costume",
       "value": "fall-2022",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-21",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "auto-approve",
+        "confidence": "high",
         "sources": [
           "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
           "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/halloween-2022-event-details-part-2"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "Halloween 2022 says this species wears a Spooky Festival costume.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -11819,26 +11858,24 @@
       "kind": "costume",
       "value": "fall-2022",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-21",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "auto-approve",
+        "confidence": "high",
         "sources": [
           "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
           "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/halloween-2022-event-details-part-2"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "Halloween 2022 says this species wears a Spooky Festival costume.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -11846,26 +11883,24 @@
       "kind": "costume",
       "value": "fall-2022",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-21",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "auto-approve",
+        "confidence": "high",
         "sources": [
           "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
           "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/halloween-2022-event-details-part-2"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "Halloween 2022 says this species wears a Spooky Festival costume.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -11891,8 +11926,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -11902,25 +11937,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id ANNIVERSARY_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id ANNIVERSARY_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as party-hat. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/pokemongo-8th-anniversary"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "party hat"
+      },
+      "merged_into": "party-hat"
     },
     {
       "species_id": "happiny",
@@ -11999,8 +12032,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -12065,8 +12098,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -12146,8 +12179,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -12182,26 +12215,24 @@
       "kind": "costume",
       "value": "spring-2023-mystic",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-21",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SPRING_2023_MYSTIC. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "auto-approve",
+        "confidence": "high",
         "sources": [
           "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
           "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongo.com/news/a-mystic-hero"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The Mystic Hero post says Lapras wears a Blanche accessory.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -12254,8 +12285,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -12335,8 +12366,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -12362,8 +12393,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The 2017 anniversary post names Pikachu in Ash's hat and does not name this species.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -12416,8 +12447,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The 2017 anniversary post names Pikachu in Ash's hat and does not name this species.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -12427,25 +12458,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id ANNIVERSARY_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id ANNIVERSARY_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as party-hat. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/pokemongo-8th-anniversary"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "party hat"
+      },
+      "merged_into": "party-hat"
     },
     {
       "species_id": "nidoking",
@@ -12470,8 +12499,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -12497,8 +12526,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -12535,25 +12564,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as spooky-festival. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/halloween-2022-event-details-part-2"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "Halloween 2022"
+      },
+      "merged_into": "spooky-festival"
     },
     {
       "species_id": "noctowl",
@@ -12683,8 +12710,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -12791,8 +12818,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The 2017 anniversary post names Pikachu in Ash's hat and does not name this species.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13088,8 +13115,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13099,25 +13126,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id DIWALI_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id DIWALI_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as saree. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/en/news/festival-of-lights-2024"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post names this costume, and the game id is diwali-2024.",
+        "checked_at": "2026-11-21",
+        "because": "saree"
+      },
+      "merged_into": "saree"
     },
     {
       "species_id": "pikachu",
@@ -13277,8 +13302,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "Official posts name Flying Pikachu balloon colors and do not say which numbered id is which.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13304,8 +13329,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "Official posts name Flying Pikachu balloon colors and do not say which numbered id is which.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13331,8 +13356,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "Official posts name Flying Pikachu balloon colors and do not say which numbered id is which.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13358,8 +13383,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "Official posts name Flying Pikachu balloon colors and do not say which numbered id is which.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13369,25 +13394,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FLYING_5TH_ANNIV. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FLYING_5TH_ANNIV. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as flying-5-balloon. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/birthday2021"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post names this costume, and the game id is flying-5th-anniv.",
+        "checked_at": "2026-11-21",
+        "because": "5-shaped balloon"
+      },
+      "merged_into": "flying-5-balloon"
     },
     {
       "species_id": "pikachu",
@@ -13468,7 +13491,10 @@
         ],
         "reason": "The game id is in the pokedex import and on the event-form list.",
         "checked_at": "2026-11-20"
-      }
+      },
+      "community_aliases": [
+        "gofest-2022-noevolve"
+      ]
     },
     {
       "species_id": "pikachu",
@@ -13476,26 +13502,23 @@
       "value": "gofest-2022-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
-      "verified_by": "auto-verifier",
-      "status": "approved",
+      "verified_by": "community-import",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id GOFEST_2022_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id GOFEST_2022_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as gofest-2022. Kept on that row as an alias.",
       "verification": {
-        "verdict": "auto-approve",
+        "verdict": "alias",
         "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game id is in the pokedex import and on the event-form list.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "This is a second internal slot for the same costume.",
+        "checked_at": "2026-11-21"
+      },
+      "merged_into": "gofest-2022"
     },
     {
       "species_id": "pikachu",
@@ -13520,8 +13543,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13547,8 +13570,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13736,8 +13759,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13763,8 +13786,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13790,8 +13813,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13817,8 +13840,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13844,8 +13867,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13871,8 +13894,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13898,8 +13921,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13925,8 +13948,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13952,8 +13975,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -13979,8 +14002,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14006,8 +14029,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14033,8 +14056,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14060,8 +14083,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14087,8 +14110,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14114,8 +14137,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14141,8 +14164,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "No fetched official page names this GO Tour id.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14267,26 +14290,24 @@
       "kind": "costume",
       "value": "indonesia-2025-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-21",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id INDONESIA_2025_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "auto-approve",
+        "confidence": "high",
         "sources": [
           "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
           "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongo.com/news/indonesia-journey-2025-bekasi"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The Indonesia Journey 2025 post says Pikachu wears a batik shirt.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14366,8 +14387,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14455,25 +14476,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id ONE_YEAR_ANNIVERSARY. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id ONE_YEAR_ANNIVERSARY. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as ash-hat. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/en/post/birthday2017"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post names this costume, and the game id is one-year-anniversary.",
+        "checked_at": "2026-11-21",
+        "because": "Ash's famous hat"
+      },
+      "merged_into": "ash-hat"
     },
     {
       "species_id": "pikachu",
@@ -14498,8 +14517,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14672,8 +14691,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14699,8 +14718,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14726,8 +14745,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14753,8 +14772,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14780,8 +14799,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14819,8 +14838,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "Official posts name colored T-shirts and do not number these ids.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14846,8 +14865,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "Official posts name colored T-shirts and do not number these ids.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14873,8 +14892,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "Official posts name colored T-shirts and do not number these ids.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -14900,8 +14919,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15125,8 +15144,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15134,26 +15153,24 @@
       "kind": "costume",
       "value": "spring-2023-valor",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-21",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SPRING_2023_VALOR. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "auto-approve",
+        "confidence": "high",
         "sources": [
           "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
           "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongo.com/news/a-valorous-hero"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The Valorous Hero post says Ponyta wears a Candela accessory.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15187,51 +15204,47 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as spooky-festival. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/halloween-2022-event-details-part-2"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "Halloween 2022"
+      },
+      "merged_into": "spooky-festival"
     },
     {
       "species_id": "pumpkaboo_large",
       "kind": "costume",
       "value": "fall-2022",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-21",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "auto-approve",
+        "confidence": "high",
         "sources": [
           "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
           "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/halloween-2022-event-details-part-2"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "Halloween 2022 says this species wears a Spooky Festival costume.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15239,26 +15252,24 @@
       "kind": "costume",
       "value": "fall-2022",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-21",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "auto-approve",
+        "confidence": "high",
         "sources": [
           "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
           "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/halloween-2022-event-details-part-2"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "Halloween 2022 says this species wears a Spooky Festival costume.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15266,26 +15277,24 @@
       "kind": "costume",
       "value": "fall-2022",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-21",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "auto-approve",
+        "confidence": "high",
         "sources": [
           "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
           "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/halloween-2022-event-details-part-2"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "Halloween 2022 says this species wears a Spooky Festival costume.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15295,25 +15304,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FALL_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as fashion-2023. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/fashion-week-2023"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "fashionable costume"
+      },
+      "merged_into": "fashion-2023"
     },
     {
       "species_id": "raichu",
@@ -15581,8 +15588,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The 2017 anniversary post names Pikachu in Ash's hat and does not name this species.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15608,8 +15615,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15716,8 +15723,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The Valorous Hero post names Ponyta and does not name this species.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15809,8 +15816,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15836,8 +15843,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15863,8 +15870,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15890,8 +15897,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15917,8 +15924,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15944,8 +15951,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15971,8 +15978,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -15998,8 +16005,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -16079,8 +16086,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -16106,8 +16113,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -16280,8 +16287,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -16334,8 +16341,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -16427,8 +16434,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -16481,8 +16488,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -16508,8 +16515,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -16589,8 +16596,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -16643,8 +16650,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -16775,8 +16782,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -16883,8 +16890,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -16910,8 +16917,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -16937,8 +16944,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -16948,25 +16955,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FALL_2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as spooky-festival. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/halloween-2022-event-details-part-2"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "Halloween 2022"
+      },
+      "merged_into": "spooky-festival"
     },
     {
       "species_id": "wartortle",
@@ -16991,8 +16996,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     },
     {
@@ -17029,25 +17034,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id SPRING_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id SPRING_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as flower-crown. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/verdant-wonders-2024"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "flower crown"
+      },
+      "merged_into": "flower-crown"
     },
     {
       "species_id": "wigglytuff",
@@ -17107,25 +17110,23 @@
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
       "verified_at": "2026-11-20",
       "verified_by": "community-import",
-      "status": "draft",
+      "status": "merged",
       "source_type": "community",
-      "notes": "Game id FALL_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
+      "notes": "Game id FALL_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded. Same costume as fashion-2023. Kept on that row as an alias.",
       "verification": {
-        "verdict": "needs-review",
-        "confidence": "low",
+        "verdict": "alias",
+        "confidence": "high",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "official Pokémon GO post"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemongolive.com/news/fashion-week-2023"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
-      }
+        "reason": "The official post for this event names this species in this costume.",
+        "checked_at": "2026-11-21",
+        "because": "fashionable costume"
+      },
+      "merged_into": "fashion-2023"
     },
     {
       "species_id": "wurmple",
@@ -17177,8 +17178,8 @@
           "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
           "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
         ],
-        "reason": "The game-data import lists this code, and no second source confirmed it.",
-        "checked_at": "2026-11-20"
+        "reason": "The game-data import lists this code, and no official post confirmed it.",
+        "checked_at": "2026-11-21"
       }
     }
   ]

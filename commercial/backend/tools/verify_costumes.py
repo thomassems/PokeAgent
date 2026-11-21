@@ -14,17 +14,24 @@ left alone.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import re
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from html.parser import HTMLParser
 from pathlib import Path
 
 from data.go_catalog import variant_label
 from tools.costume_evidence import (
+    Announcement,
+    news_result,
+    parse_announcements,
     parse_event_codes,
     parse_sprite_names,
+    slot_stem,
     variant_kind,
     verdict_for,
 )
@@ -38,7 +45,10 @@ _ROOT = Path(__file__).resolve().parents[1]
 _CATALOG = _ROOT / "data" / "go_base.json"
 _SEED = _ROOT / "data" / "go_curated_seed.json"
 _CACHE = _ROOT / "data" / "cache" / "costume-evidence.json"
+_NEWS_CACHE = _ROOT / "data" / "cache" / "costume-news.json"
 _CHECKED_ON = "2026-11-20"
+_NEWS_ON = "2026-11-21"
+_NEWS_GAP = 1.0
 _POKEDEX_URL = "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
 _EVENT_TITLE = "Event Pokémon (GO)"
 _PIKACHU_TITLE = "Pikachu (GO)"
@@ -223,11 +233,288 @@ def pending_lines(seed: dict[str, object]) -> list[str]:
     return lines
 
 
+class _Text(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.parts: list[str] = []
+        self.skip = False
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag in {"script", "style", "noscript"}:
+            self.skip = True
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in {"script", "style", "noscript"}:
+            self.skip = False
+
+    def handle_data(self, data: str) -> None:
+        if not self.skip:
+            self.parts.append(data)
+
+
+def _page_text(url: str) -> str:
+    status, body = _request(url)
+    if status != 200 or not body.lstrip().startswith("<"):
+        return ""
+    parser = _Text()
+    parser.feed(body)
+    return re.sub(r"\s+", " ", " ".join(parser.parts))
+
+
+def _news_urls(seed: dict[str, object], names: dict[str, str]) -> list[str]:
+    rows = seed["rows"]
+    assert isinstance(rows, list)
+    draft_names = {
+        names.get(str(row["species_id"]), "")
+        for row in rows
+        if (row.get("verification") or {}).get("verdict") == "needs-review"
+    }
+    draft_names.discard("")
+    urls: list[str] = []
+    for row in rows:
+        if row.get("kind") != "costume":
+            continue
+        if names.get(str(row["species_id"]), "") not in draft_names:
+            continue
+        if row.get("source_type", "official") != "official":
+            continue
+        url = str(row.get("source_url") or "")
+        if url.startswith("https://") and url not in urls:
+            urls.append(url)
+    extras = (
+        "https://pokemongo.com/news/an-instinctive-hero",
+        "https://pokemongo.com/news/a-mystic-hero",
+        "https://pokemongo.com/news/a-valorous-hero",
+        "https://pokemongo.com/news/indonesia-journey-2025-bekasi",
+        "https://pokemongo.com/news/birthday2017",
+        "https://pokemongo.com/news/birthday2021",
+        "https://pokemongo.com/news/flying-pikachu-2022",
+        "https://pokemongo.com/news/pokemon-go-safari-zone-taipei",
+    )
+    for url in extras:
+        if url not in urls:
+            urls.append(url)
+    return urls
+
+
+def load_announcements(
+    seed: dict[str, object], names: dict[str, str], *, refresh: bool
+) -> list[Announcement]:
+    """Parsed species and costume phrases. The post HTML is not stored."""
+    if _NEWS_CACHE.exists() and not refresh:
+        cached = json.loads(_NEWS_CACHE.read_text())
+        return [
+            Announcement(str(item["species"]), str(item["phrase"]), str(item["url"]))
+            for item in cached["announcements"]
+        ]
+    found: list[Announcement] = []
+    for url in _news_urls(seed, names):
+        time.sleep(_NEWS_GAP)
+        try:
+            text = _page_text(url)
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+            print(f"news fetch failed\t{url}")
+            continue
+        if not text:
+            print(f"news fetch empty\t{url}")
+            continue
+        found.extend(parse_announcements(text, url, tuple(names.values())))
+    _NEWS_CACHE.parent.mkdir(parents=True, exist_ok=True)
+    _NEWS_CACHE.write_text(
+        json.dumps(
+            {
+                "checked_at": _NEWS_ON,
+                "announcements": [
+                    {"species": item.species, "phrase": item.phrase, "url": item.url}
+                    for item in found
+                ],
+            },
+            indent=2,
+        )
+        + "\n"
+    )
+    return found
+
+
+def _append_alias(row: dict[str, object], code: str) -> None:
+    current = row.get("community_aliases")
+    aliases = list(current) if isinstance(current, list) else []
+    if code not in aliases:
+        aliases.append(code)
+    row["community_aliases"] = aliases
+
+
+def apply_news(
+    seed: dict[str, object],
+    announcements: list[Announcement],
+    names: dict[str, str],
+) -> dict[str, int]:
+    """Upgrade drafts a fetched official post actually names."""
+    rows = seed["rows"]
+    assert isinstance(rows, list)
+    official: dict[str, list[dict[str, str]]] = {}
+    for row in rows:
+        if row.get("kind") != "costume" or row.get("status") == "merged":
+            continue
+        if row.get("source_type", "official") != "official":
+            continue
+        official.setdefault(str(row["species_id"]), []).append(row)
+    counts = {"news_approved": 0, "news_merged": 0}
+    for row in rows:
+        verification = row.get("verification") or {}
+        if not isinstance(verification, dict):
+            continue
+        if (
+            verification.get("verdict") != "needs-review"
+            or row.get("status") != "draft"
+        ):
+            continue
+        species_id = str(row["species_id"])
+        result = news_result(
+            species_id=species_id,
+            value=str(row["value"]),
+            species_name=names.get(species_id, ""),
+            official_rows=official.get(species_id, []),
+            announcements=announcements,
+        )
+        if result.action == "merge":
+            target = next(
+                item
+                for item in official[species_id]
+                if item["value"] == result.official
+            )
+            _append_alias(target, str(row["value"]))
+            row["status"] = "merged"
+            row["merged_into"] = result.official
+            row["verified_by"] = "community-import"
+            note = str(row.get("notes") or "")
+            extra = f" Same costume as {result.official}. Kept on that row as an alias."
+            if extra.strip() not in note:
+                row["notes"] = note + extra
+            row["verification"] = {
+                "verdict": "alias",
+                "confidence": result.confidence,
+                "sources": ["official Pokémon GO post"],
+                "urls": [result.url],
+                "reason": result.reason,
+                "checked_at": _NEWS_ON,
+                "because": result.because,
+            }
+            counts["news_merged"] += 1
+        elif result.action == "approve":
+            row["status"] = "approved"
+            row["verified_by"] = "auto-verifier"
+            row["verified_at"] = _NEWS_ON
+            row["verification"] = {
+                "verdict": "auto-approve",
+                "confidence": result.confidence,
+                "sources": ["pokemon-go-api pokedex", "official Pokémon GO post"],
+                "urls": [str(row["source_url"]), result.url],
+                "reason": result.reason,
+                "checked_at": _NEWS_ON,
+            }
+            counts["news_approved"] += 1
+        else:
+            verification["reason"] = result.reason
+            verification["checked_at"] = _NEWS_ON
+            row["verification"] = verification
+    return counts
+
+
+def _icon_map(payload: list[dict[str, object]]) -> dict[tuple[str, str], str]:
+    """Species id and costume slug to an icon URL. The file is not copied."""
+    from tools.import_community_variants import slug
+
+    icons: dict[tuple[str, str], str] = {}
+    for mon in payload:
+        game_id = str(mon.get("id") or "").lower()
+        assets = mon.get("assetForms")
+        if not isinstance(assets, list):
+            continue
+        for asset in assets:
+            if not isinstance(asset, dict) or asset.get("isFemale"):
+                continue
+            token = asset.get("costume") or asset.get("form") or ""
+            image = str(asset.get("image") or "")
+            if game_id and token and image:
+                icons[(game_id, slug(str(token)))] = image
+    return icons
+
+
+def _same_icon(left: str, right: str) -> bool:
+    hashes: list[str] = []
+    for url in (left, right):
+        time.sleep(_NEWS_GAP)
+        request = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
+        try:
+            with urllib.request.urlopen(request, timeout=60) as response:
+                if response.status != 200:
+                    return False
+                payload = response.read()
+        except urllib.error.URLError:
+            return False
+        if not payload:
+            return False
+        hashes.append(hashlib.sha256(payload).hexdigest())
+    return hashes[0] == hashes[1]
+
+
+def apply_slot_merges(
+    seed: dict[str, object], payload: list[dict[str, object]]
+) -> list[str]:
+    """Merge a second slot when it is the same costume, not a different one.
+
+    A no-evolve suffix is the same costume. An `-a-02` suffix is merged only
+    when its icon matches the primary icon. Different pixels stay separate.
+    """
+    rows = seed["rows"]
+    assert isinstance(rows, list)
+    costumes = [
+        row
+        for row in rows
+        if row.get("kind") == "costume" and row.get("status") != "merged"
+    ]
+    by_key = {(str(row["species_id"]), str(row["value"])): row for row in costumes}
+    icons = _icon_map(payload)
+    merged: list[str] = []
+    for row in costumes:
+        stem = slot_stem(str(row["value"]))
+        if not stem:
+            continue
+        primary = by_key.get((str(row["species_id"]), stem))
+        if primary is None or primary is row:
+            continue
+        if str(row["value"]).endswith("-02"):
+            left = icons.get((str(row["species_id"]), str(row["value"])), "")
+            right = icons.get((str(row["species_id"]), stem), "")
+            if not left or not right or not _same_icon(left, right):
+                continue
+        _append_alias(primary, str(row["value"]))
+        row["status"] = "merged"
+        row["merged_into"] = stem
+        row["verified_by"] = "community-import"
+        note = str(row.get("notes") or "")
+        extra = f" Same costume as {stem}. Kept on that row as an alias."
+        if extra.strip() not in note:
+            row["notes"] = note + extra
+        row["verification"] = {
+            "verdict": "alias",
+            "confidence": "high",
+            "sources": ["pokemon-go-api pokedex"],
+            "urls": [str(row.get("source_url") or "")],
+            "reason": "This is a second internal slot for the same costume.",
+            "checked_at": _NEWS_ON,
+        }
+        merged.append(f"{row['species_id']} {row['value']} -> {stem}")
+    return merged
+
+
 def verify(*, refresh: bool, dry_run: bool) -> tuple[dict[str, int], list[str]]:
     payload = fetch_pokedex(refresh=refresh)
     codes, names = load_evidence(refresh=refresh)
     catalog = json.loads(_CATALOG.read_text())["species"]
     dex_of = {item["id"]: int(item["dex"]) for item in catalog}
+    species_names = {item["id"]: str(item["name"]) for item in catalog}
     seed = json.loads(_SEED.read_text())
     counts = apply_verdicts(
         seed,
@@ -236,16 +523,24 @@ def verify(*, refresh: bool, dry_run: bool) -> tuple[dict[str, int], list[str]]:
         names=names,
         dex_of=dex_of,
     )
+    announcements = load_announcements(seed, species_names, refresh=refresh)
+    counts.update(apply_news(seed, announcements, species_names))
+    slot_merges = apply_slot_merges(seed, payload)
+    counts["slot_merged"] = len(slot_merges)
     seed["method"] = (
         "Rows a person checked stay as they were. Costume and variant drafts "
         "are approved by tools/verify_costumes.py when an official Pokémon GO "
         "post is already cited, or when the game-data id is also on the "
-        "independent event-form list. Anything else stays a draft. The "
-        f"verifier last ran on {_CHECKED_ON}."
+        "independent event-form list. A later pass reads official posts and "
+        "approves a leftover only when a post names that species in that "
+        "costume. A second slot is merged when it is the same costume. "
+        f"The verifier last ran on {_NEWS_ON}."
     )
     if not dry_run:
         _SEED.write_text(json.dumps(seed, indent=2, ensure_ascii=False) + "\n")
-    return counts, pending_lines(seed)
+    lines = [f"slot-merge\t{line}" for line in slot_merges]
+    lines.extend(pending_lines(seed))
+    return counts, lines
 
 
 def main() -> None:

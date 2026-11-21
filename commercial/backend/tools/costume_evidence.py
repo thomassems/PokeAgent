@@ -285,3 +285,424 @@ def _unique(urls: tuple[str, ...]) -> tuple[str, ...]:
         if url and url not in seen:
             seen.append(url)
     return tuple(seen)
+
+
+# A second pass reads official posts. A row is approved only when a post
+# names that species in that costume. A game id is merged into an official
+# row only when that post is the one the official row already cites and the
+# id's year does not contradict the post. Numbered balloon and shirt ids
+# stay drafts: the posts name the colors and do not number the files.
+
+_MONTHS = {
+    "january": 1,
+    "february": 2,
+    "march": 3,
+    "april": 4,
+    "may": 5,
+    "june": 6,
+    "july": 7,
+    "august": 8,
+    "september": 9,
+    "october": 10,
+    "november": 11,
+    "december": 12,
+}
+_SEASONS = {
+    "spring": {3, 4, 5},
+    "summer": {6, 7, 8},
+    "fall": {9, 10, 11},
+    "winter": {12, 1, 2},
+}
+_CODE_MONTHS = {
+    "jan": 1,
+    "january": 1,
+    "feb": 2,
+    "february": 2,
+    "mar": 3,
+    "march": 3,
+    "apr": 4,
+    "april": 4,
+    "may": 5,
+    "jun": 6,
+    "june": 6,
+    "jul": 7,
+    "july": 7,
+    "aug": 8,
+    "august": 8,
+    "sep": 9,
+    "september": 9,
+    "oct": 10,
+    "october": 10,
+    "nov": 11,
+    "november": 11,
+    "dec": 12,
+    "december": 12,
+}
+_BECAUSE = (
+    "fashionable costume",
+    "flower crown",
+    "party hat",
+    "Halloween 2022",
+    "cempasuchil crown",
+    "saree",
+    "5-shaped balloon",
+    "Ash's famous hat",
+    "cherry blossoms",
+)
+# Game id, official slug, phrase the post must use, slug the post URL must use.
+_EXPLICIT = (
+    ("diwali-2024", "saree", "saree", "festival-of-lights-2024"),
+    ("flying-5th-anniv", "flying-5-balloon", "5-shaped", "birthday2021"),
+    ("one-year-anniversary", "ash-hat", "ash", "birthday2017"),
+)
+_DIRECT = (
+    (
+        "spring-2023-instinct",
+        "elekid",
+        "spark",
+        "an-instinctive-hero",
+        "The Instinctive Hero post says Elekid wears a Spark accessory.",
+    ),
+    (
+        "spring-2023-mystic",
+        "lapras",
+        "blanche",
+        "a-mystic-hero",
+        "The Mystic Hero post says Lapras wears a Blanche accessory.",
+    ),
+    (
+        "spring-2023-valor",
+        "ponyta",
+        "candela",
+        "a-valorous-hero",
+        "The Valorous Hero post says Ponyta wears a Candela accessory.",
+    ),
+    (
+        "indonesia-2025-noevolve",
+        "pikachu",
+        "batik",
+        "indonesia-journey-2025",
+        "The Indonesia Journey 2025 post says Pikachu wears a batik shirt.",
+    ),
+)
+
+
+@dataclass(frozen=True)
+class Announcement:
+    species: str
+    phrase: str
+    url: str
+
+
+@dataclass(frozen=True)
+class NewsResult:
+    action: str
+    official: str
+    because: str
+    url: str
+    reason: str
+    confidence: str
+
+
+def url_slug(url: str) -> str:
+    path = url.split("?", 1)[0].rstrip("/")
+    return path.rsplit("/", 1)[-1].lower()
+
+
+def parse_announcements(
+    text: str, url: str, names: tuple[str, ...]
+) -> list[Announcement]:
+    """Species and costume phrase from one post. The post text is not kept."""
+    cleaned = text.replace("’", "'").replace("‘", "'")
+    found: list[Announcement] = []
+    seen: set[tuple[str, str]] = set()
+
+    def _add(name: str, raw: str) -> None:
+        phrase = re.sub(r"\s+", " ", raw).strip(" *^")
+        key = (name.lower(), phrase.lower())
+        if phrase and key not in seen:
+            seen.add(key)
+            found.append(Announcement(name, phrase, url))
+
+    for name in sorted(set(names), key=len, reverse=True):
+        wearing = re.compile(
+            rf"\b{re.escape(name)}\s+(?:wearing|adorned with)\s+"
+            rf"(?:a |an )?([^.]{{2,80}})",
+            re.IGNORECASE,
+        )
+        shirt = re.compile(
+            rf"\b{re.escape(name)}\s+berkemeja\s+([A-Za-z]+)",
+            re.IGNORECASE,
+        )
+        for pattern in (wearing, shirt):
+            for match in pattern.finditer(cleaned):
+                _add(name, match.group(1))
+    # "Pikachu ... will be wearing Ash's famous hat" does not put the
+    # name immediately before wearing. Take the nearest name in the window.
+    for match in re.finditer(
+        r"\b(?:wearing|adorned with)\s+(?:a |an )?([^.]{2,80})",
+        cleaned,
+        re.IGNORECASE,
+    ):
+        window = cleaned[max(0, match.start() - 80) : match.start()]
+        nearest: tuple[int, str] | None = None
+        for name in names:
+            for hit in re.finditer(rf"\b{re.escape(name)}\b", window, re.IGNORECASE):
+                if nearest is None or hit.start() > nearest[0]:
+                    nearest = (hit.start(), name)
+        if nearest:
+            _add(nearest[1], match.group(1))
+    for match in re.finditer(
+        r"Flying Pikachu(?:\s+with\s+([^.]{3,80}))?", cleaned, re.IGNORECASE
+    ):
+        phrase = re.sub(r"\s+", " ", match.group(1) or "flying").strip()
+        key = ("pikachu", phrase.lower())
+        if key not in seen:
+            seen.add(key)
+            found.append(Announcement("Pikachu", phrase, url))
+    return found
+
+
+def _year(value: str) -> str:
+    match = re.search(r"20\d\d", value)
+    return match.group(0) if match else ""
+
+
+def _month(value: str) -> int:
+    for part in value.lower().split("-"):
+        if part in _CODE_MONTHS:
+            return _CODE_MONTHS[part]
+    return 0
+
+
+def _season(value: str) -> str:
+    parts = set(value.lower().split("-"))
+    for name in _SEASONS:
+        if name in parts:
+            return name
+    return ""
+
+
+def _months_named(text: str) -> set[int]:
+    lowered = text.lower()
+    return {number for name, number in _MONTHS.items() if name in lowered}
+
+
+def _anniversary_year(url: str) -> str:
+    match = re.search(r"(\d+)(?:st|nd|rd|th)-anniversary", url, re.IGNORECASE)
+    if not match:
+        return ""
+    return str(2016 + int(match.group(1)))
+
+
+def because_phrase(notes: str) -> str:
+    for phrase in _BECAUSE:
+        if phrase in notes:
+            return phrase
+    return ""
+
+
+def _compatible(value: str, notes: str, url: str) -> bool:
+    year = _year(value)
+    if not year:
+        return False
+    blob = f"{notes} {url}"
+    # The 8th-anniversary URL means 2024 only for an anniversary id.
+    # A 2024 GO Fest id is not that party hat.
+    anniversary = "anniversary" in value.split("-") and _anniversary_year(url) == year
+    if year not in blob and not anniversary:
+        return False
+    extras = [
+        part
+        for part in value.split("-")
+        if part
+        not in {"noevolve", "spring", "summer", "fall", "winter", "anniversary"}
+        and part not in _CODE_MONTHS
+        and not re.fullmatch(r"20\d\d", part)
+    ]
+    if extras and not any(part in blob.lower() for part in extras):
+        return False
+    month = _month(value)
+    if month and not re.search(rf"\b{_month_name(month)}\b", blob, re.IGNORECASE):
+        return False
+    season = _season(value)
+    named = _months_named(notes)
+    if season and named and not (named & _SEASONS[season]):
+        return False
+    if "anniversary" in value.split("-") and "anniversary" not in blob.lower():
+        return False
+    return True
+
+
+def _month_name(number: int) -> str:
+    for name, month in _MONTHS.items():
+        if month == number:
+            return name
+    return ""
+
+
+def _named(
+    announcements: list[Announcement], species: str, slug: str
+) -> list[Announcement]:
+    return [
+        item
+        for item in announcements
+        if item.species.lower() == species.lower() and url_slug(item.url) == slug
+    ]
+
+
+def news_result(
+    *,
+    species_id: str,
+    value: str,
+    species_name: str,
+    official_rows: list[dict[str, object]],
+    announcements: list[Announcement],
+) -> NewsResult:
+    """Merge into one official row, approve from one post, or leave it."""
+    for code, official, needle, slug in _EXPLICIT:
+        if species_id != "pikachu" or value != code:
+            continue
+        hits = [
+            item
+            for item in announcements
+            if item.species.lower() == "pikachu"
+            and slug in url_slug(item.url)
+            and needle in item.phrase.lower()
+        ]
+        row = next(
+            (item for item in official_rows if item.get("value") == official), None
+        )
+        because = because_phrase(str(row.get("notes", ""))) if row else ""
+        if not hits or not because:
+            return NewsResult(
+                "leave",
+                "",
+                "",
+                "",
+                (
+                    "The game-data import lists this code, and no "
+                    "official post confirmed it."
+                ),
+                "low",
+            )
+        return NewsResult(
+            "merge",
+            official,
+            because,
+            hits[0].url,
+            f"The official post names this costume, and the game id is {value}.",
+            "high",
+        )
+    compatible = [
+        row
+        for row in official_rows
+        if _compatible(value, str(row.get("notes", "")), str(row.get("source_url", "")))
+    ]
+    confirmed = []
+    for row in compatible:
+        slug = url_slug(str(row.get("source_url", "")))
+        if _named(announcements, species_name, slug):
+            confirmed.append(row)
+    if len(confirmed) == 1:
+        row = confirmed[0]
+        because = because_phrase(str(row.get("notes", "")))
+        if because:
+            return NewsResult(
+                "merge",
+                str(row["value"]),
+                because,
+                str(row["source_url"]),
+                "The official post for this event names this species in this costume.",
+                "high",
+            )
+    for code, species, needle, slug, reason in _DIRECT:
+        if value != code or species_id != species:
+            continue
+        hits = [
+            item
+            for item in announcements
+            if item.species.lower() == species_name.lower()
+            and slug in url_slug(item.url)
+            and needle in item.phrase.lower()
+        ]
+        if hits:
+            return NewsResult("approve", "", "", hits[0].url, reason, "high")
+        return NewsResult(
+            "leave",
+            "",
+            "",
+            "",
+            "The game-data import lists this code, and no official post confirmed it.",
+            "low",
+        )
+    if value.startswith("fall-2022") and species_name in {"Pumpkaboo", "Gourgeist"}:
+        hits = [
+            item
+            for item in announcements
+            if item.species.lower() == species_name.lower()
+            and "halloween-2022" in url_slug(item.url)
+            and "spooky" in item.phrase.lower()
+        ]
+        if hits and not confirmed:
+            return NewsResult(
+                "approve",
+                "",
+                "",
+                hits[0].url,
+                "Halloween 2022 says this species wears a Spooky Festival costume.",
+                "high",
+            )
+    return NewsResult(
+        "leave", "", "", "", _leave_reason(value, species_name, announcements), "low"
+    )
+
+
+def _leave_reason(
+    value: str, species_name: str, announcements: list[Announcement]
+) -> str:
+    own = [
+        item for item in announcements if item.species.lower() == species_name.lower()
+    ]
+    phrases = " ".join(item.phrase.lower() for item in own)
+    if re.fullmatch(r"flying-0\d", value) and "balloon" in phrases:
+        return (
+            "Official posts name Flying Pikachu balloon colors and do not "
+            "say which numbered id is which."
+        )
+    if value.startswith("tshirt-") and "t-shirt" in phrases:
+        return "Official posts name colored T-shirts and do not number these ids."
+    if value == "may-2023" and "cherry blossom" in phrases:
+        return "The April 2023 spring post names cherry blossoms, and this id says May."
+    if value.endswith("-instinct") and species_name != "Elekid":
+        if any("spark" in item.phrase.lower() for item in announcements):
+            return (
+                "The Instinctive Hero post names Elekid and does not name this species."
+            )
+    if value.endswith("-valor") and species_name != "Ponyta":
+        if any("candela" in item.phrase.lower() for item in announcements):
+            return "The Valorous Hero post names Ponyta and does not name this species."
+    if value.startswith("gotour-"):
+        return "No fetched official page names this GO Tour id."
+    if value == "one-year-anniversary" and species_name != "Pikachu":
+        if any("ash" in item.phrase.lower() for item in announcements):
+            return (
+                "The 2017 anniversary post names Pikachu in Ash's hat "
+                "and does not name this species."
+            )
+    return "The game-data import lists this code, and no official post confirmed it."
+
+
+def slot_stem(value: str) -> str:
+    """Primary id when this code is a second slot of the same costume.
+
+    `gotour-2024-a-02` can be that slot. `flying-02` is a numbered balloon,
+    not a copy of `flying`. A trailing `noevolve` is the same costume on a
+    Pokemon that does not evolve.
+    """
+    match = re.fullmatch(r"(.+-[abc])-02", value)
+    if match:
+        return match.group(1)
+    if value.endswith("-noevolve"):
+        return value[: -len("-noevolve")]
+    return ""

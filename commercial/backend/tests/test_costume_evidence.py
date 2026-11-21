@@ -1,12 +1,15 @@
 """Costume verifier: fixtures only, no network."""
 
 from tools.costume_evidence import (
+    news_result,
     normalize_code,
+    parse_announcements,
     parse_event_codes,
     parse_sprite_names,
+    slot_stem,
     verdict_for,
 )
-from tools.verify_costumes import apply_verdicts
+from tools.verify_costumes import apply_news, apply_verdicts
 
 _PAGE = "https://example.test/event-forms"
 _POKEDEX = "https://example.test/pokedex.json"
@@ -231,3 +234,207 @@ def test_apply_skips_a_row_a_person_signed() -> None:
     assert approved["verified_by"] == "auto-verifier"
     assert counts["auto_approved"] == 1
     assert counts["skipped"] == 1
+
+
+_POST = "https://pokemongo.com/news/fashion-week-2022"
+_NAMES = ("Diglett", "Eevee", "Pikachu", "Elekid", "Pumpkaboo")
+
+
+def test_a_post_yields_species_and_costume_not_the_sentence() -> None:
+    text = (
+        "Diglett wearing a fashionable costume will appear. "
+        "December 12 is only a date. "
+        "Flying Pikachu with a 5-shaped balloon. "
+        "Pikachu berkemeja Batik in raids. "
+        "Pikachu discovered in the wild will be wearing Ash's famous hat."
+    )
+    found = parse_announcements(text, _POST, _NAMES)
+    pairs = {(item.species, item.phrase) for item in found}
+    assert ("Diglett", "fashionable costume will appear") in pairs
+    assert ("Pikachu", "a 5-shaped balloon") in pairs
+    assert ("Pikachu", "Batik") in pairs
+    assert ("Pikachu", "Ash's famous hat") in pairs
+    assert all("December" not in item.phrase for item in found)
+
+
+def test_fall_code_merges_into_the_one_official_row_that_post_names() -> None:
+    official = [
+        {
+            "value": "fashion-2022",
+            "source_url": _POST,
+            "notes": (
+                "Fashion Week (27 September to 3 October 2022) says this "
+                "Pokemon is wearing a fashionable costume."
+            ),
+        },
+        {
+            "value": "fashion-2023",
+            "source_url": "https://pokemongo.com/news/fashion-week-2023",
+            "notes": (
+                "Fashion Week 2023 (15 to 19 November 2023) says this "
+                "Pokemon is wearing a fashionable costume."
+            ),
+        },
+    ]
+    posts = parse_announcements("Diglett wearing a fashionable costume.", _POST, _NAMES)
+    result = news_result(
+        species_id="diglett",
+        value="fall-2022",
+        species_name="Diglett",
+        official_rows=official,
+        announcements=posts,
+    )
+    assert result is not None
+    assert result.action == "merge"
+    assert result.official == "fashion-2022"
+    assert result.because == "fashionable costume"
+
+
+def test_a_gofest_id_does_not_merge_into_an_anniversary_party_hat() -> None:
+    official = [
+        {
+            "value": "party-hat",
+            "source_url": "https://pokemongo.com/news/pokemongo-8th-anniversary",
+            "notes": "The same post stars Eevee wearing a party hat.",
+        }
+    ]
+    posts = parse_announcements(
+        "Eevee wearing a party hat.",
+        official[0]["source_url"],
+        ("Eevee",),
+    )
+    result = news_result(
+        species_id="eevee",
+        value="gofest-2024-mtiara",
+        species_name="Eevee",
+        official_rows=official,
+        announcements=posts,
+    )
+    assert result is not None
+    assert result.action == "leave"
+
+
+def test_may_code_does_not_merge_into_an_april_post() -> None:
+    official = [
+        {
+            "value": "cherry-blossoms",
+            "source_url": "https://pokemongo.com/news/spring-into-spring-2023",
+            "notes": (
+                "Spring into Spring 2023 (4 to 10 April 2023) stars this "
+                "Pokemon adorned with cherry blossoms."
+            ),
+        }
+    ]
+    posts = parse_announcements(
+        "Eevee adorned with cherry blossoms.",
+        official[0]["source_url"],
+        _NAMES,
+    )
+    result = news_result(
+        species_id="eevee",
+        value="may-2023",
+        species_name="Eevee",
+        official_rows=official,
+        announcements=posts,
+    )
+    assert result is not None
+    assert result.action == "leave"
+    assert "May" in result.reason
+
+
+def test_diwali_merges_only_when_the_lights_post_says_saree() -> None:
+    official = [
+        {
+            "value": "saree",
+            "source_url": "https://pokemongo.com/news/festival-of-lights-2024",
+            "notes": "Festival of Lights 2024 debuts Pikachu wearing a saree.",
+        }
+    ]
+    posts = parse_announcements(
+        "Pikachu wearing a saree.", official[0]["source_url"], _NAMES
+    )
+    result = news_result(
+        species_id="pikachu",
+        value="diwali-2024",
+        species_name="Pikachu",
+        official_rows=official,
+        announcements=posts,
+    )
+    assert result is not None
+    assert result.action == "merge"
+    assert result.official == "saree"
+    assert result.because == "saree"
+
+
+def test_numbered_balloon_stays_a_draft_when_the_post_does_not_number_it() -> None:
+    posts = parse_announcements(
+        "Flying Pikachu with green balloons. "
+        "Flying Pikachu with multicolored balloons.",
+        "https://pokemongo.com/news/pokemon-go-safari-zone-taipei",
+        _NAMES,
+    )
+    result = news_result(
+        species_id="pikachu",
+        value="flying-01",
+        species_name="Pikachu",
+        official_rows=[],
+        announcements=posts,
+    )
+    assert result is not None
+    assert result.action == "leave"
+    assert "numbered" in result.reason
+
+
+def test_a_02_is_a_slot_and_flying_02_is_not() -> None:
+    assert slot_stem("gotour-2024-a-02") == "gotour-2024-a"
+    assert slot_stem("flying-02") == ""
+    assert slot_stem("fall-2022-noevolve") == "fall-2022"
+
+
+def test_news_approve_writes_the_post_and_leaves_a_month_conflict() -> None:
+    seed = {
+        "rows": [
+            {
+                "species_id": "elekid",
+                "kind": "costume",
+                "value": "spring-2023-instinct",
+                "source_url": "https://example.test/pokedex.json",
+                "verified_by": "community-import",
+                "status": "draft",
+                "notes": "Game id.",
+                "verification": {"verdict": "needs-review", "reason": "old"},
+            },
+            {
+                "species_id": "eevee",
+                "kind": "costume",
+                "value": "may-2023",
+                "source_url": "https://example.test/pokedex.json",
+                "verified_by": "community-import",
+                "status": "draft",
+                "notes": "Game id.",
+                "verification": {"verdict": "needs-review", "reason": "old"},
+            },
+        ]
+    }
+    posts = parse_announcements(
+        "Elekid wearing a Spark-themed accessory. Eevee adorned with cherry blossoms.",
+        "https://pokemongo.com/news/an-instinctive-hero",
+        _NAMES,
+    )
+    # The spring sentence is a different post. Keep them apart.
+    posts = [item for item in posts if item.species == "Elekid"]
+    posts.extend(
+        parse_announcements(
+            "Eevee adorned with cherry blossoms.",
+            "https://pokemongo.com/news/spring-into-spring-2023",
+            _NAMES,
+        )
+    )
+    counts = apply_news(seed, posts, {"elekid": "Elekid", "eevee": "Eevee"})
+    elekid, eevee = seed["rows"]
+    assert counts["news_approved"] == 1
+    assert elekid["status"] == "approved"
+    assert elekid["verified_by"] == "auto-verifier"
+    assert "instinctive-hero" in elekid["verification"]["urls"][1]
+    assert eevee["status"] == "draft"
+    assert "May" in eevee["verification"]["reason"]
