@@ -445,13 +445,19 @@ hiding the data behind a paywall or monetizing it with ads. It also
 drops official PokeAPI sprites and draws a type-coloured badge instead.
 PvPoke stays, with the MIT notice. PokeAPI species data stays, under its
 BSD-style license. The GO guides stay: they are original summaries, not
-a ScrapedDuck feed. `commercial/README.md` records the license check.
+a ScrapedDuck feed. The commercial README recorded the license check.
 
 The product name is the `APP_NAME` environment variable, defaulting to
 Field Notes, because the name is still an open question.
 
-A fix to code that exists in both trees has to be applied in both places
-until the split. There is no shared package.
+There was no shared package. A fix that existed in both trees had to be
+applied in both places.
+
+On 22 November 2026 the `commercial/` folder was removed from this
+repository. The edition now lives in the private trainermon repository.
+That repository's root is the old folder, and its history is only those
+commits. This repository's history is unchanged, so older commits still
+contain the folder. The personal app does not import it.
 
 Rejected: **stripping the feeds from the personal app.** That copy is
 the free edition and may keep them. Rejected: **a build flag inside one
