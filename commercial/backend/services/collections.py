@@ -68,6 +68,15 @@ def _require_open(user: dict[str, Any]) -> None:
         raise PermissionError("Checklists are not on this account.")
 
 
+def _game_data_only(fact: dict[str, Any]) -> bool:
+    """True when the verifier approved this row from the pokedex alone."""
+    raw = fact.get("verification") or ""
+    if not raw:
+        return False
+    parsed = json.loads(raw) if isinstance(raw, str) else raw
+    return isinstance(parsed, dict) and parsed.get("verdict") == "game_data_only"
+
+
 def _matches(entry: dict[str, Any], species_id: str, kind: str, value: str) -> bool:
     if entry["species_id"] != species_id:
         return False
@@ -109,6 +118,7 @@ def _items(definition: dict[str, Any]) -> list[dict[str, Any]]:
                 "name": species.name,
                 "types": list(species.types),
                 "shiny_released": value in shiny_for[kind],
+                "from_game_data": _game_data_only(fact),
                 "source_url": fact["source_url"],
                 "verified_at": fact["verified_at"],
             }

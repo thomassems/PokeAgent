@@ -335,6 +335,17 @@ numbered Flying Pikachu and T-shirt ids stayed drafts. The posts do not
 say which file is which, and the `-02` icons are different costumes,
 not copies.
 
+### Verifier run on 22 November 2026
+
+The same script now approves a pokedex costume that no post corroborated.
+Those 91 drafts became `game_data_only`: status `approved`, confidence
+`low`, evidence the pokedex import URL, reason "present in game data; no
+official post found". They count on checklists. They are not auto-verified,
+and the script does not assign a color, a trainer, or a shiny release to
+them. The two `costume-1` placeholder slots stay rejected. A row stays a
+draft only when two sources name different costumes for the same id.
+None of the 91 were that case. Pikachu's checklist counts the new rows.
+
 ### Still unverified
 
 These names came up on a community list, or were already on the list from

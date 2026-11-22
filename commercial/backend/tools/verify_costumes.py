@@ -9,6 +9,11 @@ The pokedex file is the game-data import. The event-form list is read to
 check ids and names, then discarded. A second run uses the cache and does
 not fetch. Rows a person has already signed (an email in verified_by) are
 left alone.
+
+A corroborated row is auto-verified. A pokedex id with no second source is
+approved at low confidence as game_data_only. A battle form or placeholder
+slot is rejected. A row stays a draft only when sources name different
+costumes. Shiny is not inferred from an image URL.
 """
 
 from __future__ import annotations
@@ -48,6 +53,8 @@ _CACHE = _ROOT / "data" / "cache" / "costume-evidence.json"
 _NEWS_CACHE = _ROOT / "data" / "cache" / "costume-news.json"
 _CHECKED_ON = "2026-11-20"
 _NEWS_ON = "2026-11-21"
+_GAME_DATA_ON = "2026-11-22"
+_GAME_DATA_REASON = "present in game data; no official post found"
 _NEWS_GAP = 1.0
 _POKEDEX_URL = "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
 _EVENT_TITLE = "Event Pokémon (GO)"
@@ -359,7 +366,7 @@ def apply_news(
         if row.get("source_type", "official") != "official":
             continue
         official.setdefault(str(row["species_id"]), []).append(row)
-    counts = {"news_approved": 0, "news_merged": 0}
+    counts = {"news_approved": 0, "news_merged": 0, "conflict": 0}
     for row in rows:
         verification = row.get("verification") or {}
         if not isinstance(verification, dict):
@@ -414,6 +421,18 @@ def apply_news(
                 "checked_at": _NEWS_ON,
             }
             counts["news_approved"] += 1
+        elif result.action == "conflict":
+            row["status"] = "draft"
+            row["verification"] = {
+                "verdict": "needs-review",
+                "confidence": "low",
+                "sources": ["pokemon-go-api pokedex"],
+                "urls": [str(row.get("source_url") or _POKEDEX_URL)],
+                "reason": result.reason,
+                "checked_at": _GAME_DATA_ON,
+                "conflict": True,
+            }
+            counts["conflict"] += 1
         else:
             verification["reason"] = result.reason
             verification["checked_at"] = _NEWS_ON
@@ -509,6 +528,54 @@ def apply_slot_merges(
     return merged
 
 
+def apply_game_data(
+    seed: dict[str, object],
+    *,
+    pokedex: set[tuple[str, str]],
+) -> int:
+    """Approve a pokedex costume that no post corroborated.
+
+    Status stays approved so a checklist counts the row. The verdict is
+    game_data_only, which is a lower confidence than auto-approve. A
+    conflict, a signed row, a shiny kind, and a row that is not in the
+    pokedex stay as they are. This does not record a shiny release.
+    """
+    rows = seed["rows"]
+    assert isinstance(rows, list)
+    promoted = 0
+    for row in rows:
+        if row.get("status") != "draft" or row.get("kind") not in {
+            "costume",
+            "background",
+        }:
+            continue
+        if "@" in str(row.get("verified_by") or ""):
+            continue
+        verification = row.get("verification") or {}
+        if not isinstance(verification, dict):
+            continue
+        if verification.get("verdict") != "needs-review" or verification.get(
+            "conflict"
+        ):
+            continue
+        key = (str(row["species_id"]), str(row["value"]))
+        if key not in pokedex:
+            continue
+        row["status"] = "approved"
+        row["verified_by"] = "auto-verifier"
+        row["verified_at"] = _GAME_DATA_ON
+        row["verification"] = {
+            "verdict": "game_data_only",
+            "confidence": "low",
+            "sources": ["pokemon-go-api pokedex"],
+            "urls": [_POKEDEX_URL],
+            "reason": _GAME_DATA_REASON,
+            "checked_at": _GAME_DATA_ON,
+        }
+        promoted += 1
+    return promoted
+
+
 def verify(*, refresh: bool, dry_run: bool) -> tuple[dict[str, int], list[str]]:
     payload = fetch_pokedex(refresh=refresh)
     codes, names = load_evidence(refresh=refresh)
@@ -516,9 +583,10 @@ def verify(*, refresh: bool, dry_run: bool) -> tuple[dict[str, int], list[str]]:
     dex_of = {item["id"]: int(item["dex"]) for item in catalog}
     species_names = {item["id"]: str(item["name"]) for item in catalog}
     seed = json.loads(_SEED.read_text())
+    pokedex = _pokedex_keys(payload)
     counts = apply_verdicts(
         seed,
-        pokedex=_pokedex_keys(payload),
+        pokedex=pokedex,
         codes=codes,
         names=names,
         dex_of=dex_of,
@@ -527,14 +595,17 @@ def verify(*, refresh: bool, dry_run: bool) -> tuple[dict[str, int], list[str]]:
     counts.update(apply_news(seed, announcements, species_names))
     slot_merges = apply_slot_merges(seed, payload)
     counts["slot_merged"] = len(slot_merges)
+    counts["game_data_only"] = apply_game_data(seed, pokedex=pokedex)
     seed["method"] = (
         "Rows a person checked stay as they were. Costume and variant drafts "
         "are approved by tools/verify_costumes.py when an official Pokémon GO "
         "post is already cited, or when the game-data id is also on the "
         "independent event-form list. A later pass reads official posts and "
-        "approves a leftover only when a post names that species in that "
-        "costume. A second slot is merged when it is the same costume. "
-        f"The verifier last ran on {_NEWS_ON}."
+        "approves a leftover when a post names that species in that costume. "
+        "A pokedex id with no corroborating post is approved at low "
+        "confidence as game data only. A second slot is merged when it is "
+        "the same costume. A row stays a draft only when sources name "
+        f"different costumes. The verifier last ran on {_GAME_DATA_ON}."
     )
     if not dry_run:
         _SEED.write_text(json.dumps(seed, indent=2, ensure_ascii=False) + "\n")

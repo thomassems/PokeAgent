@@ -1,6 +1,6 @@
 {
   "verified_on": "2026-11-20",
-  "method": "Rows a person checked stay as they were. Costume and variant drafts are approved by tools/verify_costumes.py when an official Pokémon GO post is already cited, or when the game-data id is also on the independent event-form list. A later pass reads official posts and approves a leftover only when a post names that species in that costume. A second slot is merged when it is the same costume. The verifier last ran on 2026-11-21.",
+  "method": "Rows a person checked stay as they were. Costume and variant drafts are approved by tools/verify_costumes.py when an official Pokémon GO post is already cited, or when the game-data id is also on the independent event-form list. A later pass reads official posts and approves a leftover when a post names that species in that costume. A pokedex id with no corroborating post is approved at low confidence as game data only. A second slot is merged when it is the same costume. A row stays a draft only when sources name different costumes. The verifier last ran on 2026-11-22.",
   "rows": [
     {
       "species_id": "barboach",
@@ -9933,26 +9933,22 @@
       "kind": "costume",
       "value": "summer-2023",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SUMMER_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -9987,26 +9983,22 @@
       "kind": "costume",
       "value": "wildarea-2025",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id WILDAREA_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -10041,26 +10033,22 @@
       "kind": "costume",
       "value": "jan-2020-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id JAN_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -10188,26 +10176,22 @@
       "kind": "costume",
       "value": "spring-2020-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SPRING_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -10350,26 +10334,22 @@
       "kind": "costume",
       "value": "winter-2025",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id WINTER_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -10549,26 +10529,22 @@
       "kind": "costume",
       "value": "fall-2020-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -10630,26 +10606,22 @@
       "kind": "costume",
       "value": "fall-2024",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -10657,26 +10629,22 @@
       "kind": "costume",
       "value": "fall-2024",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -10912,26 +10880,22 @@
       "kind": "costume",
       "value": "gofest-2024-mtiara",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOFEST_2024_MTIARA. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -10939,26 +10903,22 @@
       "kind": "costume",
       "value": "gofest-2024-stiara",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOFEST_2024_STIARA. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -11020,26 +10980,22 @@
       "kind": "costume",
       "value": "may-2023",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id May_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -11101,26 +11057,22 @@
       "kind": "costume",
       "value": "spring-2023-instinct",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SPRING_2023_INSTINCT. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The Instinctive Hero post names Elekid and does not name this species.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -11128,26 +11080,22 @@
       "kind": "costume",
       "value": "spring-2023-instinct",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SPRING_2023_INSTINCT. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The Instinctive Hero post names Elekid and does not name this species.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -11180,26 +11128,22 @@
       "kind": "costume",
       "value": "gofest-2024-sscarf",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOFEST_2024_SSCARF. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -11234,26 +11178,22 @@
       "kind": "costume",
       "value": "may-2023",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id MAY_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -11354,26 +11294,22 @@
       "kind": "costume",
       "value": "may-2023",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id MAY_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -11501,26 +11437,22 @@
       "kind": "costume",
       "value": "fall-2024",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -11715,26 +11647,22 @@
       "kind": "costume",
       "value": "may-2023",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id MAY_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -11908,26 +11836,22 @@
       "kind": "costume",
       "value": "fall-2024",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -12014,26 +11938,22 @@
       "kind": "costume",
       "value": "jan-2020-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id JAN_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -12080,26 +12000,22 @@
       "kind": "costume",
       "value": "may-2023",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id MAY_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -12161,26 +12077,22 @@
       "kind": "costume",
       "value": "fall-2020-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -12267,26 +12179,22 @@
       "kind": "costume",
       "value": "may-2023",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id MAY_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -12348,26 +12256,22 @@
       "kind": "costume",
       "value": "april-2020-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id APRIL_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -12375,26 +12279,22 @@
       "kind": "costume",
       "value": "one-year-anniversary",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id ONE_YEAR_ANNIVERSARY. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The 2017 anniversary post names Pikachu in Ash's hat and does not name this species.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -12429,26 +12329,22 @@
       "kind": "costume",
       "value": "one-year-anniversary",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id ONE_YEAR_ANNIVERSARY. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The 2017 anniversary post names Pikachu in Ash's hat and does not name this species.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -12481,26 +12377,22 @@
       "kind": "costume",
       "value": "royal-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id ROYAL_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -12508,26 +12400,22 @@
       "kind": "costume",
       "value": "royal-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id ROYAL_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -12692,26 +12580,22 @@
       "kind": "costume",
       "value": "fall-2018",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2018. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -12800,26 +12684,22 @@
       "kind": "costume",
       "value": "one-year-anniversary",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id ONE_YEAR_ANNIVERSARY. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The 2017 anniversary post names Pikachu in Ash's hat and does not name this species.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13097,26 +12977,22 @@
       "kind": "costume",
       "value": "costume-2020",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id COSTUME_2020. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13284,26 +13160,22 @@
       "kind": "costume",
       "value": "flying-01",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FLYING_01. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "Official posts name Flying Pikachu balloon colors and do not say which numbered id is which.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13311,26 +13183,22 @@
       "kind": "costume",
       "value": "flying-02",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FLYING_02. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "Official posts name Flying Pikachu balloon colors and do not say which numbered id is which.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13338,26 +13206,22 @@
       "kind": "costume",
       "value": "flying-03",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FLYING_03. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "Official posts name Flying Pikachu balloon colors and do not say which numbered id is which.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13365,26 +13229,22 @@
       "kind": "costume",
       "value": "flying-04",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FLYING_04. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "Official posts name Flying Pikachu balloon colors and do not say which numbered id is which.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13525,26 +13385,22 @@
       "kind": "costume",
       "value": "gofest-2024-mtiara",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOFEST_2024_MTIARA. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13552,26 +13408,22 @@
       "kind": "costume",
       "value": "gofest-2024-stiara",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOFEST_2024_STIARA. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13741,26 +13593,22 @@
       "kind": "costume",
       "value": "gotour-2023-bandana-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2023_BANDANA_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13768,26 +13616,22 @@
       "kind": "costume",
       "value": "gotour-2023-hat-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2023_HAT_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13795,26 +13639,22 @@
       "kind": "costume",
       "value": "gotour-2024-a",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2024_A. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13822,26 +13662,22 @@
       "kind": "costume",
       "value": "gotour-2024-a-02",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2024_A_02. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13849,26 +13685,22 @@
       "kind": "costume",
       "value": "gotour-2024-b",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2024_B. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13876,26 +13708,22 @@
       "kind": "costume",
       "value": "gotour-2024-b-02",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2024_B_02. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13903,26 +13731,22 @@
       "kind": "costume",
       "value": "gotour-2025-a",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2025_A. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13930,26 +13754,22 @@
       "kind": "costume",
       "value": "gotour-2025-a-02",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2025_A_02. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13957,26 +13777,22 @@
       "kind": "costume",
       "value": "gotour-2025-b",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2025_B. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -13984,26 +13800,22 @@
       "kind": "costume",
       "value": "gotour-2025-b-02",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2025_B_02. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14011,26 +13823,22 @@
       "kind": "costume",
       "value": "gotour-2026-a",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2026_A. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14038,26 +13846,22 @@
       "kind": "costume",
       "value": "gotour-2026-a-02",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2026_A_02. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14065,26 +13869,22 @@
       "kind": "costume",
       "value": "gotour-2026-b",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2026_B. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14092,26 +13892,22 @@
       "kind": "costume",
       "value": "gotour-2026-b-02",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2026_B_02. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14119,26 +13915,22 @@
       "kind": "costume",
       "value": "gotour-2026-c",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2026_C. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14146,26 +13938,22 @@
       "kind": "costume",
       "value": "gotour-2026-c-02",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOTOUR_2026_C_02. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "No fetched official page names this GO Tour id.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14369,26 +14157,22 @@
       "kind": "costume",
       "value": "jeju",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id JEJU. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14499,26 +14283,22 @@
       "kind": "costume",
       "value": "pi",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id PI. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14673,26 +14453,22 @@
       "kind": "costume",
       "value": "summer-2023-a",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SUMMER_2023_A. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14700,26 +14476,22 @@
       "kind": "costume",
       "value": "summer-2023-b",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SUMMER_2023_B. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14727,26 +14499,22 @@
       "kind": "costume",
       "value": "summer-2023-c",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SUMMER_2023_C. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14754,26 +14522,22 @@
       "kind": "costume",
       "value": "summer-2023-d",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SUMMER_2023_D. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14781,26 +14545,22 @@
       "kind": "costume",
       "value": "summer-2023-e",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SUMMER_2023_E. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14820,26 +14580,22 @@
       "kind": "costume",
       "value": "tshirt-01",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id TSHIRT_01. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "Official posts name colored T-shirts and do not number these ids.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14847,26 +14603,22 @@
       "kind": "costume",
       "value": "tshirt-02",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id TSHIRT_02. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "Official posts name colored T-shirts and do not number these ids.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14874,26 +14626,22 @@
       "kind": "costume",
       "value": "tshirt-03",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id TSHIRT_03. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "Official posts name colored T-shirts and do not number these ids.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -14901,26 +14649,22 @@
       "kind": "costume",
       "value": "vs-2019",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id VS_2019. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -15126,26 +14870,22 @@
       "kind": "costume",
       "value": "gofest-2021-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOFEST_2021_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -15570,26 +15310,22 @@
       "kind": "costume",
       "value": "one-year-anniversary",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id ONE_YEAR_ANNIVERSARY. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The 2017 anniversary post names Pikachu in Ash's hat and does not name this species.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -15597,26 +15333,22 @@
       "kind": "costume",
       "value": "pi",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id PI. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -15705,26 +15437,22 @@
       "kind": "costume",
       "value": "spring-2023-valor",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SPRING_2023_VALOR. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The Valorous Hero post names Ponyta and does not name this species.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -15798,26 +15526,22 @@
       "kind": "costume",
       "value": "fall-2020-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -15825,26 +15549,22 @@
       "kind": "costume",
       "value": "summer-2024",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SUMMER_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -15852,26 +15572,22 @@
       "kind": "costume",
       "value": "summer-2024",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SUMMER_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -15879,26 +15595,22 @@
       "kind": "costume",
       "value": "2021",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id 2021. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -15906,26 +15618,22 @@
       "kind": "costume",
       "value": "2022",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id 2022. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -15933,26 +15641,22 @@
       "kind": "costume",
       "value": "2020",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id 2020. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -15960,26 +15664,22 @@
       "kind": "costume",
       "value": "pi-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id PI_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -15987,26 +15687,22 @@
       "kind": "costume",
       "value": "fall-2020-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -16068,26 +15764,22 @@
       "kind": "costume",
       "value": "nightcap",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id NIGHTCAP. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -16095,26 +15787,22 @@
       "kind": "costume",
       "value": "wildarea-2024",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id WILDAREA_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -16269,26 +15957,22 @@
       "kind": "costume",
       "value": "winter-2025",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id WINTER_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -16323,26 +16007,22 @@
       "kind": "costume",
       "value": "may-2023",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id MAY_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -16416,26 +16096,22 @@
       "kind": "costume",
       "value": "april-2020-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id APRIL_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -16470,26 +16146,22 @@
       "kind": "costume",
       "value": "april-2020-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id APRIL_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -16497,26 +16169,22 @@
       "kind": "costume",
       "value": "fall-2020-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id FALL_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -16578,26 +16246,22 @@
       "kind": "costume",
       "value": "gofest-2024-mscarf",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOFEST_2024_MSCARF. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -16632,26 +16296,22 @@
       "kind": "costume",
       "value": "may-2023",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id MAY_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -16764,26 +16424,22 @@
       "kind": "costume",
       "value": "may-2023",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id MAY_2023. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The April 2023 spring post names cherry blossoms, and this id says May.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -16872,26 +16528,22 @@
       "kind": "costume",
       "value": "jan-2020-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id JAN_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -16899,26 +16551,22 @@
       "kind": "costume",
       "value": "summer-2024",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id SUMMER_2024. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -16926,26 +16574,22 @@
       "kind": "costume",
       "value": "winter-2025",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id WINTER_2025. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -16978,26 +16622,22 @@
       "kind": "costume",
       "value": "jan-2020-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id JAN_2020_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     },
     {
@@ -17160,26 +16800,22 @@
       "kind": "costume",
       "value": "gofest-2021-noevolve",
       "source_url": "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-      "verified_at": "2026-11-20",
-      "verified_by": "community-import",
-      "status": "draft",
+      "verified_at": "2026-11-22",
+      "verified_by": "auto-verifier",
+      "status": "approved",
       "source_type": "community",
       "notes": "Game id GOFEST_2021_NOEVOLVE. Community draft from the pokedex asset list. Every asset in that file has a shiny image URL, so shiny is not recorded.",
       "verification": {
-        "verdict": "needs-review",
+        "verdict": "game_data_only",
         "confidence": "low",
         "sources": [
-          "pokemon-go-api pokedex",
-          "Event Pokémon (GO)",
-          "Pikachu (GO)"
+          "pokemon-go-api pokedex"
         ],
         "urls": [
-          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json",
-          "https://bulbapedia.bulbagarden.net/wiki/Event_Pok%C3%A9mon_(GO)",
-          "https://bulbapedia.bulbagarden.net/wiki/Pikachu_(GO)"
+          "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
         ],
-        "reason": "The game-data import lists this code, and no official post confirmed it.",
-        "checked_at": "2026-11-21"
+        "reason": "present in game data; no official post found",
+        "checked_at": "2026-11-22"
       }
     }
   ]

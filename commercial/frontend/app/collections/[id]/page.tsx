@@ -18,6 +18,7 @@ type CollectionItem = {
   owned: boolean;
   shiny: boolean;
   shiny_released: boolean;
+  from_game_data?: boolean;
 };
 
 type Collection = {
@@ -126,7 +127,8 @@ export default function CollectionPage() {
           ) : null}
           <p className="mt-1 text-xs text-ink-500">
             The total is verified rows only. Anything still not yet verified
-            stays off this list.
+            stays off this list. A quiet &quot;from game data&quot; mark means no
+            official post confirmed that costume.
           </p>
         </div>
         {profile === null ? (
@@ -185,6 +187,14 @@ export default function CollectionPage() {
                       ...(item.shiny_released ? ["Shiny released"] : []),
                     ]}
                   />
+                  {item.from_game_data ? (
+                    <p
+                      className="pl-14 text-[11px] text-ink-500"
+                      title="Present in game data. No official post confirmed this costume."
+                    >
+                      from game data
+                    </p>
+                  ) : null}
                   <div className="mt-2 flex flex-wrap gap-4 pl-14">
                     <label className="flex min-h-11 items-center gap-2 text-sm">
                       <input

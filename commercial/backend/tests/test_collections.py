@@ -70,15 +70,28 @@ def test_pikachu_seed_rows_are_sourced() -> None:
                 assert row.get("merged_into")
             elif status == "approved":
                 assert row["verified_by"] == "auto-verifier"
-                assert verification["verdict"] == "auto-approve"
-                assert len(verification["urls"]) >= 2
+                if verification["verdict"] == "game_data_only":
+                    assert verification["confidence"] == "low"
+                    assert (
+                        verification["reason"]
+                        == "present in game data; no official post found"
+                    )
+                    assert verification["urls"] == [
+                        "https://pokemon-go-api.github.io/"
+                        "pokemon-go-api/api/pokedex.json"
+                    ]
+                    assert verification["checked_at"] == "2026-11-22"
+                    assert row["verified_at"] == "2026-11-22"
+                    assert row["kind"] in {"costume", "background"}
+                    assert "shiny is not recorded" in row["notes"]
+                else:
+                    assert verification["verdict"] == "auto-approve"
+                    assert len(verification["urls"]) >= 2
             elif status == "rejected":
                 assert row["verified_by"] == "auto-verifier"
                 assert verification["verdict"] == "reject-non-costume"
             else:
-                assert status == "draft"
-                assert row["verified_by"] == "community-import"
-                assert verification["verdict"] == "needs-review"
+                raise AssertionError(status)
         else:
             assert row["source_url"].startswith("https://pokemongolive.com/")
             if row["verified_by"] == "auto-verifier":
@@ -91,7 +104,7 @@ def test_pikachu_seed_rows_are_sourced() -> None:
         if row["verified_by"] == "hand-seed":
             assert row["verified_at"] == "2026-11-19"
         if row["verified_by"] == "auto-verifier":
-            assert row["verified_at"] in {"2026-11-20", "2026-11-21"}
+            assert row["verified_at"] in {"2026-11-20", "2026-11-21", "2026-11-22"}
         blob = " ".join(
             (
                 row["source_url"],
@@ -104,17 +117,29 @@ def test_pikachu_seed_rows_are_sourced() -> None:
             assert row["value"].replace("-", "").isalnum()
 
 
-def test_uncorroborated_costumes_stay_draft() -> None:
+def test_game_data_only_rows_count_and_placeholders_stay_rejected() -> None:
     rows = json.loads(_SEED.read_text())["rows"]
-    drafts = [row for row in rows if row.get("status") == "draft"]
-    assert drafts
-    assert {row["kind"] for row in drafts} == {"costume"}
-    for row in drafts:
-        assert row["verification"]["verdict"] == "needs-review"
-        assert row["verified_by"] == "community-import"
-        assert row["source_url"].startswith("https://")
-    approved = [row for row in rows if _approved(row)]
-    assert any(row.get("verified_by") == "auto-verifier" for row in approved)
+    game = [
+        row
+        for row in rows
+        if (row.get("verification") or {}).get("verdict") == "game_data_only"
+    ]
+    assert len(game) == 91
+    assert {row["status"] for row in game} == {"approved"}
+    assert {row["kind"] for row in game} == {"costume"}
+    assert not any(row.get("status") == "draft" for row in rows)
+    rejected = {
+        (row["species_id"], row["value"])
+        for row in rows
+        if row.get("status") == "rejected"
+    }
+    assert rejected == {("pikachu", "costume-1"), ("raichu", "costume-1")}
+    shiny = [
+        row
+        for row in game
+        if row["kind"] in {"costume_shiny", "background_shiny", "shiny"}
+    ]
+    assert shiny == []
 
 
 def test_checklist_counts_verified_rows_only(client: TestClient) -> None:
@@ -130,6 +155,15 @@ def test_checklist_counts_verified_rows_only(client: TestClient) -> None:
     assert payload["total"] == expected
     assert payload["total"] == len(payload["items"])
     assert all(item["owned"] is False for item in payload["items"])
+    game = next(
+        row
+        for row in rows
+        if (row.get("verification") or {}).get("verdict") == "game_data_only"
+    )
+    marked = next(item for item in payload["items"] if item["value"] == game["value"])
+    assert marked["from_game_data"] is True
+    doctor = next(item for item in payload["items"] if item["value"] == "doctor")
+    assert doctor["from_game_data"] is False
 
     init_curation()
     with connect() as conn:
@@ -206,28 +240,29 @@ def test_every_costumed_species_has_a_collection() -> None:
         assert set(by_species[species]["kinds"]) == kinds
 
 
-def test_a_draft_only_collection_totals_zero(client: TestClient) -> None:
+def test_a_game_data_only_collection_counts_those_rows(client: TestClient) -> None:
     rows = json.loads(_SEED.read_text())["rows"]
-    by_species: dict[str, list[str]] = {}
+    by_species: dict[str, list[dict[str, str]]] = {}
     for row in rows:
         if row["kind"] in {"costume", "background"}:
-            by_species.setdefault(row["species_id"], []).append(
-                row.get("status", "approved")
-            )
-    draft_only = sorted(
+            by_species.setdefault(row["species_id"], []).append(row)
+    game_only = sorted(
         species
-        for species, statuses in by_species.items()
-        if statuses and set(statuses) == {"draft"}
+        for species, group in by_species.items()
+        if group
+        and all(
+            (row.get("verification") or {}).get("verdict") == "game_data_only"
+            for row in group
+        )
     )
-    assert draft_only
+    assert game_only
     _register(client)
-    body = client.get(f"/api/collections/{draft_only[0]}-costumes")
+    body = client.get(f"/api/collections/{game_only[0]}-costumes")
     assert body.status_code == 200
     payload = body.json()
-    assert payload["total"] == 0
-    assert payload["items"] == []
-    listing = client.get("/api/collections").json()["collections"]
-    assert any(item["id"] == f"{draft_only[0]}-costumes" for item in listing)
+    assert payload["total"] == len(by_species[game_only[0]])
+    assert payload["items"]
+    assert all(item["from_game_data"] is True for item in payload["items"])
 
 
 def test_stranger_is_rejected_and_the_gate_is_one_function(

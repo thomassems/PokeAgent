@@ -34,7 +34,13 @@ type Fact = {
 };
 
 type SourceFilter = "all" | "official" | "community";
-type StatusFilter = "all" | "draft" | "approved" | "rejected" | "merged";
+type StatusFilter =
+  | "all"
+  | "draft"
+  | "approved"
+  | "rejected"
+  | "merged"
+  | "game_data_only";
 type Pending = "approved" | "rejected" | null;
 
 const inputClass =
@@ -94,7 +100,11 @@ export default function CuratePage() {
       }
       const source = fact.source_type === "community" ? "community" : "official";
       if (sourceFilter !== "all" && source !== sourceFilter) return false;
-      if (statusFilter !== "all" && fact.status !== statusFilter) return false;
+      if (statusFilter === "game_data_only") {
+        if (fact.verification?.verdict !== "game_data_only") return false;
+      } else if (statusFilter !== "all" && fact.status !== statusFilter) {
+        return false;
+      }
       return true;
     });
   }, [facts, speciesQuery, sourceFilter, statusFilter]);
@@ -186,7 +196,8 @@ export default function CuratePage() {
             Paste an announcement and the model drafts rows from that text only.
             The costume verifier approves a row when an official Pokémon GO post
             is already cited, or when the game data and a second source agree.
-            Needs you is what it could not corroborate.
+            Game data only means the id is in the pokedex and no post confirmed
+            it. Needs you is a row whose sources name different costumes.
           </p>
         </div>
         {profile === null ? (
@@ -294,6 +305,7 @@ export default function CuratePage() {
               >
                 <option value="draft">Needs you</option>
                 <option value="approved">Approved</option>
+                <option value="game_data_only">Game data only</option>
                 <option value="rejected">Rejected</option>
                 <option value="merged">Merged aliases</option>
                 <option value="all">All statuses</option>
@@ -387,8 +399,12 @@ export default function CuratePage() {
                       <p className="font-medium">
                         {fact.species_name || fact.species_id} ·{" "}
                         {fact.kind_label || fact.kind} · {fact.label || fact.value}
-                        {fact.verified_by === "auto-verifier" &&
-                        fact.status === "approved" ? (
+                        {fact.verification?.verdict === "game_data_only" ? (
+                          <span className="ml-2 rounded-sm border border-ink-400 px-1.5 py-0.5 text-xs font-medium text-ink-300">
+                            Game data only
+                          </span>
+                        ) : fact.verified_by === "auto-verifier" &&
+                          fact.status === "approved" ? (
                           <span className="ml-2 rounded-sm bg-plasma-500 px-1.5 py-0.5 text-xs font-medium text-shell-950">
                             Auto-verified
                           </span>

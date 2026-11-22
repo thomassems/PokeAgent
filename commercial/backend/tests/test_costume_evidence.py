@@ -9,7 +9,7 @@ from tools.costume_evidence import (
     slot_stem,
     verdict_for,
 )
-from tools.verify_costumes import apply_news, apply_verdicts
+from tools.verify_costumes import apply_game_data, apply_news, apply_verdicts
 
 _PAGE = "https://example.test/event-forms"
 _POKEDEX = "https://example.test/pokedex.json"
@@ -438,3 +438,91 @@ def test_news_approve_writes_the_post_and_leaves_a_month_conflict() -> None:
     assert "instinctive-hero" in elekid["verification"]["urls"][1]
     assert eevee["status"] == "draft"
     assert "May" in eevee["verification"]["reason"]
+    promoted = apply_game_data(
+        seed,
+        pokedex={("elekid", "spring-2023-instinct"), ("eevee", "may-2023")},
+    )
+    assert promoted == 1
+    assert eevee["status"] == "approved"
+    assert eevee["verification"]["verdict"] == "game_data_only"
+    assert eevee["verification"]["confidence"] == "low"
+    assert eevee["verified_by"] == "auto-verifier"
+    assert "merged_into" not in eevee
+    assert "cherry" not in eevee["verification"]["reason"]
+
+
+def test_two_posts_conflict_and_a_pokedex_id_does_not() -> None:
+    official = [
+        {
+            "value": "fashion-a",
+            "source_url": "https://pokemongo.com/news/fashion-a",
+            "notes": "September 2022 fashionable costume.",
+        },
+        {
+            "value": "fashion-b",
+            "source_url": "https://pokemongo.com/news/fashion-b",
+            "notes": "October 2022 fashionable costume.",
+        },
+    ]
+    posts = parse_announcements(
+        "Diglett wearing a fashionable costume.",
+        official[0]["source_url"],
+        ("Diglett",),
+    )
+    posts.extend(
+        parse_announcements(
+            "Diglett wearing a fashionable costume.",
+            official[1]["source_url"],
+            ("Diglett",),
+        )
+    )
+    result = news_result(
+        species_id="diglett",
+        value="fall-2022",
+        species_name="Diglett",
+        official_rows=official,
+        announcements=posts,
+    )
+    assert result.action == "conflict"
+    seed = {
+        "rows": [
+            *official,
+            {
+                "species_id": "diglett",
+                "kind": "costume",
+                "value": "fall-2022",
+                "source_url": _POKEDEX,
+                "source_type": "community",
+                "verified_by": "community-import",
+                "status": "draft",
+                "notes": "Game id. Shiny is not recorded.",
+                "verification": {"verdict": "needs-review", "reason": "old"},
+            },
+            {
+                "species_id": "pikachu",
+                "kind": "costume_shiny",
+                "value": "flying-01",
+                "source_url": _POKEDEX,
+                "source_type": "community",
+                "verified_by": "community-import",
+                "status": "draft",
+                "notes": "Shiny is not recorded.",
+                "verification": {"verdict": "needs-review", "reason": "old"},
+            },
+        ]
+    }
+    for row in official:
+        row["species_id"] = "diglett"
+        row["kind"] = "costume"
+        row["status"] = "approved"
+        row["source_type"] = "official"
+    apply_news(seed, posts, {"diglett": "Diglett", "pikachu": "Pikachu"})
+    apply_game_data(
+        seed,
+        pokedex={("diglett", "fall-2022"), ("pikachu", "flying-01")},
+    )
+    costume, shiny = seed["rows"][2:]
+    assert costume["status"] == "draft"
+    assert costume["verification"]["conflict"] is True
+    assert shiny["status"] == "draft"
+    assert shiny["kind"] == "costume_shiny"

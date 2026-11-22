@@ -387,7 +387,27 @@ merged only when it is the same costume: a `noevolve` suffix, or an
 and shirt ids stay drafts, because the posts name the colors and do not
 number the files. The post text and its images are not stored.
 
-Rejected: **approving every pokedex id.** That file includes assets that
-were not released. Rejected: **storing checklist sentences or images.**
+Rejected: **approving every pokedex id as fully verified.** That file
+includes assets that were not released, so a pokedex id alone is not an
+auto-verified row. Rejected: **storing checklist sentences or images.**
 The URL is the citation. Rejected: **guessing that a lettered game id is
 a named trainer costume** when the two codes are not the same.
+
+On 22 November 2026 Thomas asked the leftover drafts to count, labelled
+as lower confidence. A pokedex costume that no post corroborated is now
+approved with verdict `game_data_only`, confidence `low`, and the reason
+"present in game data; no official post found". The evidence URL is the
+pokedex import. `verified_by` is `auto-verifier`. The status is `approved`,
+so a checklist counts it the same way it counts any other approved row.
+`/curate` shows a Game data only badge, separate from Auto-verified, and
+a filter for that verdict. The public checklist adds a small "from game
+data" note. An admin can still return the row to draft, which writes the
+admin email and keeps a later run from changing it.
+
+A row stays a draft only when sources name different costumes for the
+same id. The two placeholder slots, `pikachu` `costume-1` and `raichu`
+`costume-1`, stay rejected. A shiny image URL is still not a shiny
+release, and this pass does not write a shiny row. The same script
+applies the rule on the next import: a post or a second list entry is
+auto-verified, a pokedex id alone is game_data_only, a battle form or
+placeholder is rejected, and a conflict stays a draft.

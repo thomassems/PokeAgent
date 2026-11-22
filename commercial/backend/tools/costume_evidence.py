@@ -1,10 +1,11 @@
 """Decide whether a costume draft is real enough to approve.
 
-A game-data id on its own is not enough: that file also holds unreleased
-assets. An official Pokémon GO post is enough on its own, because the post
-is the release. A community id is approved only when the same species and
-code also appear on an independent event-form list. The list is read for
-the check. Its sentences are not stored.
+An official Pokémon GO post is a full approval on its own, because the post
+is the release. A community id is fully approved when the same species and
+code also appear on an independent event-form list. A pokedex id with no
+second source is not that approval: the verifier records it later as
+game_data_only. Two sources that name different costumes stay a draft.
+The list is read for the check. Its sentences are not stored.
 """
 
 from __future__ import annotations
@@ -616,6 +617,15 @@ def news_result(
                 "The official post for this event names this species in this costume.",
                 "high",
             )
+    if len(confirmed) > 1:
+        return NewsResult(
+            "conflict",
+            "",
+            "",
+            "",
+            "Official posts name more than one costume for this id.",
+            "low",
+        )
     for code, species, needle, slug, reason in _DIRECT:
         if value != code or species_id != species:
             continue
