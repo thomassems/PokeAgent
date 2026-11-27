@@ -61,7 +61,7 @@
   font-size: 1.05rem;
 }
 
-.theme-main .chat-header span[aria-hidden],
+.theme-main .chat-brand-dot,
 .theme-main .chat-agent-dot,
 .theme-main .chat-activity-dot {
   background: var(--theme-accent);
@@ -87,9 +87,13 @@
 
 .theme-main .chat-welcome p,
 .theme-go .chat-welcome p,
-.theme-main .chat-user-game,
-.theme-go .chat-user-game {
+.theme-main .chat-user-game {
   color: var(--theme-muted);
+}
+
+/* The GO bubble is teal. The muted green used on the page fails on it. */
+.theme-go .chat-user-message .chat-user-game {
+  color: #f4fffb;
 }
 
 .theme-main .chat-examples button,
@@ -112,13 +116,8 @@
 .chat-sprites {
   display: flex;
   justify-content: center;
-  gap: 0.25rem;
+  gap: 0.75rem;
   margin-bottom: 0.75rem;
-}
-
-.chat-sprites .pixel-sprite {
-  width: 72px;
-  height: 72px;
 }
 
 .theme-main .chat-user-message p {
@@ -324,10 +323,5 @@
 @media (max-width: 40rem) {
   .theme-main .chat-welcome h2 {
     font-size: 0.9rem;
-  }
-
-  .chat-sprites .pixel-sprite {
-    width: 56px;
-    height: 56px;
   }
 }

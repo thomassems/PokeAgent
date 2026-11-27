@@ -3,7 +3,7 @@
      sticky bar lets the two answer columns show through on either side. */
   z-index: 10;
   width: 100%;
-  padding: 1rem 0 0.6rem;
+  padding: 1rem 0 max(0.6rem, env(safe-area-inset-bottom));
   background: #f8f7f4;
 }
 
@@ -32,7 +32,7 @@
   background: transparent;
   color: #242620;
   caret-color: #a05228;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   line-height: 1.5;
 }
 

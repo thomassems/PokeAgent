@@ -79,3 +79,63 @@
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Phone layout. These sit outside @layer so they beat utility font sizes.
+   Desktop (768px and up) keeps the existing control sizes. */
+header {
+  padding-top: env(safe-area-inset-top);
+}
+
+body {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+.chat-composer-actions svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  max-width: none;
+}
+
+@media (max-width: 767px) {
+  .min-h-screen {
+    min-height: 100dvh;
+  }
+
+  main {
+    min-width: 0;
+  }
+
+  main input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  main select,
+  main textarea {
+    width: 100%;
+    max-width: 100%;
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  main button,
+  main label:has(input[type="checkbox"]),
+  main label:has(input[type="radio"]) {
+    min-height: 44px;
+  }
+
+  main button {
+    touch-action: manipulation;
+  }
+
+  .chat-composer-actions button[type="submit"] {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

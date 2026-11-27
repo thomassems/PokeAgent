@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Press_Start_2P } from "next/font/google";
 import "./globals.css";
 
@@ -27,6 +27,12 @@ const pixel = Press_Start_2P({
 export const metadata: Metadata = {
   title: "PokeAgent",
   description: "Ask a Pokémon agent questions and explore a team builder preview.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

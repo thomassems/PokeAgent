@@ -4,31 +4,26 @@ import { useEffect, useRef, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { ComparisonTurn } from "@/components/ComparisonTurn";
 import { PromptPanel } from "@/components/PromptPanel";
+import { SpeciesBadge } from "@/components/SpeciesBadge";
 import { AGENT_IDS, type AgentId } from "@/lib/agents";
 import { readAgentStream } from "@/lib/agent-stream";
 import { useSharedGame, type Game } from "@/lib/game";
 import { useSharedAccent } from "@/lib/go-accent";
-import { spriteUrlFor } from "@/lib/pokeapi";
 import { useSharedGeneration } from "@/lib/generation";
 import { applyAgentEvent, newRun, type RunState } from "@/lib/run-state";
-import type { Generation } from "@/lib/types";
+import type { Generation, TypeName } from "@/lib/types";
 
 const EXAMPLE_PROMPTS = [
-  "What makes a good fast Electric type?",
-  "What does Body Slam do?",
-  "How did Steel resist Ghost in Generation 4?",
+  "What hits Water and Ground super effectively?",
+  "Which moves get STAB on Garchomp?",
+  "How did the type chart change in Generation 6?",
+  "Suggest a sixth Pokémon for a rain team.",
 ];
 
-const STARTER_SPRITES = [
-  { id: 1, name: "Bulbasaur" },
-  { id: 4, name: "Charmander" },
-  { id: 7, name: "Squirtle" },
-] as const;
-
-const GO_EXAMPLE_PROMPTS = [
-  "What raid bosses are in Pokemon GO right now?",
-  "When is the next Community Day?",
-  "What is this week's Spotlight Hour?",
+const STARTER_BADGES: readonly { name: string; types: readonly TypeName[] }[] = [
+  { name: "Bulbasaur", types: ["grass"] },
+  { name: "Charmander", types: ["fire"] },
+  { name: "Squirtle", types: ["water"] },
 ];
 
 /** One question, answered by every implementation. */
@@ -44,7 +39,7 @@ export default function Home() {
   const [generation, setGeneration] = useSharedGeneration();
   const [game, setGame] = useSharedGame();
   const [accent, setAccent] = useSharedAccent();
-  const examples = game === "go" ? GO_EXAMPLE_PROMPTS : EXAMPLE_PROMPTS;
+  const examples = EXAMPLE_PROMPTS;
   const [prompt, setPrompt] = useState("");
   const [turns, setTurns] = useState<Turn[]>([]);
   const activeRequest = useRef<AbortController | null>(null);
@@ -186,7 +181,7 @@ export default function Home() {
 
   return (
     <div
-      className={`chat-page theme-${game} flex min-h-screen flex-col`}
+      className={`chat-page theme-${game} flex min-h-dvh flex-col`}
       data-accent={game === "go" ? accent : undefined}
     >
       <AppHeader activePage="chat" />
@@ -195,17 +190,8 @@ export default function Home() {
           <div className="chat-welcome flex flex-1 flex-col items-center justify-center text-center">
             {game === "main" && (
               <div className="chat-sprites">
-                {STARTER_SPRITES.map((species) => (
-                  // Already a small pixel PNG. next/image would re-encode it.
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    key={species.id}
-                    className="pixel-sprite"
-                    src={spriteUrlFor(species.id)}
-                    alt={species.name}
-                    width={72}
-                    height={72}
-                  />
+                {STARTER_BADGES.map((species) => (
+                  <SpeciesBadge key={species.name} name={species.name} types={species.types} />
                 ))}
               </div>
             )}
