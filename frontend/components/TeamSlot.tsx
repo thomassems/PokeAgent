@@ -1,39 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import type { Slot } from "@/lib/types";
+import { SpeciesBadge } from "./SpeciesBadge";
 import { TypeChip } from "./TypeChip";
-
-/**
- * Official PokeAPI sprites are already pixel art. A plain img at the file's
- * native 96px keeps that grid on an integer scale. next/image would resample
- * it, which softens the pixels.
- */
-function PixelSprite({ src, name }: { src: string; name: string }) {
-  const [failed, setFailed] = useState(false);
-  if (failed) {
-    return (
-      <span
-        aria-hidden
-        className="flex size-24 items-center justify-center font-mono text-lg text-ink-500"
-      >
-        {name.charAt(0)}
-      </span>
-    );
-  }
-  return (
-    // The sprite file is already 96px pixel art. next/image would resample it.
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={src}
-      alt=""
-      width={96}
-      height={96}
-      className="pixel-sprite"
-      onError={() => setFailed(true)}
-    />
-  );
-}
 
 type TeamSlotProps = {
   slot: Slot;
@@ -84,9 +53,7 @@ export function TeamSlot({ slot, index, onOpenPicker, onRemove }: TeamSlotProps)
         aria-label={`Replace ${slot.pokemon.name}`}
         className="flex min-w-0 flex-1 items-center gap-3 text-left"
       >
-        <span className="flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-sm border border-shell-700 bg-screen-950">
-          <PixelSprite key={slot.pokemon.spriteUrl} src={slot.pokemon.spriteUrl} name={slot.pokemon.name} />
-        </span>
+        <SpeciesBadge name={slot.pokemon.name} types={slot.pokemon.types} size="lg" />
         <span className="min-w-0">
           <span className="flex items-baseline gap-2">
             <span className="truncate text-sm font-medium text-ink-100">{slot.pokemon.name}</span>
